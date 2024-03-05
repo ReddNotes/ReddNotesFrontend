@@ -1,13 +1,21 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+/* ? common styles */
+@import url('./styles/button.css');
+@import url('./styles/link.css');
+
+#root {
+  --bg-color: #F5F5F5;
+  --accent-color: #E24352;
+  --dark-color: #0A100D;
+  --secondary-color: #8B8B8B;
+  --light-color: #F5F5F5;
+  font-family: 'Inter';
 }
 
 body {
   margin: 0;
   padding: 0;
-  min-width: 100vw;
+  min-width: 100%;
   min-height: 100vh;
 }

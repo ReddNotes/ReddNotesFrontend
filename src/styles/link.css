@@ -1,0 +1,16 @@
+.link {
+  font-family: Inter;
+  cursor: pointer;
+  color: var(--accent-color);
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.link:hover {
+  opacity: 0.8;
+}
+
+.link:active {
+  opacity: 0.6;
+}
