@@ -8,8 +8,8 @@ import './App.css';
 
 // ? pages
 import Login from './../pages/Login/login.jsx';
-import Register from './../pages/Register/register.jsx';
 import NotFound from '../pages/NotFound/NotFound.jsx';
+import Register from './../pages/Register/register.jsx';
 
 // ? utils
 import { WEB_SOCKET_SETTING } from './../utils/constants.js';
@@ -243,7 +243,40 @@ function App() {
 
           // create
           case 'create':
-            // todo
+            setToken((token) => {
+              if (token) {
+                setCurrentUser((pre) => {
+                  if (answer.data.owner === pre._id) {
+                    return {
+                      ...pre,
+                      notes: [...pre.notes, answer.data._id],
+                    };
+                  } else {
+                    return pre;
+                  }
+                });
+                setAllUsers((pre) => {
+                  const updatedUsers = pre.map((user) => {
+                    if (user._id === answer.data.owner) {
+                      return {
+                        ...user,
+                        notes: [...user.notes, answer.data._id],
+                      };
+                    } else {
+                      return user;
+                    }
+                  });
+
+                  return updatedUsers;
+                });
+              }
+
+              return token;
+            });
+
+            setAllNotes((pre) => [...pre, answer.data]);
+            setCountAllNotes((pre) => pre + 1);
+
             break;
 
           default:
@@ -263,10 +296,18 @@ function App() {
 
   return (
     <>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
+      {socket ? (
+        <>
+          <Routes>
+            <Route path='/' element={<div> todo make main components</div>} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+        </>
+      ) : (
+        <p>todo preloader</p>
+      )}
     </>
   );
 }
