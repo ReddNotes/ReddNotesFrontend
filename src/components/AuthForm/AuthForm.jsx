@@ -1,6 +1,7 @@
 // AuthForm.jsx
 
 // ! modules
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 // ? assets
@@ -25,6 +26,7 @@ export default function AuthForm({
       value: 'input value',
       name: 'First input',
       type: 'text',
+      require: true,
       placeholder: 'type here something',
     },
   ],
@@ -35,6 +37,21 @@ export default function AuthForm({
   },
   error = 'Something was wrong...',
 }) {
+  // ? useState
+  const [isSubmitButtonActive, setSubmitButtonActive] = useState(false);
+
+  // ? useEffect
+  useEffect(() => {
+    setSubmitButtonActive(true);
+    for (let i = 0; i < fields.length; i++) {
+      const inp = fields[i];
+
+      if (!inp.value.trim()) {
+        setSubmitButtonActive(false);
+      }
+    }
+  }, [fields]);
+
   return (
     <div className={s.main}>
       <div className={s.container}>
@@ -62,7 +79,11 @@ export default function AuthForm({
 
           <p className={s.error}>{error}</p>
 
-          <button type='submit' className={`button ${s.submit_button}`}>
+          <button
+            disabled={!isSubmitButtonActive}
+            type='submit'
+            className={`button ${s.submit_button}`}
+          >
             {submit.text}
           </button>
 
