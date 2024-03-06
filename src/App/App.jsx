@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 // ? modules
 import { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // ? styles
 import './App.css';
@@ -15,6 +15,8 @@ import Register from './../pages/Register/register.jsx';
 import { WEB_SOCKET_SETTING } from './../utils/constants.js';
 
 function App() {
+  const navigate = useNavigate();
+
   // ? useStates
   // do we check token in local storage
   const [isTokenCheck, setTokenCheck] = useState(false);
@@ -174,6 +176,7 @@ function App() {
                 setToken(answer.token);
                 localStorage.setItem('token', answer.token);
                 setTokenCheck(true);
+                navigate('/');
                 break;
               }
               // token
@@ -200,6 +203,7 @@ function App() {
             setUsersDownloaded(true);
             setToken(answer.token);
             localStorage.setItem('token', answer.token);
+            navigate('/');
             setTokenCheck(true);
             break;
 

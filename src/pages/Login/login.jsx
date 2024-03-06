@@ -26,12 +26,11 @@ export default function Login({ handleSubmit, error }) {
 
   function onSubmit(e) {
     e.preventDefault();
-
+    setInputValue({ ...emptyValue });
     handleSubmit({
       nickname: inputValue['login-nickname'],
       password: inputValue['login-password'],
     });
-    setInputValue(emptyValue);
   }
 
   return (
@@ -42,14 +41,14 @@ export default function Login({ handleSubmit, error }) {
         {
           id: 'login-nickname',
           name: 'Nickname',
-          value: inputValue.nickname,
+          value: inputValue['login-nickname'],
           type: 'text',
           placeholder: 'Pizza Guy',
         },
         {
           id: 'login-password',
           name: 'Password',
-          value: inputValue.password,
+          value: inputValue['login-password'],
           type: 'password',
           placeholder: 'Type strong password',
         },
