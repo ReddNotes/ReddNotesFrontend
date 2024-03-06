@@ -31,13 +31,13 @@
 .inputs {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .field__name {
@@ -54,9 +54,27 @@
   border: 0.5px solid var(--dark-color);
   border-radius: 8px;
   padding: 0 15px;
+
+  outline: none;
+
+  &:focus {
+    border: 0.5px solid var(--accent-secondary-color);
+  }
+
+  &.field__input_valid_invalid {
+    border: 1px solid var(--accent-color);
+  }
 }
 
 .error {
+  color: var(--accent-color);
+  font-size: 10px;
+  min-height: 12px;
+  margin: 0;
+  padding: 0 0 0 15px;
+}
+
+.server-error {
   color: var(--accent-color);
   font-size: 15px;
   margin: 20px 0 0;

@@ -1,7 +1,6 @@
 // AuthForm.jsx
 
 // ! modules
-import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 // ? assets
@@ -26,7 +25,8 @@ export default function AuthForm({
       value: 'input value',
       name: 'First input',
       type: 'text',
-      require: true,
+      required: true,
+      error: 'Some small error',
       placeholder: 'type here something',
     },
   ],
@@ -35,23 +35,9 @@ export default function AuthForm({
     text: 'page',
     href: '/',
   },
+  isFormActive = false,
   error = 'Something was wrong...',
 }) {
-  // ? useState
-  const [isSubmitButtonActive, setSubmitButtonActive] = useState(false);
-
-  // ? useEffect
-  useEffect(() => {
-    setSubmitButtonActive(true);
-    for (let i = 0; i < fields.length; i++) {
-      const inp = fields[i];
-
-      if (!inp.value.trim()) {
-        setSubmitButtonActive(false);
-      }
-    }
-  }, [fields]);
-
   return (
     <div className={s.main}>
       <div className={s.container}>
@@ -68,19 +54,23 @@ export default function AuthForm({
                     id={inp.id}
                     onChange={onChange}
                     value={inp.value}
-                    className={s.field__input}
+                    required={inp.required}
+                    className={`${s.field__input} ${
+                      inp.error && s.field__input_valid_invalid
+                    }`}
                     type={inp.type}
                     placeholder={inp.placeholder}
                   />
+                  <p className={s.error}>{inp.error}</p>
                 </div>
               );
             })}
           </div>
 
-          <p className={s.error}>{error}</p>
+          <p className={s['server-error']}>{error}</p>
 
           <button
-            disabled={!isSubmitButtonActive}
+            disabled={!isFormActive}
             type='submit'
             className={`button ${s.submit_button}`}
           >
