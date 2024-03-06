@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 // ? modules
 import { useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // ? styles
 import './App.css';
 
 // ? pages
 import Login from './../pages/Login/login.jsx';
+import NotFound from '../pages/NotFound/NotFound.jsx';
 import Register from './../pages/Register/register.jsx';
 import MainContainer from '../pages/MainContainer/MainContainer.jsx';
 import Post from '../components/Post/Post.jsx';
@@ -17,6 +18,8 @@ import NotFound from '../pages/NotFound/NotFound.jsx';
 import { WEB_SOCKET_SETTING } from './../utils/constants.js';
 
 function App() {
+  const navigate = useNavigate();
+
   // ? useStates
   // do we check token in local storage
   const [isTokenCheck, setTokenCheck] = useState(false);
@@ -38,7 +41,6 @@ function App() {
     lastName: null,
     birthday: null, // date
     description: null,
-    isActive: false,
   });
   // all chats
   const [allNotes, setAllNotes] = useState([]);
@@ -50,6 +52,12 @@ function App() {
   const [countAllUsers, setCountAllUsers] = useState(null);
   // count all notes
   const [countAllNotes, setCountAllNotes] = useState(null);
+
+  // errors
+  const [errorsFromServer, setErrorsFromServer] = useState({
+    login: '',
+    register: '',
+  });
 
   useEffect(() => {
     const _socket = new WebSocket(WEB_SOCKET_SETTING.URL);
@@ -158,12 +166,22 @@ function App() {
             // methods
             switch (answer.method) {
               // data
-              case 'by data':
+              case 'by data': {
+                if (answer.errorMessage) {
+                  return setErrorsFromServer((pre) => ({
+                    ...pre,
+                    login: answer.errorMessage,
+                  }));
+                }
+
                 setCurrentUser({ ...currentUser, ...answer.data });
                 setUsersDownloaded(true);
                 setToken(answer.token);
+                localStorage.setItem('token', answer.token);
                 setTokenCheck(true);
+                navigate('/');
                 break;
+              }
               // token
               case 'by token':
                 setCurrentUser({ ...currentUser, ...answer.data });
@@ -178,7 +196,18 @@ function App() {
 
           // register
           case 'signup':
-            // todo
+            if (answer.errorMessage) {
+              return setErrorsFromServer((pre) => ({
+                ...pre,
+                register: answer.errorMessage,
+              }));
+            }
+            setCurrentUser(answer.data);
+            setUsersDownloaded(true);
+            setToken(answer.token);
+            localStorage.setItem('token', answer.token);
+            navigate('/');
+            setTokenCheck(true);
             break;
 
           default:
@@ -245,7 +274,40 @@ function App() {
 
           // create
           case 'create':
-            // todo
+            setToken((token) => {
+              if (token) {
+                setCurrentUser((pre) => {
+                  if (answer.data.owner === pre._id) {
+                    return {
+                      ...pre,
+                      notes: [...pre.notes, answer.data._id],
+                    };
+                  } else {
+                    return pre;
+                  }
+                });
+                setAllUsers((pre) => {
+                  const updatedUsers = pre.map((user) => {
+                    if (user._id === answer.data.owner) {
+                      return {
+                        ...user,
+                        notes: [...user.notes, answer.data._id],
+                      };
+                    } else {
+                      return user;
+                    }
+                  });
+
+                  return updatedUsers;
+                });
+              }
+
+              return token;
+            });
+
+            setAllNotes((pre) => [...pre, answer.data]);
+            setCountAllNotes((pre) => pre + 1);
+
             break;
 
           default:
@@ -263,14 +325,68 @@ function App() {
     }
   }
 
+  // ? functions
+
+  // login to server
+  function handleLogin(data) {
+    console.log('submit login');
+    socket.send(
+      JSON.stringify({
+        type: 'auth',
+        action: 'login',
+        method: 'by data',
+        data: data,
+        token: token,
+      }),
+    );
+  }
+
+  // register to server
+  function handleRegister(data) {
+    console.log('submit register');
+    socket.send(
+      JSON.stringify({
+        type: 'auth',
+        action: 'signup',
+        method: '',
+        data: data,
+        token: token,
+      }),
+    );
+  }
+
   return (
     <>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/" element={<MainContainer><Post /></MainContainer>} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      {socket ? (
+        <>
+          <Routes>
+            <Route path='/' element={<div> todo make main components</div>} />
+
+            <Route
+              path='/login'
+              element={
+                <Login
+                  handleSubmit={handleLogin}
+                  error={errorsFromServer.login}
+                />
+              }
+            />
+
+            <Route
+              path='/register'
+              element={
+                <Register
+                  handleSubmit={handleRegister}
+                  error={errorsFromServer.register}
+                />
+              }
+            />
+            <Route path='*' element={<NotFound />} />
+          </Routes>
+        </>
+      ) : (
+        <p>todo preloader</p>
+      )}
     </>
   );
 }
