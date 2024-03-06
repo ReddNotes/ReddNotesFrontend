@@ -1,28 +1,34 @@
-// ! modules
-import { NavLink } from 'react-router-dom'
-
-// ? assets
-import fullLogo from './../../assets/ReddNotes_logo_full.svg';
-
-// ? style
-import './register.css'
+// ? components
+import AuthForm from '../../components/AuthForm/AuthForm';
 
 export default function Register() {
-    return(
-        <div className='register_bg'>
-            <div className='register_container'>
-                <img src={fullLogo} alt='Reddnotes Logo' />
-                <h1>Welcome back user</h1>
-                <form>
-                    <h2>Nickname</h2>
-                    <input type="text" placeholder='PizzaGuy'/>
-                    <h2>Password</h2>
-                    <input type="password" placeholder='GF3g5G6F89'/>
-                </form>
-                <p className='register_error_msg'>Something was wrong...</p>
-                <button className='button register_submit_button'>Register</button>
-                <p className='register_bottom_text'>Already register ? <NavLink className='link' to={'/login'} >Login</NavLink></p>
-            </div>
-        </div>
-    )
+  return (
+    <AuthForm
+      title={'Welcome to ReddNotes'}
+      fields={[
+        {
+          name: 'Nickname',
+          type: 'text',
+          placeholder: 'Pizza Guy',
+        },
+        {
+          name: 'Password',
+          type: 'password',
+          placeholder: 'Type strong password',
+        },
+      ]}
+      submit={{
+        text: 'Register',
+        function: (e) => {
+          e.preventDefault();
+          console.log('submit');
+        },
+      }}
+      link={{
+        sentence: 'Already have account ?',
+        text: 'Login',
+        href: '/login',
+      }}
+    />
+  );
 }

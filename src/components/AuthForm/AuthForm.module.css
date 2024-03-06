@@ -1,4 +1,4 @@
-.register_bg {
+.main {
   background-color: var(--bg-color);
   min-height: 100vh;
   display: flex;
@@ -6,53 +6,65 @@
   align-items: center;
 }
 
-.register_container {
+.container {
   width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.register_container img {
+.logo {
   width: 182px;
-  margin: 0 0 10px;
 }
 
-.register_container h1 {
+.title {
   font-size: 24px;
   font-weight: 500;
   color: var(--dark-color);
-  margin: 0;
+  margin: 10px 0 20px;
 }
 
-.register_container form {
+.form {
   width: 100%;
 }
 
-.register_container h2 {
-  margin-top: 30px;
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.field__name {
+  margin: 0;
   font-size: 12px;
   font-weight: 400;
   color: var(--secondary-color);
 }
 
-.register_container input {
+.field__input {
   width: 100%;
   box-sizing: border-box;
   height: 46px;
   border: 0.5px solid var(--dark-color);
   border-radius: 8px;
-  padding-left: 15px;
+  padding: 0 15px;
 }
 
-.register_error_msg {
+.error {
   color: var(--accent-color);
   font-size: 15px;
-  margin-top: 30px;
+  margin: 20px 0 0;
   min-height: 19px;
+  text-align: center;
 }
 
-.register_submit_button {
+.submit_button {
   margin-top: 140px;
   width: 100%;
   background-color: var(--dark-color);
@@ -63,7 +75,8 @@
   transition: all 0.3s linear;
 }
 
-.register_bottom_text {
+.bottom_text {
   color: var(--dark-color);
   font-size: 14px;
+  text-align: center;
 }
