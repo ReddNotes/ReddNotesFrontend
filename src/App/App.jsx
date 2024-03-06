@@ -9,6 +9,8 @@ import './App.css';
 // ? pages
 import Login from './../pages/Login/login.jsx';
 import Register from './../pages/Register/register.jsx';
+import MainContainer from '../pages/MainContainer/MainContainer.jsx';
+import Post from '../components/Post/Post.jsx';
 import NotFound from '../pages/NotFound/NotFound.jsx';
 
 // ? utils
@@ -266,6 +268,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/" element={<MainContainer><Post /></MainContainer>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
