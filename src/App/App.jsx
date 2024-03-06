@@ -36,7 +36,6 @@ function App() {
     lastName: null,
     birthday: null, // date
     description: null,
-    isActive: false,
   });
   // all chats
   const [allNotes, setAllNotes] = useState([]);
@@ -48,6 +47,12 @@ function App() {
   const [countAllUsers, setCountAllUsers] = useState(null);
   // count all notes
   const [countAllNotes, setCountAllNotes] = useState(null);
+
+  // errors
+  const [errorsFromServer, setErrorsFromServer] = useState({
+    login: '',
+    register: '',
+  });
 
   useEffect(() => {
     const _socket = new WebSocket(WEB_SOCKET_SETTING.URL);
@@ -156,12 +161,21 @@ function App() {
             // methods
             switch (answer.method) {
               // data
-              case 'by data':
+              case 'by data': {
+                if (answer.errorMessage) {
+                  return setErrorsFromServer((pre) => ({
+                    ...pre,
+                    login: answer.errorMessage,
+                  }));
+                }
+
                 setCurrentUser({ ...currentUser, ...answer.data });
                 setUsersDownloaded(true);
                 setToken(answer.token);
+                localStorage.setItem('token', answer.token);
                 setTokenCheck(true);
                 break;
+              }
               // token
               case 'by token':
                 setCurrentUser({ ...currentUser, ...answer.data });
@@ -176,7 +190,17 @@ function App() {
 
           // register
           case 'signup':
-            // todo
+            if (answer.errorMessage) {
+              return setErrorsFromServer((pre) => ({
+                ...pre,
+                register: answer.errorMessage,
+              }));
+            }
+            setCurrentUser(answer.data);
+            setUsersDownloaded(true);
+            setToken(answer.token);
+            localStorage.setItem('token', answer.token);
+            setTokenCheck(true);
             break;
 
           default:
@@ -294,14 +318,62 @@ function App() {
     }
   }
 
+  // ? functions
+
+  // login to server
+  function handleLogin(data) {
+    console.log('submit login');
+    socket.send(
+      JSON.stringify({
+        type: 'auth',
+        action: 'login',
+        method: 'by data',
+        data: data,
+        token: token,
+      }),
+    );
+  }
+
+  // register to server
+  function handleRegister(data) {
+    console.log('submit register');
+    socket.send(
+      JSON.stringify({
+        type: 'auth',
+        action: 'signup',
+        method: '',
+        data: data,
+        token: token,
+      }),
+    );
+  }
+
   return (
     <>
       {socket ? (
         <>
           <Routes>
             <Route path='/' element={<div> todo make main components</div>} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
+
+            <Route
+              path='/login'
+              element={
+                <Login
+                  handleSubmit={handleLogin}
+                  error={errorsFromServer.login}
+                />
+              }
+            />
+
+            <Route
+              path='/register'
+              element={
+                <Register
+                  handleSubmit={handleRegister}
+                  error={errorsFromServer.register}
+                />
+              }
+            />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </>

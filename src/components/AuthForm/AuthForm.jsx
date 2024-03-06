@@ -11,6 +11,7 @@ import s from './AuthForm.module.css';
 
 export default function AuthForm({
   title = 'do not forgot to change in production',
+  onChange,
   submit = {
     text: 'Submit form',
     function: (e) => {
@@ -20,6 +21,8 @@ export default function AuthForm({
   },
   fields = [
     {
+      id: 'auth_input',
+      value: 'input value',
       name: 'First input',
       type: 'text',
       placeholder: 'type here something',
@@ -45,6 +48,9 @@ export default function AuthForm({
                 <div key={index} className={s.field}>
                   <h2 className={s.field__name}>{inp.name}</h2>
                   <input
+                    id={inp.id}
+                    onChange={onChange}
+                    value={inp.value}
                     className={s.field__input}
                     type={inp.type}
                     placeholder={inp.placeholder}
