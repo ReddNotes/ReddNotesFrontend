@@ -252,7 +252,7 @@ function App() {
       case 'note':
         switch (answer.action) {
           // get
-          case 'get':
+          case 'get': {
             // methods
             switch (answer.method) {
               // data
@@ -265,9 +265,10 @@ function App() {
                 break;
             }
             break;
+          }
 
           // create
-          case 'create':
+          case 'create': {
             setToken((token) => {
               if (token) {
                 setCurrentUser((pre) => {
@@ -303,6 +304,34 @@ function App() {
             setCountAllNotes((pre) => pre + 1);
 
             break;
+          }
+
+          // reaction
+          case 'reaction': {
+            // methods
+            switch (answer.method) {
+              // set
+              case 'set':
+              case 'delete': {
+                setAllNotes((pre) => {
+                  const updatedNotes = pre.map((note) => {
+                    if (note._id === answer.data._id) {
+                      return answer.data;
+                    } else {
+                      return note;
+                    }
+                  });
+                  return updatedNotes;
+                });
+
+                break;
+              }
+
+              default:
+                break;
+            }
+            break;
+          }
 
           default:
             break;
@@ -320,6 +349,8 @@ function App() {
   }
 
   // ? functions
+
+  // * auth
 
   // login to server
   function handleLogin(data) {
@@ -349,6 +380,27 @@ function App() {
     );
   }
 
+  // * note
+
+  // set/delete reaction
+  function handleChangeReaction(data, method) {
+    if (token) {
+      console.log('submit reaction');
+      socket.send(
+        JSON.stringify({
+          type: 'note',
+          action: 'reaction',
+          method: method,
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
+
   return (
     <>
       {socket ? (
@@ -358,11 +410,14 @@ function App() {
               path='/'
               element={
                 isUsersDataDownloaded && (
-                  <>
-                    <Popup imgSrc={dummyImg} />
 
-                    <Notes notes={allNotes} users={allUsers} />
-                  </>
+                  <Notes
+                    isAuthorized={!!token}
+                    currentUser={currentUser}
+                    handleChangeReaction={handleChangeReaction}
+                    notes={allNotes}
+                    users={allUsers}
+                  />
                 )
               }
             />
