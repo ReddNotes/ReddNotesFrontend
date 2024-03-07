@@ -25,6 +25,7 @@
 .container {
   width: 100%;
   display: flex;
+  align-items: center;
   gap: 16px;
 }
 
@@ -40,6 +41,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: min-content;
 }
 
 .header_link {
@@ -74,11 +76,40 @@
 }
 
 .reaction {
+  min-width: 38px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 4px;
 }
 
-.reaction_count_active_active {
-  color: var(--accent-color);
+@media screen and (max-width: 440px) {
+  .main {
+    border: 0;
+    border-radius: 0;
+    padding: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .header {
+    height: fit-content;
+    gap: 4px;
+    flex-direction: column-reverse;
+  }
+  .header_created {
+    width: 100%;
+    gap: 4px;
+    flex-direction: row-reverse;
+  }
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .title {
+    max-width: calc(100% - 24px - 16px - 8px);
+  }
+  .value {
+    min-height: 96px;
+    border: 0;
+    padding: 4px 0;
+  }
 }

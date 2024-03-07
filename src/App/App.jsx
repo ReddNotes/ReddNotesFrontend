@@ -138,7 +138,7 @@ function App() {
       // try to login by token
       const token = localStorage.getItem('token');
 
-      if (!token) return setTokenCheck(true);
+      if (!token || token === 'null') return setTokenCheck(true);
 
       setToken(token);
     });
@@ -191,6 +191,10 @@ function App() {
                 setCurrentUser({ ...currentUser, ...answer.data });
                 setToken(answer.token);
                 localStorage.setItem('token', answer.token);
+                localStorage.setItem(
+                  answer.data.nickname,
+                  JSON.stringify(answer.data),
+                );
                 setTokenCheck(true);
                 navigate('/');
                 break;
@@ -431,6 +435,12 @@ function App() {
     setPopupPictureOpen(false);
   }
 
+  // logout
+  function handlerLogout() {
+    localStorage.setItem('token', null);
+    setToken(null);
+  }
+
   return (
     <>
       {socket ? (
@@ -444,7 +454,11 @@ function App() {
           )}
 
           {['/', '/settings', '/profile'].includes(page) && (
-            <MenuBar pathname={page} />
+            <MenuBar
+              handlerLogout={handlerLogout}
+              pathname={page}
+              isAuthorized={!!token}
+            />
           )}
 
           <Routes>

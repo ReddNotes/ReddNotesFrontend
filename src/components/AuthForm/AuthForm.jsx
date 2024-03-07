@@ -39,7 +39,7 @@ export default function AuthForm({
   error = 'Something was wrong...',
 }) {
   return (
-    <div className={s.main}>
+    <section className={s.main}>
       <div className={s.container}>
         <img className={s.logo} src={fullLogo} alt='ReddNotes Logo' />
         <h1 className={`title-first text ${s.title}`}>{title}</h1>
@@ -91,6 +91,6 @@ export default function AuthForm({
           </p>
         </form>
       </div>
-    </div>
+    </section>
   );
 }

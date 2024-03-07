@@ -48,6 +48,11 @@ export default function Notes({
             />
           );
         })}
+      <div className={s.end}>
+        <p className='text text_color_second body'>
+          You have been see all notes
+        </p>
+      </div>
     </section>
   );
 }

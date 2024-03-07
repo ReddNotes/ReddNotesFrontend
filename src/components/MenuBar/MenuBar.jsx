@@ -15,7 +15,7 @@ import userActiveIcon from './../../assets/icon/user_red.svg';
 import settingsActiveIcon from './../../assets/icon/settings_red.svg';
 import logoutIcon from './../../assets/icon/logout.svg';
 
-export default function MenuBar({ pathname }) {
+export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
   const _id = 'menubar-navigation-line';
 
   const [line, setLine] = useState(null);
@@ -101,7 +101,12 @@ export default function MenuBar({ pathname }) {
       </div>
 
       <div className={s.item}>
-        <button className='button'>
+        <button
+          disabled={!isAuthorized}
+          type='button'
+          onClick={handlerLogout}
+          className='button'
+        >
           <img src={logoutIcon} alt='Logout Logo' />
         </button>
       </div>
