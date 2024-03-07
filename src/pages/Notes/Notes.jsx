@@ -4,7 +4,14 @@ import s from './Notes.module.css';
 // ? components
 import Note from '../../components/Note/Note';
 
-export default function Notes({ notes, users }) {
+export default function Notes({
+  openPopupPicture,
+  isAuthorized,
+  currentUser,
+  handleChangeReaction,
+  notes,
+  users,
+}) {
   return (
     <section className={s.main}>
       {notes
@@ -17,12 +24,29 @@ export default function Notes({ notes, users }) {
         .map((note) => {
           for (let i = 0; i < users.length; i++) {
             const user = users[i];
+            note.isReactionActive = false;
+            note.isSavedFavorites = false;
             if (user._id === note.owner) {
               note.user = user;
             }
           }
 
-          return <Note key={note._id} note={note} />;
+          if (note.likes.includes(currentUser._id)) {
+            note.isReactionActive = true;
+          }
+          if (isAuthorized && currentUser.favorites.includes(note._id)) {
+            note.isSavedFavorites = true;
+          }
+
+          return (
+            <Note
+              openPopupPicture={openPopupPicture}
+              isAuthorized={isAuthorized}
+              handleChangeReaction={handleChangeReaction}
+              key={note._id}
+              note={note}
+            />
+          );
         })}
     </section>
   );

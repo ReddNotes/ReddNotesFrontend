@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
-// ? modules
+// ! modules
 import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // ? styles
 import './App.css';
+
+// ? components
+import PopupPicture from './../components/PopupPicture/PopupPicture.jsx';
 
 // ? pages
 import Login from './../pages/Login/login.jsx';
@@ -50,12 +53,21 @@ function App() {
   const [countAllUsers, setCountAllUsers] = useState(null);
   // count all notes
   const [countAllNotes, setCountAllNotes] = useState(null);
+  // is popup picture open or not
+  const [isPopupPictureOpen, setPopupPictureOpen] = useState(false);
+  // info about current picture
+  const [currentPicture, setCurrentPicture] = useState({
+    src: 'https://images.unsplash.com/photo-1531804055935-76f44d7c3621?q=80&w=3088&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    alt: null,
+  });
 
   // errors
   const [errorsFromServer, setErrorsFromServer] = useState({
     login: '',
     register: '',
   });
+
+  // ? useEffects
 
   useEffect(() => {
     const _socket = new WebSocket(WEB_SOCKET_SETTING.URL);
@@ -147,7 +159,9 @@ function App() {
     };
   }, [socket]);
 
-  // connect to web-socket
+  // ? functions
+
+  // * web-socket
 
   // handle Web-Socket for response from server
   function handleWebSocketResponse(event) {
@@ -252,7 +266,7 @@ function App() {
       case 'note':
         switch (answer.action) {
           // get
-          case 'get':
+          case 'get': {
             // methods
             switch (answer.method) {
               // data
@@ -265,9 +279,10 @@ function App() {
                 break;
             }
             break;
+          }
 
           // create
-          case 'create':
+          case 'create': {
             setToken((token) => {
               if (token) {
                 setCurrentUser((pre) => {
@@ -303,6 +318,34 @@ function App() {
             setCountAllNotes((pre) => pre + 1);
 
             break;
+          }
+
+          // reaction
+          case 'reaction': {
+            // methods
+            switch (answer.method) {
+              // set
+              case 'set':
+              case 'delete': {
+                setAllNotes((pre) => {
+                  const updatedNotes = pre.map((note) => {
+                    if (note._id === answer.data._id) {
+                      return answer.data;
+                    } else {
+                      return note;
+                    }
+                  });
+                  return updatedNotes;
+                });
+
+                break;
+              }
+
+              default:
+                break;
+            }
+            break;
+          }
 
           default:
             break;
@@ -319,7 +362,7 @@ function App() {
     }
   }
 
-  // ? functions
+  // * auth
 
   // login to server
   function handleLogin(data) {
@@ -349,16 +392,66 @@ function App() {
     );
   }
 
+  // * note
+
+  // set/delete reaction
+  function handleChangeReaction(data, method) {
+    if (token) {
+      console.log('submit reaction');
+      socket.send(
+        JSON.stringify({
+          type: 'note',
+          action: 'reaction',
+          method: method,
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
+
+  // * other
+
+  // set info and open popup with picture
+  function openPopupPicture(data) {
+    document.body.style.overflow = 'hidden'; // disabled scroll
+    setCurrentPicture(data);
+    setPopupPictureOpen(true);
+  }
+
+  // close popup with picture
+  function handlerClose() {
+    document.body.style.overflow = ''; // enabled scroll
+    setPopupPictureOpen(false);
+  }
+
   return (
     <>
       {socket ? (
         <>
+          {isPopupPictureOpen && (
+            <PopupPicture
+              src={currentPicture.src}
+              alt={currentPicture.alt}
+              handlerClose={handlerClose}
+            />
+          )}
           <Routes>
             <Route
               path='/'
               element={
                 isUsersDataDownloaded && (
-                  <Notes notes={allNotes} users={allUsers} />
+                  <Notes
+                    openPopupPicture={openPopupPicture}
+                    isAuthorized={!!token}
+                    currentUser={currentUser}
+                    handleChangeReaction={handleChangeReaction}
+                    notes={allNotes}
+                    users={allUsers}
+                  />
                 )
               }
             />

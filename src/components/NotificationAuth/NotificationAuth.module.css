@@ -1,0 +1,25 @@
+.main {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-bottom: 0.5px solid var(--accent-color);
+  backdrop-filter: blur(5px); /* like glass */
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 3;
+}
+
+.container {
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  max-width: var(--max-width-content);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.title {
+  min-width: max-content;
+}

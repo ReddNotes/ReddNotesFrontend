@@ -1,28 +1,25 @@
 // ! modules
 import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // ? styles
 import s from './Note.module.css';
 
 // ? assets
-import fire_empty from './../../assets/icon/fire_empty.svg';
-import fire_full from './../../assets/icon/fire_full.svg';
-import star_empty from './../../assets/icon/star_empty.svg';
-import star_full from './../../assets/icon/star_full.svg';
-import comment from './../../assets/icon/comment.svg';
+import reactionIcon from './../../assets/icon/fire_empty.svg';
+import reactionFillIcon from './../../assets/icon/fire_full.svg';
+import favoriteIcon from './../../assets/icon/star_empty.svg';
+import favoriteFillIcon from './../../assets/icon/star_full.svg';
+import commentIcon from './../../assets/icon/comment.svg';
 
-export default function Note({ note }) {
-  const [isFireActive, setFireActive] = useState(false);
-  const [isStarActive, setStarActive] = useState(false);
-
-  function toggleFire() {
-    setFireActive(!isFireActive);
-  }
-
-  function toggleStar() {
-    setStarActive(!isStarActive);
-  }
+export default function Note({
+  openPopupPicture,
+  isAuthorized,
+  handleChangeReaction,
+  note,
+}) {
+  const [isReactionActive, setReactionActive] = useState(note.isReactionActive);
+  const [isSavedFavorites, setSavedFavorites] = useState(note.isSavedFavorites);
 
   const date = new Date(note.creationDate);
 
@@ -34,6 +31,29 @@ export default function Note({ note }) {
   const hours = ('0' + date.getHours()).slice(-2);
   const minutes = ('0' + date.getMinutes()).slice(-2);
   const formattedTime = `${hours}:${minutes}`;
+
+  // ?
+  useEffect(() => {
+    setReactionActive(note.isReactionActive);
+    setSavedFavorites(note.isSavedFavorites);
+  }, [note]);
+
+  // ? functions
+
+  // ?
+  function toggleStar() {
+    setSavedFavorites(!isSavedFavorites);
+  }
+
+  // change reaction
+  function handleClickReaction() {
+    handleChangeReaction(
+      {
+        noteId: note._id,
+      },
+      isReactionActive ? 'delete' : 'set',
+    );
+  }
 
   return (
     <article className={s.main}>
@@ -47,17 +67,21 @@ export default function Note({ note }) {
               alt={`avatar of ${note.user.nickname}`}
             />
           </NavLink>
-          <h2 className={s.title}>{note.title}</h2>
+          <h2 className={'text title-third'}>{note.title}</h2>
         </div>
         {/* time */}
         <div className={s.header_created}>
-          <p className={s.time}>{formattedDate}</p>
-          <p className={s.time}>{formattedTime}</p>
+          <p className={`text text_color_second detail ${s.time}`}>
+            {formattedDate}
+          </p>
+          <p className={`text text_color_second detail ${s.time}`}>
+            {formattedTime}
+          </p>
         </div>
       </header>
       {/* text */}
       <div className={s.value}>
-        <p className={s.text}>{note.description}</p>
+        <p className={'text label-second'}>{note.description}</p>
       </div>
 
       {/* bottom */}
@@ -65,27 +89,36 @@ export default function Note({ note }) {
         <div className={s.container}>
           <div className={s.reaction}>
             <p
-              className={`${s.text} ${s.reaction_count} ${isFireActive && s.reaction_count_active_active
-                }`}
+              className={`text title-third  text_color_second ${
+                isReactionActive && 'text_color_accent'
+              }`}
             >
-              {note.likes.lenght || 0}
+              {note.likes.length}
             </p>
-            <button className='button' onClick={toggleFire}>
+            <button
+              disabled={!isAuthorized}
+              className='button'
+              onClick={handleClickReaction}
+            >
               <img
-                src={isFireActive ? fire_full : fire_empty}
+                src={isReactionActive ? reactionFillIcon : reactionIcon}
                 alt='action icon'
               />
             </button>
           </div>
 
-          <button className='button'>
-            <img src={comment} alt='comment icon' />
+          <button disabled={!isAuthorized} className='button'>
+            <img src={commentIcon} alt='comment icon' />
           </button>
         </div>
 
-        <button className='button' onClick={toggleStar}>
+        <button
+          disabled={!isAuthorized}
+          className='button'
+          onClick={toggleStar}
+        >
           <img
-            src={isStarActive ? star_full : star_empty}
+            src={isSavedFavorites ? favoriteFillIcon : favoriteIcon}
             alt='star icon'
           />
         </button>

@@ -1,6 +1,6 @@
 .main {
   width: 100%;
-  max-width: 640px;
+  max-width: var(--max-width-content);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 8px;
   padding: 8px 16px;
@@ -8,7 +8,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
   gap: 8px;
+  background-color: var(--bg-secondary-color);
 }
 
 .header {
@@ -35,14 +37,6 @@
   line-height: 0;
 }
 
-.title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 300;
-  height: 24px;
-  line-height: 24px;
-}
-
 .header_created {
   display: flex;
   flex-direction: column;
@@ -50,26 +44,16 @@
 }
 
 .time {
-  margin: 0;
   text-align: end;
-  font-size: 10px;
-  color: var(--secondary-color);
 }
 
 .value {
   width: 100%;
   min-height: 128px;
-  font-size: 14px;
-  font-weight: 200;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  text-align: justify;
   box-sizing: border-box;
   padding: 12px 0;
-}
-
-.text {
-  margin: 0;
 }
 
 .footer {
@@ -84,11 +68,6 @@
   display: flex;
   align-items: center;
   gap: 4px;
-}
-
-.reaction_count {
-  font-size: 16px;
-  color: var(--dark-color);
 }
 
 .reaction_count_active_active {

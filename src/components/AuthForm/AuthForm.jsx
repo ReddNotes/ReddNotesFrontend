@@ -42,14 +42,16 @@ export default function AuthForm({
     <div className={s.main}>
       <div className={s.container}>
         <img className={s.logo} src={fullLogo} alt='ReddNotes Logo' />
-        <h1 className={s.title}>{title}</h1>
+        <h1 className={`title-first text ${s.title}`}>{title}</h1>
 
         <form onSubmit={submit.function} className={s.form}>
           <div className={s.inputs}>
             {fields.map((inp, index) => {
               return (
                 <div key={index} className={s.field}>
-                  <h2 className={s.field__name}>{inp.name}</h2>
+                  <h2 className={'text text_color_second label-third'}>
+                    {inp.name}
+                  </h2>
                   <input
                     id={inp.id}
                     onChange={onChange}
@@ -61,13 +63,17 @@ export default function AuthForm({
                     type={inp.type}
                     placeholder={inp.placeholder}
                   />
-                  <p className={s.error}>{inp.error}</p>
+                  <p className={`text text_color_accent detail ${s.error}`}>
+                    {inp.error}
+                  </p>
                 </div>
               );
             })}
           </div>
 
-          <p className={s['server-error']}>{error}</p>
+          <p className={`text text_color_accent body ${s['server-error']}`}>
+            {error}
+          </p>
 
           <button
             disabled={!isFormActive}
@@ -77,7 +83,7 @@ export default function AuthForm({
             {submit.text}
           </button>
 
-          <p className={s.bottom_text}>
+          <p className={`text subhead ${s.bottom_text}`}>
             {link.sentence + ' '}
             <NavLink className='link' to={link.href}>
               {link.text}
