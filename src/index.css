@@ -10,9 +10,10 @@
   --dark-color: #0a100d;
   --secondary-color: #8b8b8b;
   --light-color: #f5f5f5;
-
   --accent-secondary-color: #504f8f;
-
+  --menubar-bg-color: #f2f3f5;
+  --menubar-border-color: #D9D9D9;
+  --active-pannel-width: 3px;
   font-family: 'Inter';
 }
 

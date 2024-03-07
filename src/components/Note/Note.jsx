@@ -65,9 +65,8 @@ export default function Note({ note }) {
         <div className={s.container}>
           <div className={s.reaction}>
             <p
-              className={`${s.text} ${s.reaction_count} ${
-                isFireActive && s.reaction_count_active_active
-              }`}
+              className={`${s.text} ${s.reaction_count} ${isFireActive && s.reaction_count_active_active
+                }`}
             >
               {note.likes.lenght || 0}
             </p>
@@ -85,7 +84,10 @@ export default function Note({ note }) {
         </div>
 
         <button className='button' onClick={toggleStar}>
-          <img src={isStarActive ? star_full : star_empty} alt='star icon' />
+          <img
+            src={isStarActive ? star_full : star_empty}
+            alt='star icon'
+          />
         </button>
       </footer>
     </article>
