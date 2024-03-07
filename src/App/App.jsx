@@ -3,6 +3,10 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
+//component
+import Popup from '../components/popup/popup.jsx';
+//? dummy image
+import dummyImg from '../../public/images/formBackground.png';
 // ? styles
 import './App.css';
 
@@ -358,7 +362,11 @@ function App() {
               path='/'
               element={
                 isUsersDataDownloaded && (
-                  <Notes notes={allNotes} users={allUsers} />
+                  <>
+                    <Popup imgSrc={dummyImg} />
+
+                    <Notes notes={allNotes} users={allUsers} />
+                  </>
                 )
               }
             />
