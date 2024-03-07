@@ -6,12 +6,15 @@
 
 #root {
   --bg-color: #f5f5f5;
+  --bg-secondary-color: #efefef;
   --accent-color: #e24352;
   --dark-color: #0a100d;
   --secondary-color: #8b8b8b;
   --light-color: #f5f5f5;
 
   --accent-secondary-color: #504f8f;
+
+  --max-width-content: 640px;
 
   font-family: 'Inter';
 }

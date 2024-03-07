@@ -7,7 +7,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 
 // ? components
-import PopupPicture from '../components/PopupPicture/PopupPicture.jsx';
+import PopupPicture from './../components/PopupPicture/PopupPicture.jsx';
 
 // ? pages
 import Login from './../pages/Login/login.jsx';
