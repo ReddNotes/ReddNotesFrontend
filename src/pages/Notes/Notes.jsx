@@ -1,10 +1,10 @@
 // ? styles
-import s from './MainContainer.module.css';
+import s from './Notes.module.css';
 
 // ? components
 import Note from '../../components/Note/Note';
 
-export default function MainContainer({ notes }) {
+export default function Notes({ notes }) {
   return (
     <section className={s.main}>
       {notes

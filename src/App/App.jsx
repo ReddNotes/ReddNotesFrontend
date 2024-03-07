@@ -8,9 +8,9 @@ import './App.css';
 
 // ? pages
 import Login from './../pages/Login/login.jsx';
-import Register from './../pages/Register/register.jsx';
-import MainContainer from './../pages/MainContainer/MainContainer.jsx';
+import Notes from '../pages/Notes/Notes.jsx';
 import NotFound from './../pages/NotFound/NotFound.jsx';
+import Register from './../pages/Register/register.jsx';
 
 // ? utils
 import { WEB_SOCKET_SETTING } from './../utils/constants.js';
@@ -358,7 +358,7 @@ function App() {
       {socket ? (
         <>
           <Routes>
-            <Route path='/' element={<MainContainer notes={allNotes} />} />
+            <Route path='/' element={<Notes notes={allNotes} />} />
 
             <Route
               path='/login'
