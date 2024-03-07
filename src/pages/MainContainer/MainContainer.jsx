@@ -1,10 +1,15 @@
 // ? styles
 import s from './MainContainer.module.css';
 
+// ? components
+import MenuBar from './../../components/MenuBar/MenuBar';
+
 export default function MainContainer({ children }) {
-    return (
-        <div className={s.main}>
-            { children }
-        </div>
-    )
+  return (
+    <section className={s.main}>
+      <MenuBar />
+
+      {children}
+    </section>
+  );
 }

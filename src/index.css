@@ -6,7 +6,6 @@
 @import url('./styles/link.css');
 
 #root {
-
   /* #efefef; */
 
   /* variables */
@@ -14,13 +13,18 @@
   --accent-color: #e24352;
   --accent-secondary-color: #504f8f;
 
-  /* max-width */
+  /* width */
+  --width-menubar: 64px;
+  --width-border-active-page: 3px; /* todo create a new name */
+
+  /* ? max-width */
   --max-width-content: 640px;
 
   /* ? bg */
   --bg-main-color: #f5f5f5;
   --bg-main-dark-color: #0a100d;
   --bg-secondary-color: #fff;
+  --bg-tertiary-color: #f2f3f5;
 
   /* ? fg */
   --fg-main-color: #0a100d;
@@ -30,9 +34,8 @@
   /* ? border */
   --border-main-color: #8b8b8b;
   --border-secondary-color: #0a100d;
+  --border-tertiary-color: #d9d9d9;
 
-  --menubar-bg-color: #f2f3f5;
-  --menubar-border-color: #D9D9D9;
   --active-pannel-width: 3px;
 
   /* css rules */

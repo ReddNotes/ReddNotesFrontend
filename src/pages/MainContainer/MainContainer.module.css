@@ -1,5 +1,5 @@
 .main {
-    display: grid;
-    grid-template-columns: 64px auto;
-    grid-template-rows: 100vh;
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: var(--width-menubar) auto;
 }

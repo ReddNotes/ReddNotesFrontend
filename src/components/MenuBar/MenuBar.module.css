@@ -1,72 +1,62 @@
 .main {
-    width: 100%;
-    background-color: var(--menubar-bg-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    box-sizing: border-box;
-    border-right: 1px solid var(--menubar-border-color);
+  width: var(--width-menubar);
+  background-color: var(--bg-tertiary-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  border-right: 1px solid var(--border-tertiary-color);
 }
 
-.top_container_top {
-    padding: 6px;
-    margin: 8px 8px 0;
-    border-bottom: 1px solid var(--menubar-border-color);
+.container {
+  padding: 6px;
+  margin: 8px 8px 0;
+
+  border-bottom: 1px solid var(--border-tertiary-color);
 }
 
-.top_container_top img {
-    width: 100%;
+.logo {
+  width: 36px;
+  height: 36px;
 }
 
-.top_container_bottom {
-    display: flex;
-    flex-direction: column;
+.navigation {
+  display: flex;
+  flex-direction: column;
 }
 
-.top_container_link_container {
-    width: 100%;
-    height: 56px;
-    display: flex;
-    align-items: center;
+.item {
+  width: var(--width-menubar);
+  height: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
-.top_container_link {
-    height: 36px;
-    margin: auto 14px auto calc(14px - var(--active-pannel-width));
-    position: relative;
+.item_type_logo {
+  margin-bottom: 8px;
 }
 
-.top_container_link div{
-    position: absolute;
-    top: 1px;
-    right: 1px;
-    width: 6px;
-    height: 6px;
-    background-color: transparent;
-    border-radius: 50%;
+.item_type_logo::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 48px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--border-tertiary-color);
 }
 
-.left_border {
-    width: var(--active-pannel-width);
-    height: 48px;
-    border-top-right-radius: var(--active-pannel-width);
-    border-bottom-right-radius: var(--active-pannel-width);
-    background-color: transparent;
-}
-
-#current {
-    background-color: var(--accent-color);
-}
-
-.container_bottom {
-    width: 100%;
-    height: 56px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container_bottom button{
-    height: 36px;
+.link_type_current::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: var(--width-border-active-page);
+  height: 48px;
+  border-top-right-radius: var(--width-border-active-page);
+  border-bottom-right-radius: var(--width-border-active-page);
+  background-color: var(--accent-color);
 }

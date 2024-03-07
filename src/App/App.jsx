@@ -11,7 +11,8 @@ import PopupPicture from './../components/PopupPicture/PopupPicture.jsx';
 
 // ? pages
 import Login from './../pages/Login/login.jsx';
-import Notes from '../pages/Notes/Notes.jsx';
+import MainContainer from './../pages/MainContainer/MainContainer.jsx';
+import Notes from './../pages/Notes/Notes.jsx';
 import NotFound from './../pages/NotFound/NotFound.jsx';
 import Register from './../pages/Register/register.jsx';
 
@@ -444,16 +445,28 @@ function App() {
               path='/'
               element={
                 isUsersDataDownloaded && (
-                  <Notes
-                    openPopupPicture={openPopupPicture}
-                    isAuthorized={!!token}
-                    currentUser={currentUser}
-                    handleChangeReaction={handleChangeReaction}
-                    notes={allNotes}
-                    users={allUsers}
-                  />
+                  <MainContainer>
+                    <Notes
+                      openPopupPicture={openPopupPicture}
+                      isAuthorized={!!token}
+                      currentUser={currentUser}
+                      handleChangeReaction={handleChangeReaction}
+                      notes={allNotes}
+                      users={allUsers}
+                    />
+                  </MainContainer>
                 )
               }
+            />
+
+            <Route
+              path='/settings'
+              element={<MainContainer>settings</MainContainer>}
+            />
+
+            <Route
+              path='/profile'
+              element={<MainContainer>profile</MainContainer>}
             />
 
             <Route

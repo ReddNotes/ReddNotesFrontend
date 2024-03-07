@@ -1,64 +1,81 @@
 // ! modules
-import { NavLink } from 'react-router-dom'
-import { useState } from 'react'
+import { NavLink } from 'react-router-dom';
 
 // ? styles
-import s from './MenuBar.module.css'
+import s from './MenuBar.module.css';
 
 // ? assets
-import fireLogo from './../../assets/ReddNotes_logo_fire.svg'
-import notesLogo from './../../assets/icon/notes.svg'
-import userLogo from './../../assets/icon/user.svg'
-import settingsLogo from './../../assets/icon/settings.svg'
-import notesLogoRed from './../../assets/icon/notes_red.svg'
-import userLogoRed from './../../assets/icon/user_red.svg'
-import settingsLogoRed from './../../assets/icon/settings_red.svg'
-import logoutLogo from './../../assets/icon/logout.svg'
+import fireLogo from './../../assets/ReddNotes_logo_fire.svg';
+import notesIcon from './../../assets/icon/notes.svg';
+import userIcon from './../../assets/icon/user.svg';
+import settingsIcon from './../../assets/icon/settings.svg';
+import notesActiveIcon from './../../assets/icon/notes_red.svg';
+import userActiveIcon from './../../assets/icon/user_red.svg';
+import settingsActiveIcon from './../../assets/icon/settings_red.svg';
+import logoutIcon from './../../assets/icon/logout.svg';
 
 export default function MenuBar() {
-    const [onNotes, setOnNotes] = useState(true);
-    const [onUser, setOnUser] = useState(false);
-    const [onSettings, setOnSettings] = useState(false);
+  const currentPage = window.location.pathname;
 
-    const [notifOnNotes, setNotifOnNotes] = useState(true);
-    const [notifOnUser, setNotifOnUser] = useState(false);
-    const [notifOnSettings, setNotifOnSettings] = useState(false);
-
-    return (
-        <div className={s.main}>
-            <div className={s.top_container}>
-                <div className={s.top_container_top}>
-                    <img src={fireLogo} alt="Redd Notes logo" />
-                </div>
-                <div className={s.top_container_bottom}>
-                    <div className={s.top_container_link_container}>
-                        <div className={s.left_border} id={onNotes ? s.current : ''}/>
-                        <NavLink className={`${s.top_container_link} link`}>
-                            <div id={notifOnNotes ? s.current : ''} />
-                            <img src={onNotes ? notesLogoRed : notesLogo} alt="Notes Logo" />
-                        </NavLink>
-                    </div>
-                    <div className={s.top_container_link_container}>
-                        <div className={s.left_border} id={onUser ? s.current : ''}/>
-                        <NavLink className={`${s.top_container_link} link`}>
-                            <div id={notifOnUser ? s.current : ''} />
-                            <img src={onUser ? userLogoRed : userLogo} alt="User Logo" />
-                        </NavLink>
-                    </div>
-                    <div className={s.top_container_link_container}>
-                        <div className={s.left_border} id={onSettings ? s.current : ''}/>
-                        <NavLink className={`${s.top_container_link} link`}>
-                            <div id={notifOnSettings ? s.current : ''} />
-                            <img src={onSettings ? settingsLogoRed : settingsLogo} alt="Settings Logo" />
-                        </NavLink>
-                    </div>
-                </div>
-            </div>
-            <div className={s.container_bottom}>
-                <button className='button'>
-                    <img src={logoutLogo} alt="Logout Logo" />
-                </button>
-            </div>
+  return (
+    <article className={s.main}>
+      <div>
+        <div className={`${s.item} ${s.item_type_logo}`}>
+          <img className={s.logo} src={fireLogo} alt='Redd Notes logo' />
         </div>
-    )
+
+        <nav className={s.navigation}>
+          {/* main */}
+          <NavLink
+            to={'/'}
+            className={({ isActive }) =>
+              `link ${s.item} ${isActive && s.link_type_current}`
+            }
+          >
+            {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
+            <img
+              src={currentPage === '/' ? notesActiveIcon : notesIcon}
+              alt='Notes Logo'
+            />
+          </NavLink>
+
+          {/* profile */}
+          <NavLink
+            to={'/profile'}
+            className={({ isActive }) => {
+              return `link ${s.item} ${isActive && s.link_type_current}`;
+            }}
+          >
+            {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
+            <img
+              src={currentPage === '/profile' ? userActiveIcon : userIcon}
+              alt='User Logo'
+            />
+          </NavLink>
+
+          {/* settings */}
+          <NavLink
+            to={'/settings'}
+            className={({ isActive }) => {
+              return `link ${s.item} ${isActive && s.link_type_current}`;
+            }}
+          >
+            {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
+            <img
+              src={
+                currentPage === '/settings' ? settingsActiveIcon : settingsIcon
+              }
+              alt='Settings Logo'
+            />
+          </NavLink>
+        </nav>
+      </div>
+
+      <div className={s.item}>
+        <button className='button'>
+          <img src={logoutIcon} alt='Logout Logo' />
+        </button>
+      </div>
+    </article>
+  );
 }
