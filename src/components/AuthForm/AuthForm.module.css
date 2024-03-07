@@ -1,5 +1,4 @@
 .main {
-  background-color: var(--bg-color);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -20,7 +19,7 @@
 .title {
   font-size: 24px;
   font-weight: 500;
-  color: var(--dark-color);
+  color: var(--fg-main-color);
   margin: 10px 0 20px;
 }
 
@@ -44,14 +43,14 @@
   margin: 0;
   font-size: 12px;
   font-weight: 400;
-  color: var(--secondary-color);
+  color: var(--fg-secondary-color);
 }
 
 .field__input {
   width: 100%;
   box-sizing: border-box;
   height: 46px;
-  border: 0.5px solid var(--dark-color);
+  border: 0.5px solid var(--border-secondary-color);
   border-radius: 8px;
   padding: 0 15px;
 
@@ -85,8 +84,8 @@
 .submit_button {
   margin-top: 140px;
   width: 100%;
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  background-color: var(--bg-main-dark-color);
+  color: var(--fg-main-light-color);
   height: 45px;
   border: 0;
   border-radius: 3px;
@@ -94,7 +93,7 @@
 }
 
 .bottom_text {
-  color: var(--dark-color);
+  color: var(--fg-main-color);
   font-size: 14px;
   text-align: center;
 }

@@ -10,6 +10,7 @@
   align-items: center;
   box-sizing: border-box;
   gap: 8px;
+  background-color: var(--bg-secondary-color);
 }
 
 .header {
@@ -54,7 +55,7 @@
   margin: 0;
   text-align: end;
   font-size: 10px;
-  color: var(--secondary-color);
+  color: var(--fg-secondary-color);
 }
 
 .value {
@@ -89,7 +90,7 @@
 
 .reaction_count {
   font-size: 16px;
-  color: var(--dark-color);
+  color: var(--fg-main-color);
 }
 
 .reaction_count_active_active {

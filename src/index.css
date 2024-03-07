@@ -5,18 +5,33 @@
 @import url('./styles/link.css');
 
 #root {
-  --bg-color: #f5f5f5;
-  --bg-secondary-color: #efefef;
-  --accent-color: #e24352;
-  --dark-color: #0a100d;
-  --secondary-color: #8b8b8b;
-  --light-color: #f5f5f5;
+  /* #efefef; */
 
+  /* variables */
+  /* ? color */
+  --accent-color: #e24352;
   --accent-secondary-color: #504f8f;
 
+  /* max-width */
   --max-width-content: 640px;
 
+  /* ? bg */
+  --bg-main-color: #f5f5f5;
+  --bg-main-dark-color: #0a100d;
+  --bg-secondary-color: #fff;
+
+  /* ? fg */
+  --fg-main-color: #0a100d;
+  --fg-main-light-color: #f5f5f5;
+  --fg-secondary-color: #8b8b8b;
+
+  /* ? border */
+  --border-main-color: #8b8b8b;
+  --border-secondary-color: #0a100d;
+
+  /* css rules */
   font-family: 'Inter';
+  background-color: var(--bg-main-color);
 }
 
 body {

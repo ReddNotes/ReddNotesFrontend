@@ -12,7 +12,7 @@
 
   padding: 32px 0 0;
   box-sizing: border-box;
-  background-color: var(--dark-color);
+  background-color: var(--bg-main-dark-color);
   z-index: 10;
 }
 
@@ -42,5 +42,5 @@
   object-fit: contain;
   object-fit: cover;
   border-radius: 8px;
-  box-shadow: 0 0 100px 10px var(--secondary-color);
+  box-shadow: 0 0 100px 10px var(--border-main-color);
 }
