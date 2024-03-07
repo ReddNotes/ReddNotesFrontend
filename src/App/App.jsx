@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 // ! modules
 import { useEffect, useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 // ? styles
 import './App.css';
 
 // ? components
+import MenuBar from './../components/MenuBar/MenuBar.jsx';
 import PopupPicture from './../components/PopupPicture/PopupPicture.jsx';
 
 // ? pages
@@ -21,6 +22,7 @@ import { WEB_SOCKET_SETTING } from './../utils/constants.js';
 
 function App() {
   const navigate = useNavigate();
+  const page = useLocation().pathname;
 
   // ? useStates
   // do we check token in local storage
@@ -440,6 +442,11 @@ function App() {
               handlerClose={handlerClose}
             />
           )}
+
+          {['/', '/settings', '/profile'].includes(page) && (
+            <MenuBar pathname={page} />
+          )}
+
           <Routes>
             <Route
               path='/'
@@ -459,15 +466,9 @@ function App() {
               }
             />
 
-            <Route
-              path='/settings'
-              element={<MainContainer>settings</MainContainer>}
-            />
+            <Route path='/settings' element={<p>settings</p>} />
 
-            <Route
-              path='/profile'
-              element={<MainContainer>profile</MainContainer>}
-            />
+            <Route path='/profile' element={<p>profile</p>} />
 
             <Route
               path='/login'

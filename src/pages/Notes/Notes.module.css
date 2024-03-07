@@ -8,3 +8,9 @@
   box-sizing: border-box;
   overflow-y: auto;
 }
+
+@media screen and (max-width: 440px) {
+  .main {
+    padding: 16px 8px;
+  }
+}

@@ -2,18 +2,18 @@
   width: var(--width-menubar);
   background-color: var(--bg-tertiary-color);
   display: flex;
+  height: 100vh;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   border-right: 1px solid var(--border-tertiary-color);
+  position: fixed;
 }
 
 .container {
-  padding: 6px;
-  margin: 8px 8px 0;
-
-  border-bottom: 1px solid var(--border-tertiary-color);
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
@@ -24,11 +24,25 @@
 .navigation {
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.line {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: var(--width-border-active-page);
+  height: 48px;
+  border-top-right-radius: var(--width-border-active-page);
+  border-bottom-right-radius: var(--width-border-active-page);
+  background-color: var(--accent-color);
+  transition: top 0.3s linear;
 }
 
 .item {
   width: var(--width-menubar);
-  height: 56px;
+  height: 64px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -50,13 +64,40 @@
   background-color: var(--border-tertiary-color);
 }
 
-.link_type_current::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: var(--width-border-active-page);
-  height: 48px;
-  border-top-right-radius: var(--width-border-active-page);
-  border-bottom-right-radius: var(--width-border-active-page);
-  background-color: var(--accent-color);
+@media screen and (max-width: 440px) {
+  .main {
+    width: 100%;
+    height: var(--width-menubar);
+    flex-direction: row;
+    border-right: 0;
+    border-bottom: 1px solid var(--border-tertiary-color);
+
+    backdrop-filter: blur(5px); /* like glass */
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  .item_type_logo {
+    margin-bottom: 0;
+  }
+  .item_type_logo::after {
+    right: 0;
+    bottom: 8px;
+    width: 2px;
+    height: 48px;
+  }
+  .navigation {
+    flex-direction: row;
+  }
+  .line {
+    transition: left 0.3s linear;
+    height: var(--width-border-active-page);
+    width: 48px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+
+    border-bottom-left-radius: var(--width-border-active-page);
+    border-bottom-right-radius: var(--width-border-active-page);
+  }
+  .container {
+    flex-direction: row;
+  }
 }

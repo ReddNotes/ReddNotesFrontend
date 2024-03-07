@@ -19,9 +19,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
 }
 
 .container {
+  width: 100%;
   display: flex;
   gap: 16px;
 }
@@ -31,6 +33,13 @@
   height: 24px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.title {
+  max-width: calc(100% - 24px - 16px - 16px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header_link {

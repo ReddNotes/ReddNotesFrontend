@@ -1,5 +1,13 @@
 .main {
-  display: grid;
   min-height: 100vh;
-  grid-template-columns: var(--width-menubar) auto;
+  width: 100%;
+  margin: 0 0 0 calc(var(--width-menubar));
+}
+
+@media screen and (max-width: 440px) {
+  .main {
+    min-height: 100vh;
+    width: 100%;
+    margin: calc(var(--width-menubar)) 0 0 0;
+  }
 }

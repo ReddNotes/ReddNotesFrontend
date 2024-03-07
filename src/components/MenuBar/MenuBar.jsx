@@ -1,4 +1,5 @@
 // ! modules
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 // ? styles
@@ -14,17 +15,47 @@ import userActiveIcon from './../../assets/icon/user_red.svg';
 import settingsActiveIcon from './../../assets/icon/settings_red.svg';
 import logoutIcon from './../../assets/icon/logout.svg';
 
-export default function MenuBar() {
-  const currentPage = window.location.pathname;
+export default function MenuBar({ pathname }) {
+  const _id = 'menubar-navigation-line';
+
+  const [line, setLine] = useState(null);
+  const [width, setWidth] = useState(window.innerWidth);
+
+  const position = {
+    '/': '8px',
+    '/profile': '72px',
+    '/settings': '136px',
+  };
+
+  window.addEventListener('resize', () => {
+    setWidth(window.innerWidth);
+  });
+
+  useEffect(() => {
+    setLine(document.getElementById(_id));
+  }, []);
+
+  useEffect(() => {
+    if (!line) return;
+
+    if (width > 440) {
+      line.style.top = position[pathname];
+      line.style.left = 0;
+    } else {
+      line.style.left = position[pathname];
+      line.style.top = 0;
+    }
+  }, [line, pathname, width]);
 
   return (
     <article className={s.main}>
-      <div>
+      <div className={s.container}>
         <div className={`${s.item} ${s.item_type_logo}`}>
           <img className={s.logo} src={fireLogo} alt='Redd Notes logo' />
         </div>
 
         <nav className={s.navigation}>
+          <div id={_id} className={s.line} />
           {/* main */}
           <NavLink
             to={'/'}
@@ -34,7 +65,7 @@ export default function MenuBar() {
           >
             {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
             <img
-              src={currentPage === '/' ? notesActiveIcon : notesIcon}
+              src={pathname === '/' ? notesActiveIcon : notesIcon}
               alt='Notes Logo'
             />
           </NavLink>
@@ -48,7 +79,7 @@ export default function MenuBar() {
           >
             {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
             <img
-              src={currentPage === '/profile' ? userActiveIcon : userIcon}
+              src={pathname === '/profile' ? userActiveIcon : userIcon}
               alt='User Logo'
             />
           </NavLink>
@@ -62,9 +93,7 @@ export default function MenuBar() {
           >
             {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
             <img
-              src={
-                currentPage === '/settings' ? settingsActiveIcon : settingsIcon
-              }
+              src={pathname === '/settings' ? settingsActiveIcon : settingsIcon}
               alt='Settings Logo'
             />
           </NavLink>

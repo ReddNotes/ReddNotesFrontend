@@ -67,7 +67,7 @@ export default function Note({
               alt={`avatar of ${note.user.nickname}`}
             />
           </NavLink>
-          <h2 className={'text title-third'}>{note.title}</h2>
+          <h2 className={`text title-third ${s.title}`}>{note.title}</h2>
         </div>
         {/* time */}
         <div className={s.header_created}>

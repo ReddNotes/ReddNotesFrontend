@@ -36,11 +36,18 @@
   --border-secondary-color: #0a100d;
   --border-tertiary-color: #d9d9d9;
 
-  --active-pannel-width: 3px;
-
   /* css rules */
   font-family: 'Inter';
   background-color: var(--bg-main-color);
+
+  min-height: 100vh;
+  display: flex;
+}
+
+@media screen and (max-width: 440px) {
+  #root {
+    flex-direction: column;
+  }
 }
 
 body {
