@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-// ? modules
+// ! modules
 import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
@@ -410,6 +410,7 @@ function App() {
               path='/'
               element={
                 isUsersDataDownloaded && (
+
                   <Notes
                     isAuthorized={!!token}
                     currentUser={currentUser}
