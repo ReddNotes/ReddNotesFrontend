@@ -1,5 +1,7 @@
-// ? styles
+// ! modules
 import { NavLink } from 'react-router-dom';
+
+// ? styles
 import s from './NotificationAuth.module.css';
 
 export default function NotificationAuth() {

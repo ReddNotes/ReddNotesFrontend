@@ -452,7 +452,7 @@ function App() {
               path='/'
               element={
                 isUsersDataDownloaded && (
-                  <MainContainer>
+                  <MainContainer isAuthorized={!!token}>
                     <Notes
                       openPopupPicture={openPopupPicture}
                       isAuthorized={!!token}
@@ -466,9 +466,23 @@ function App() {
               }
             />
 
-            <Route path='/settings' element={<p>settings</p>} />
+            <Route
+              path='/settings'
+              element={
+                <MainContainer isAuthorized={!!token}>
+                  <p>settings</p>
+                </MainContainer>
+              }
+            />
 
-            <Route path='/profile' element={<p>profile</p>} />
+            <Route
+              path='/profile'
+              element={
+                <MainContainer isAuthorized={!!token}>
+                  <p>profile</p>
+                </MainContainer>
+              }
+            />
 
             <Route
               path='/login'

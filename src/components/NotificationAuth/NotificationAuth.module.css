@@ -23,3 +23,17 @@
 .title {
   min-width: max-content;
 }
+
+@media screen and (max-width: 440px) {
+  .main {
+    top: var(--width-menubar);
+  }
+  .container {
+    gap: 16px;
+    padding: 8px 16px;
+  }
+  .title {
+    min-width: min-content;
+    text-align: center;
+  }
+}
