@@ -46,6 +46,19 @@
 
 .header_link {
   line-height: 0;
+  position: relative;
+}
+
+.owner::before {
+  --size: 4px;
+  position: absolute;
+  content: '';
+  width: calc(100% + calc(var(--size) / 2));
+  height: calc(100% + calc(var(--size) / 2));
+  top: calc(-1 * var(--size) / 2);
+  left: calc(-1 * var(--size) / 2);
+  border-radius: 100%;
+  border: 1px solid var(--accent-color);
 }
 
 .header_created {

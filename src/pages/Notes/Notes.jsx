@@ -9,6 +9,7 @@ export default function Notes({
   isAuthorized,
   currentUser,
   handleChangeReaction,
+  handleAddOrDeleteFavorites,
   notes,
   users,
 }) {
@@ -43,8 +44,10 @@ export default function Notes({
               openPopupPicture={openPopupPicture}
               isAuthorized={isAuthorized}
               handleChangeReaction={handleChangeReaction}
+              handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
               key={note._id}
               note={note}
+              user={currentUser}
             />
           );
         })}

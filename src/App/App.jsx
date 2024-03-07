@@ -354,6 +354,35 @@ function App() {
             break;
           }
 
+          // favorite
+          case 'favorite': {
+            // methods
+            switch (answer.method) {
+              // add and delete
+              case 'add':
+              case 'delete': {
+                setCurrentUser({ ...currentUser, ...answer.data });
+                setAllNotes((pre) => pre);
+                setAllUsers((pre) => {
+                  const updatedUsers = pre.map((user) => {
+                    if (user._id === answer.data._id) {
+                      return answer.data;
+                    } else {
+                      return user;
+                    }
+                  });
+                  return updatedUsers;
+                });
+
+                break;
+              }
+
+              default:
+                break;
+            }
+            break;
+          }
+
           default:
             break;
         }
@@ -420,6 +449,25 @@ function App() {
     }
   }
 
+  // add/delete to/from favorites
+  function handleAddOrDeleteFavorites(data, method) {
+    if (token) {
+      console.log('submit favorite');
+      socket.send(
+        JSON.stringify({
+          type: 'note',
+          action: 'favorite',
+          method: method,
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
+
   // * other
 
   // set info and open popup with picture
@@ -472,6 +520,7 @@ function App() {
                       isAuthorized={!!token}
                       currentUser={currentUser}
                       handleChangeReaction={handleChangeReaction}
+                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                       notes={allNotes}
                       users={allUsers}
                     />

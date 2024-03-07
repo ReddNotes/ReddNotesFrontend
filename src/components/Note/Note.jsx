@@ -16,10 +16,13 @@ export default function Note({
   openPopupPicture,
   isAuthorized,
   handleChangeReaction,
+  handleAddOrDeleteFavorites,
   note,
+  user,
 }) {
   const [isReactionActive, setReactionActive] = useState(note.isReactionActive);
   const [isSavedFavorites, setSavedFavorites] = useState(note.isSavedFavorites);
+  const [isOwner, setOwner] = useState(user._id === note.owner);
 
   const date = new Date(note.creationDate);
 
@@ -36,14 +39,10 @@ export default function Note({
   useEffect(() => {
     setReactionActive(note.isReactionActive);
     setSavedFavorites(note.isSavedFavorites);
-  }, [note]);
+    setOwner(user._id === note.owner);
+  }, [note, user]);
 
   // ? functions
-
-  // ?
-  function toggleStar() {
-    setSavedFavorites(!isSavedFavorites);
-  }
 
   // change reaction
   function handleClickReaction() {
@@ -55,12 +54,22 @@ export default function Note({
     );
   }
 
+  // add or delete note to/from favorite
+  function handleClickFavorite() {
+    handleAddOrDeleteFavorites(
+      {
+        noteId: note._id,
+      },
+      isSavedFavorites ? 'delete' : 'add',
+    );
+  }
+
   return (
     <article className={s.main}>
-      {/* top */}
+      {/* header */}
       <header className={s.header}>
         <div className={s.container}>
-          <NavLink className={`link ${s.header_link}`}>
+          <NavLink className={`link ${s.header_link} ${isOwner && s.owner}`}>
             <img
               className={s.avatar}
               src={note.user.avatar}
@@ -84,7 +93,7 @@ export default function Note({
         <p className={'text label-second'}>{note.description}</p>
       </div>
 
-      {/* bottom */}
+      {/* footer */}
       <footer className={s.footer}>
         <div className={s.container}>
           <div className={s.reaction}>
@@ -115,7 +124,7 @@ export default function Note({
         <button
           disabled={!isAuthorized}
           className='button'
-          onClick={toggleStar}
+          onClick={handleClickFavorite}
         >
           <img
             src={isSavedFavorites ? favoriteFillIcon : favoriteIcon}
