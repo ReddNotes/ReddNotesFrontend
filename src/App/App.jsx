@@ -73,16 +73,6 @@ function App() {
         token: token,
       }),
     );
-
-    // get all users
-    socket.send(
-      JSON.stringify({
-        type: 'user',
-        action: 'get',
-        method: 'all',
-        token: token,
-      }),
-    );
   }, [socket, token]);
 
   useEffect(() => {
@@ -92,6 +82,15 @@ function App() {
     socket.send(
       JSON.stringify({
         type: 'note',
+        action: 'get',
+        method: 'all',
+      }),
+    );
+
+    // get all users
+    socket.send(
+      JSON.stringify({
+        type: 'user',
         action: 'get',
         method: 'all',
       }),
@@ -173,7 +172,6 @@ function App() {
                 }
 
                 setCurrentUser({ ...currentUser, ...answer.data });
-                setUsersDownloaded(true);
                 setToken(answer.token);
                 localStorage.setItem('token', answer.token);
                 setTokenCheck(true);
@@ -183,7 +181,6 @@ function App() {
               // token
               case 'by token':
                 setCurrentUser({ ...currentUser, ...answer.data });
-                setUsersDownloaded(true);
                 setTokenCheck(true);
                 break;
 
@@ -201,7 +198,6 @@ function App() {
               }));
             }
             setCurrentUser(answer.data);
-            setUsersDownloaded(true);
             setToken(answer.token);
             localStorage.setItem('token', answer.token);
             navigate('/');
@@ -358,7 +354,14 @@ function App() {
       {socket ? (
         <>
           <Routes>
-            <Route path='/' element={<Notes notes={allNotes} />} />
+            <Route
+              path='/'
+              element={
+                isUsersDataDownloaded && (
+                  <Notes notes={allNotes} users={allUsers} />
+                )
+              }
+            />
 
             <Route
               path='/login'
