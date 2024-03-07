@@ -6,13 +6,18 @@ import { useEffect, useState } from 'react';
 import s from './Note.module.css';
 
 // ? assets
-import fire_empty from './../../assets/icon/fire_empty.svg';
-import fire_full from './../../assets/icon/fire_full.svg';
-import star_empty from './../../assets/icon/star_empty.svg';
-import star_full from './../../assets/icon/star_full.svg';
-import comment from './../../assets/icon/comment.svg';
+import reactionIcon from './../../assets/icon/fire_empty.svg';
+import reactionFillIcon from './../../assets/icon/fire_full.svg';
+import favoriteIcon from './../../assets/icon/star_empty.svg';
+import favoriteFillIcon from './../../assets/icon/star_full.svg';
+import commentIcon from './../../assets/icon/comment.svg';
 
-export default function Note({ isAuthorized, handleChangeReaction, note }) {
+export default function Note({
+  openPopupPicture,
+  isAuthorized,
+  handleChangeReaction,
+  note,
+}) {
   const [isReactionActive, setReactionActive] = useState(note.isReactionActive);
   const [isSavedFavorites, setSavedFavorites] = useState(note.isSavedFavorites);
 
@@ -92,14 +97,14 @@ export default function Note({ isAuthorized, handleChangeReaction, note }) {
               onClick={handleClickReaction}
             >
               <img
-                src={isReactionActive ? fire_full : fire_empty}
+                src={isReactionActive ? reactionFillIcon : reactionIcon}
                 alt='action icon'
               />
             </button>
           </div>
 
           <button disabled={!isAuthorized} className='button'>
-            <img src={comment} alt='comment icon' />
+            <img src={commentIcon} alt='comment icon' />
           </button>
         </div>
 
@@ -109,7 +114,7 @@ export default function Note({ isAuthorized, handleChangeReaction, note }) {
           onClick={toggleStar}
         >
           <img
-            src={isSavedFavorites ? star_full : star_empty}
+            src={isSavedFavorites ? favoriteFillIcon : favoriteIcon}
             alt='star icon'
           />
         </button>

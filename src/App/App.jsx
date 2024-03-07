@@ -6,6 +6,9 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 // ? styles
 import './App.css';
 
+// ? components
+import PopupPicture from '../components/PopupPicture/PopupPicture.jsx';
+
 // ? pages
 import Login from './../pages/Login/login.jsx';
 import Notes from '../pages/Notes/Notes.jsx';
@@ -50,12 +53,21 @@ function App() {
   const [countAllUsers, setCountAllUsers] = useState(null);
   // count all notes
   const [countAllNotes, setCountAllNotes] = useState(null);
+  // is popup picture open or not
+  const [isPopupPictureOpen, setPopupPictureOpen] = useState(false);
+  // info about current picture
+  const [currentPicture, setCurrentPicture] = useState({
+    src: 'https://images.unsplash.com/photo-1531804055935-76f44d7c3621?q=80&w=3088&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    alt: null,
+  });
 
   // errors
   const [errorsFromServer, setErrorsFromServer] = useState({
     login: '',
     register: '',
   });
+
+  // ? useEffects
 
   useEffect(() => {
     const _socket = new WebSocket(WEB_SOCKET_SETTING.URL);
@@ -147,7 +159,9 @@ function App() {
     };
   }, [socket]);
 
-  // connect to web-socket
+  // ? functions
+
+  // * web-socket
 
   // handle Web-Socket for response from server
   function handleWebSocketResponse(event) {
@@ -348,8 +362,6 @@ function App() {
     }
   }
 
-  // ? functions
-
   // * auth
 
   // login to server
@@ -401,17 +413,39 @@ function App() {
     }
   }
 
+  // * other
+
+  // set info and open popup with picture
+  function openPopupPicture(data) {
+    document.body.style.overflow = 'hidden'; // disabled scroll
+    setCurrentPicture(data);
+    setPopupPictureOpen(true);
+  }
+
+  // close popup with picture
+  function handlerClose() {
+    document.body.style.overflow = ''; // enabled scroll
+    setPopupPictureOpen(false);
+  }
+
   return (
     <>
       {socket ? (
         <>
+          {isPopupPictureOpen && (
+            <PopupPicture
+              src={currentPicture.src}
+              alt={currentPicture.alt}
+              handlerClose={handlerClose}
+            />
+          )}
           <Routes>
             <Route
               path='/'
               element={
                 isUsersDataDownloaded && (
-
                   <Notes
+                    openPopupPicture={openPopupPicture}
                     isAuthorized={!!token}
                     currentUser={currentUser}
                     handleChangeReaction={handleChangeReaction}

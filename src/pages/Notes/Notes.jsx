@@ -5,6 +5,7 @@ import s from './Notes.module.css';
 import Note from '../../components/Note/Note';
 
 export default function Notes({
+  openPopupPicture,
   isAuthorized,
   currentUser,
   handleChangeReaction,
@@ -39,6 +40,7 @@ export default function Notes({
 
           return (
             <Note
+              openPopupPicture={openPopupPicture}
               isAuthorized={isAuthorized}
               handleChangeReaction={handleChangeReaction}
               key={note._id}
