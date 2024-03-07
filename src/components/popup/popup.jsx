@@ -1,5 +1,4 @@
-import React from 'react';
-import './popup.css';
+// ! modules
 import { useState } from 'react';
 
 /* needed for dynamic functionality
@@ -7,7 +6,13 @@ import (the exported context variable)
 import { useContext } from 'react';
 */
 
-const Popup = (props) => {
+// ? styles
+import s from './popup.module.css';
+
+// ? assets
+import closeIcon from '../../assets/icon/close.svg';
+
+const Popup = ({ src, alt }) => {
   const [popup, setPopup] = useState(false);
   /*
   const newVariable = useContext(exportedCreateContextVariable)
@@ -23,16 +28,23 @@ const Popup = (props) => {
     <>
       <button onClick={onClick}>X</button>
       {popup && (
-        <div className='popupWrapper'>
-          <div className='popupButtonWrapper'>
-            <button onClick={onClick} className='closePopUp'>
-              X
+        <article className={s.main}>
+          <div className={s.container}>
+            <button onClick={onClick} className={`button ${s.close}`}>
+              <img
+                className={s.close_icon}
+                src={closeIcon}
+                alt='sign to close popup'
+              />
             </button>
+
+            <img
+              className={s.img}
+              src={src}
+              alt={alt || 'picure, that you have just opened'}
+            />
           </div>
-          <div className='popupImgContainer'>
-            <img className='popupImg' src={props.imgSrc} />
-          </div>
-        </div>
+        </article>
       )}
     </>
   );

@@ -1,12 +1,8 @@
 /* eslint-disable no-unused-vars */
-// ? modules
+// ! modules
 import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
-//component
-import Popup from '../components/popup/popup.jsx';
-//? dummy image
-import dummyImg from '../../public/images/formBackground.png';
 // ? styles
 import './App.css';
 
