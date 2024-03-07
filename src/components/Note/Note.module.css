@@ -37,14 +37,6 @@
   line-height: 0;
 }
 
-.title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 300;
-  height: 24px;
-  line-height: 24px;
-}
-
 .header_created {
   display: flex;
   flex-direction: column;
@@ -52,26 +44,16 @@
 }
 
 .time {
-  margin: 0;
   text-align: end;
-  font-size: 10px;
-  color: var(--fg-secondary-color);
 }
 
 .value {
   width: 100%;
   min-height: 128px;
-  font-size: 14px;
-  font-weight: 200;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  text-align: justify;
   box-sizing: border-box;
   padding: 12px 0;
-}
-
-.text {
-  margin: 0;
 }
 
 .footer {
@@ -86,11 +68,6 @@
   display: flex;
   align-items: center;
   gap: 4px;
-}
-
-.reaction_count {
-  font-size: 16px;
-  color: var(--fg-main-color);
 }
 
 .reaction_count_active_active {

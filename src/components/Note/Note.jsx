@@ -67,17 +67,21 @@ export default function Note({
               alt={`avatar of ${note.user.nickname}`}
             />
           </NavLink>
-          <h2 className={s.title}>{note.title}</h2>
+          <h2 className={'text title-third'}>{note.title}</h2>
         </div>
         {/* time */}
         <div className={s.header_created}>
-          <p className={s.time}>{formattedDate}</p>
-          <p className={s.time}>{formattedTime}</p>
+          <p className={`text text_color_second detail ${s.time}`}>
+            {formattedDate}
+          </p>
+          <p className={`text text_color_second detail ${s.time}`}>
+            {formattedTime}
+          </p>
         </div>
       </header>
       {/* text */}
       <div className={s.value}>
-        <p className={s.text}>{note.description}</p>
+        <p className={'text label-second'}>{note.description}</p>
       </div>
 
       {/* bottom */}
@@ -85,8 +89,8 @@ export default function Note({
         <div className={s.container}>
           <div className={s.reaction}>
             <p
-              className={`${s.text} ${s.reaction_count} ${
-                isReactionActive && s.reaction_count_active_active
+              className={`text title-third  text_color_second ${
+                isReactionActive && 'text_color_accent'
               }`}
             >
               {note.likes.length}

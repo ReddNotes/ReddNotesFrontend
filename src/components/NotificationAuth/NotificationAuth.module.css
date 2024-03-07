@@ -22,14 +22,4 @@
 
 .title {
   min-width: max-content;
-  margin: 0;
-  font-size: 14px;
-  font-weight: 300;
-}
-
-.message {
-  color: var(--fg-secondary-color);
-  margin: 0;
-  font-size: 10px;
-  font-weight: 300;
 }
