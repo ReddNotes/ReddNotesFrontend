@@ -191,10 +191,7 @@ function App() {
                 setCurrentUser({ ...currentUser, ...answer.data });
                 setToken(answer.token);
                 localStorage.setItem('token', answer.token);
-                localStorage.setItem(
-                  answer.data.nickname,
-                  JSON.stringify(answer.data),
-                );
+                localStorage.setItem(answer.data.nickname, answer.token);
                 setTokenCheck(true);
                 navigate('/');
                 break;
@@ -218,11 +215,13 @@ function App() {
                 register: answer.errorMessage,
               }));
             }
-            setCurrentUser(answer.data);
+            setToken(answer.token);
+            setCurrentUser({ ...currentUser, ...answer.data });
             setToken(answer.token);
             localStorage.setItem('token', answer.token);
-            navigate('/');
+            localStorage.setItem(answer.data.nickname, answer.token);
             setTokenCheck(true);
+            navigate('/');
             break;
 
           default:
