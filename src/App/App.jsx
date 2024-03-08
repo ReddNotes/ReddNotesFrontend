@@ -22,7 +22,9 @@ import { WEB_SOCKET_SETTING } from './../utils/constants.js';
 
 function App() {
   const navigate = useNavigate();
-  const page = useLocation().pathname;
+
+  let page = useLocation().pathname;
+  if (page.startsWith('/user')) page = '/user';
 
   // ? useStates
   // do we check token in local storage
@@ -502,7 +504,7 @@ function App() {
             />
           )}
 
-          {['/', '/profile', '/favorite', '/settings'].includes(page) && (
+          {['/', '/user', '/favorite', '/settings'].includes(page) && (
             <MenuBar
               handlerLogout={handlerLogout}
               pathname={page}
@@ -531,10 +533,10 @@ function App() {
             />
 
             <Route
-              path='/profile'
+              path='/user/:nickname'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  <p>profile</p>
+                  <p>user profile</p>
                 </MainContainer>
               }
             />

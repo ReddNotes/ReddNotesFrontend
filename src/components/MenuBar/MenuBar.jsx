@@ -36,13 +36,13 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
   const position = {
     big: {
       '/': _countPosition(0, _size.big),
-      '/profile': _countPosition(1, _size.big),
+      '/user': _countPosition(1, _size.big),
       '/favorite': _countPosition(2, _size.big),
       '/settings': _countPosition(3, _size.big),
     },
     small: {
       '/': _countPosition(0, _size.small),
-      '/profile': _countPosition(1, _size.small),
+      '/user': _countPosition(1, _size.small),
       '/favorite': _countPosition(2, _size.small),
       '/settings': _countPosition(3, _size.small),
     },
@@ -91,16 +91,16 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
             />
           </NavLink>
 
-          {/* profile */}
+          {/* user profile */}
           <NavLink
-            to={'/profile'}
+            to={'/user/e'}
             className={({ isActive }) => {
               return `link ${s.item} ${isActive && s.link_type_current}`;
             }}
           >
             {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
             <img
-              src={pathname === '/profile' ? userActiveIcon : userIcon}
+              src={pathname === '/user' ? userActiveIcon : userIcon}
               alt='User Logo'
             />
           </NavLink>

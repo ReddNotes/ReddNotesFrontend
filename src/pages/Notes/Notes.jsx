@@ -3,7 +3,6 @@ import s from './Notes.module.css';
 
 // ? components
 import Note from '../../components/Note/Note';
-import { NavLink } from 'react-router-dom';
 
 export default function Notes({
   isFavorite,
