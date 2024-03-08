@@ -16,6 +16,7 @@ import MainContainer from './../pages/MainContainer/MainContainer.jsx';
 import Notes from './../pages/Notes/Notes.jsx';
 import NotFound from './../pages/NotFound/NotFound.jsx';
 import Register from './../pages/Register/register.jsx';
+import User from '../components/User/User.jsx';
 
 // ? utils
 import { WEB_SOCKET_SETTING } from './../utils/constants.js';
@@ -533,10 +534,18 @@ function App() {
             />
 
             <Route
-              path='/user/:nickname'
+              path='/user/:nicknameId'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  <p>user profile</p>
+                  <User
+                      openPopupPicture={openPopupPicture}
+                      isAuthorized={!!token}
+                      currentUser={currentUser}
+                      handleChangeReaction={handleChangeReaction}
+                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+                      notes={allNotes}
+                      users={allUsers}
+                  />
                 </MainContainer>
               }
             />

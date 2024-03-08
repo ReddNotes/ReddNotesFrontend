@@ -15,7 +15,7 @@ export default function NotificationAuth() {
           functionality as set reaction, add to favorites, write comments,
           create own notes - you have to be logged.{' '}
           <NavLink className={'link'} to={'/login'}>
-            Login here
+            <b>Login here</b>
           </NavLink>
         </p>
       </div>
