@@ -21,10 +21,27 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
   const [line, setLine] = useState(null);
   const [width, setWidth] = useState(window.innerWidth);
 
+  // 1 * size - ((size - 48px) / 2)
+  const _size = {
+    big: 64,
+    small: 60,
+  };
+
+  function _countPosition(count, size) {
+    return `${count * size + (size - 48) / 2}px`;
+  }
+
   const position = {
-    '/': '8px',
-    '/profile': '72px',
-    '/settings': '136px',
+    big: {
+      '/': _countPosition(0, _size.big),
+      '/profile': _countPosition(1, _size.big),
+      '/settings': _countPosition(2, _size.big),
+    },
+    small: {
+      '/': _countPosition(0, _size.small),
+      '/profile': _countPosition(1, _size.small),
+      '/settings': _countPosition(2, _size.small),
+    },
   };
 
   window.addEventListener('resize', () => {
@@ -39,10 +56,10 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
     if (!line) return;
 
     if (width > 440) {
-      line.style.top = position[pathname];
+      line.style.top = position.big[pathname];
       line.style.left = 0;
     } else {
-      line.style.left = position[pathname];
+      line.style.left = position.small[pathname];
       line.style.top = 0;
     }
   }, [line, pathname, width]);
