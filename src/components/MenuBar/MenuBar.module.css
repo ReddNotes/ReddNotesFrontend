@@ -1,5 +1,5 @@
 .main {
-  width: var(--width-menubar);
+  width: var(--size-menubar);
   background-color: var(--bg-tertiary-color);
   display: flex;
   height: 100vh;
@@ -43,7 +43,7 @@
 }
 
 .item {
-  width: var(--width-menubar);
+  width: var(--size-menubar);
   height: 64px;
   display: flex;
   flex-direction: column;
@@ -69,7 +69,7 @@
 @media screen and (max-width: 440px) {
   .main {
     width: 100%;
-    height: var(--width-menubar);
+    height: var(--size-menubar);
     flex-direction: row;
     border-right: 0;
     border-bottom: 1px solid var(--border-tertiary-color);

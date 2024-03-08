@@ -2,6 +2,8 @@
   position: sticky;
   top: 0;
   width: 100%;
+  height: var(--size-menubar);
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   border-bottom: 0.5px solid var(--accent-color);
@@ -26,7 +28,8 @@
 
 @media screen and (max-width: 440px) {
   .main {
-    top: var(--width-menubar);
+    height: fit-content;
+    top: var(--size-menubar);
   }
   .container {
     gap: 16px;

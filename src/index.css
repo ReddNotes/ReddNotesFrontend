@@ -13,8 +13,8 @@
   --accent-color: #e24352;
   --accent-secondary-color: #504f8f;
 
-  /* width */
-  --width-menubar: 64px;
+  /* sizes: width, height */
+  --size-menubar: 64px; /* width or height */
   --width-border-active-page: 3px; /* todo create a new name */
 
   /* ? max-width */
