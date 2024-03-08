@@ -29,7 +29,7 @@
 @media screen and (max-width: 440px) {
   .main {
     height: fit-content;
-    top: var(--size-menubar);
+    top: calc(var(--size-menubar) - 4px);
   }
   .container {
     gap: 16px;
