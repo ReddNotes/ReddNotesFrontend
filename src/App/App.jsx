@@ -33,19 +33,20 @@ function App() {
   const [isUsersDataDownloaded, setUsersDownloaded] = useState(false);
   // token
   const [token, setToken] = useState(null);
-  // all info about user
-  const [currentUser, setCurrentUser] = useState({
-    _id: null, // number
+  const _emptyUser = {
+    _id: null, // string
     creationDate: null, // date
-    notes: [],
-    favorites: [],
-    avatar: null, // url
-    nickname: null,
-    firstName: null,
-    lastName: null,
+    notes: [], // array of id
+    favorites: [], // array of id
+    avatar: null, // string (url)
+    nickname: null, // string
+    firstName: null, // string
+    lastName: null, // string
     birthday: null, // date
-    description: null,
-  });
+    description: null, // string
+  };
+  // all info about user
+  const [currentUser, setCurrentUser] = useState(_emptyUser);
   // all chats
   const [allNotes, setAllNotes] = useState([]);
   // all users
@@ -485,6 +486,7 @@ function App() {
   // logout
   function handlerLogout() {
     localStorage.setItem('token', null);
+    setCurrentUser(_emptyUser);
     setToken(null);
   }
 
@@ -500,7 +502,7 @@ function App() {
             />
           )}
 
-          {['/', '/settings', '/profile'].includes(page) && (
+          {['/', '/profile', '/favorite', '/settings'].includes(page) && (
             <MenuBar
               handlerLogout={handlerLogout}
               pathname={page}
@@ -529,19 +531,37 @@ function App() {
             />
 
             <Route
-              path='/settings'
+              path='/profile'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  <p>settings</p>
+                  <p>profile</p>
                 </MainContainer>
               }
             />
 
             <Route
-              path='/profile'
+              path='/favorite'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  <p>profile</p>
+                  <Notes
+                    isFavorite={true}
+                    openPopupPicture={openPopupPicture}
+                    isAuthorized={!!token}
+                    currentUser={currentUser}
+                    handleChangeReaction={handleChangeReaction}
+                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+                    notes={allNotes}
+                    users={allUsers}
+                  />
+                </MainContainer>
+              }
+            />
+
+            <Route
+              path='/settings'
+              element={
+                <MainContainer isAuthorized={!!token}>
+                  <p>settings</p>
                 </MainContainer>
               }
             />

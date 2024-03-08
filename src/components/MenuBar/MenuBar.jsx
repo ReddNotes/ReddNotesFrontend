@@ -9,9 +9,11 @@ import s from './MenuBar.module.css';
 import fireLogo from './../../assets/ReddNotes_logo_fire.svg';
 import notesIcon from './../../assets/icon/notes.svg';
 import userIcon from './../../assets/icon/user.svg';
+import favoriteIcon from './../../assets/icon/star_empty.svg';
 import settingsIcon from './../../assets/icon/settings.svg';
 import notesActiveIcon from './../../assets/icon/notes_red.svg';
 import userActiveIcon from './../../assets/icon/user_red.svg';
+import favoriteActiveIcon from './../../assets/icon/star_red.svg';
 import settingsActiveIcon from './../../assets/icon/settings_red.svg';
 import logoutIcon from './../../assets/icon/logout.svg';
 
@@ -35,12 +37,14 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
     big: {
       '/': _countPosition(0, _size.big),
       '/profile': _countPosition(1, _size.big),
-      '/settings': _countPosition(2, _size.big),
+      '/favorite': _countPosition(2, _size.big),
+      '/settings': _countPosition(3, _size.big),
     },
     small: {
       '/': _countPosition(0, _size.small),
       '/profile': _countPosition(1, _size.small),
-      '/settings': _countPosition(2, _size.small),
+      '/favorite': _countPosition(2, _size.small),
+      '/settings': _countPosition(3, _size.small),
     },
   };
 
@@ -98,6 +102,20 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
             <img
               src={pathname === '/profile' ? userActiveIcon : userIcon}
               alt='User Logo'
+            />
+          </NavLink>
+
+          {/* favorite */}
+          <NavLink
+            to={'/favorite'}
+            className={({ isActive }) => {
+              return `link ${s.item} ${isActive && s.link_type_current}`;
+            }}
+          >
+            {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
+            <img
+              src={pathname === '/favorite' ? favoriteActiveIcon : favoriteIcon}
+              alt='Favorite Logo'
             />
           </NavLink>
 

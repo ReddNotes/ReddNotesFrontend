@@ -1,13 +1,12 @@
 .main {
-  min-height: 100vh;
+  min-height: calc(100vh - var(--size-menubar));
   width: 100%;
   margin: 0 0 0 calc(var(--size-menubar));
 }
 
 @media screen and (max-width: 440px) {
   .main {
-    min-height: 100vh;
-    width: 100%;
+    min-height: calc(100vh - var(--size-menubar) + 4px);
     margin: calc(var(--size-menubar) - 4px) 0 0 0;
   }
 }

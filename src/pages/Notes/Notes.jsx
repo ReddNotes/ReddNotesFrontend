@@ -3,8 +3,10 @@ import s from './Notes.module.css';
 
 // ? components
 import Note from '../../components/Note/Note';
+import { NavLink } from 'react-router-dom';
 
 export default function Notes({
+  isFavorite,
   openPopupPicture,
   isAuthorized,
   currentUser,
@@ -13,9 +15,13 @@ export default function Notes({
   notes,
   users,
 }) {
+  const _notes = isFavorite
+    ? notes.filter((note) => currentUser.favorites.includes(note._id))
+    : notes;
+
   return (
     <section className={s.main}>
-      {notes
+      {_notes
         .sort((a, b) => {
           const dateA = new Date(a.creationDate);
           const dateB = new Date(b.creationDate);
@@ -53,7 +59,11 @@ export default function Notes({
         })}
       <div className={s.end}>
         <p className='text text_color_second body'>
-          You have been see all notes
+          {!isAuthorized && isFavorite
+            ? 'To see favorites notes, before you have to login'
+            : _notes.length === 0
+            ? 'You do not save any note to favorites'
+            : `You have been see all ${isFavorite ? 'favorites' : ''} notes`}
         </p>
       </div>
     </section>
