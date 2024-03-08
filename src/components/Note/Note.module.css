@@ -78,6 +78,9 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
   padding: 12px 0;
+
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .footer {

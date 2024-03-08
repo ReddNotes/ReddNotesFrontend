@@ -50,7 +50,7 @@ function App() {
   };
   // all info about user
   const [currentUser, setCurrentUser] = useState(_emptyUser);
-  // all chats
+  // all notes
   const [allNotes, setAllNotes] = useState([]);
   // all users
   const [allUsers, setAllUsers] = useState([]);

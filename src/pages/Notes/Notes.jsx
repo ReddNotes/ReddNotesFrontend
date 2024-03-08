@@ -18,8 +18,11 @@ export default function Notes({
     ? notes.filter((note) => currentUser.favorites.includes(note._id))
     : notes;
 
+  const _totalCountNotes = _notes.length;
+
   return (
     <section className={s.main}>
+      {/* notes */}
       {_notes
         .sort((a, b) => {
           const dateA = new Date(a.creationDate);
@@ -56,12 +59,16 @@ export default function Notes({
             />
           );
         })}
+
+      {/* message */}
       <div className={s.end}>
         <p className='text text_color_second body'>
           {!isAuthorized && isFavorite
             ? 'To see favorites notes, before you have to login'
-            : _notes.length === 0
-            ? 'You do not save any note to favorites'
+            : _totalCountNotes === 0
+            ? isFavorite
+              ? 'You do not save any note to favorites'
+              : 'So far, no one has added any notes'
             : `You have been see all ${isFavorite ? 'favorites' : ''} notes`}
         </p>
       </div>
