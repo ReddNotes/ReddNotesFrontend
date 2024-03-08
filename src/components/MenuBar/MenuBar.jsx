@@ -17,7 +17,12 @@ import favoriteActiveIcon from './../../assets/icon/star_red.svg';
 import settingsActiveIcon from './../../assets/icon/settings_red.svg';
 import logoutIcon from './../../assets/icon/logout.svg';
 
-export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
+export default function MenuBar({
+  handlerLogout,
+  pathname,
+  isAuthorized,
+  user,
+}) {
   const _id = 'menubar-navigation-line';
 
   const [line, setLine] = useState(null);
@@ -84,7 +89,7 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
               `link ${s.item} ${isActive && s.link_type_current}`
             }
           >
-            {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
+            {/* // todo make logic with notification <div id={notificationOnNotes ? s.current : ''} /> */}
             <img
               src={pathname === '/' ? notesActiveIcon : notesIcon}
               alt='Notes Logo'
@@ -93,12 +98,12 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
 
           {/* user profile */}
           <NavLink
-            to={'/user/e'}
+            to={`/user/${user._id}`}
             className={({ isActive }) => {
               return `link ${s.item} ${isActive && s.link_type_current}`;
             }}
           >
-            {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
+            {/* // todo make logic with notification <div id={notificationOnUser ? s.current : ''} /> */}
             <img
               src={pathname === '/user' ? userActiveIcon : userIcon}
               alt='User Logo'
@@ -112,7 +117,7 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
               return `link ${s.item} ${isActive && s.link_type_current}`;
             }}
           >
-            {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
+            {/* // todo make logic with notification <div id={notificationOnFavorites ? s.current : ''} /> */}
             <img
               src={pathname === '/favorite' ? favoriteActiveIcon : favoriteIcon}
               alt='Favorite Logo'
@@ -126,7 +131,7 @@ export default function MenuBar({ handlerLogout, pathname, isAuthorized }) {
               return `link ${s.item} ${isActive && s.link_type_current}`;
             }}
           >
-            {/* // todo make logic with notification <div id={notifOnNotes ? s.current : ''} /> */}
+            {/* // todo make logic with notification <div id={notificationOnSettings ? s.current : ''} /> */}
             <img
               src={pathname === '/settings' ? settingsActiveIcon : settingsIcon}
               alt='Settings Logo'

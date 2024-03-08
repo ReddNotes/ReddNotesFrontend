@@ -29,7 +29,13 @@ export default function Note({
   const year = date.getFullYear();
   const month = ('0' + (date.getMonth() + 1)).slice(-2);
   const day = ('0' + date.getDate()).slice(-2);
-  const formattedDate = `${day}/${month}/${year}`;
+  const currentDate = new Date();
+  const formattedDate =
+    currentDate.getDate() === date.getDate()
+      ? 'today'
+      : currentDate.getDate() === date.getDate() + 1
+      ? 'yesterday'
+      : `${day}/${month}/${year}`;
 
   const hours = ('0' + date.getHours()).slice(-2);
   const minutes = ('0' + date.getMinutes()).slice(-2);
@@ -69,7 +75,10 @@ export default function Note({
       {/* header */}
       <header className={s.header}>
         <div className={s.container}>
-          <NavLink className={`link ${s.header_link} ${isOwner && s.owner}`}>
+          <NavLink
+            to={`/user/${note.owner}`}
+            className={`link ${s.header_link} ${isOwner && s.owner}`}
+          >
             <img
               className={s.avatar}
               src={note.user.avatar}

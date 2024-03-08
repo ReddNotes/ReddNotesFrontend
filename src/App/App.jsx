@@ -507,9 +507,10 @@ function App() {
 
           {['/', '/user', '/favorite', '/settings'].includes(page) && (
             <MenuBar
-              handlerLogout={handlerLogout}
               pathname={page}
+              user={currentUser}
               isAuthorized={!!token}
+              handlerLogout={handlerLogout}
             />
           )}
 
@@ -520,13 +521,13 @@ function App() {
                 isUsersDataDownloaded && (
                   <MainContainer isAuthorized={!!token}>
                     <Notes
-                      openPopupPicture={openPopupPicture}
-                      isAuthorized={!!token}
-                      currentUser={currentUser}
-                      handleChangeReaction={handleChangeReaction}
-                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                       notes={allNotes}
                       users={allUsers}
+                      isAuthorized={!!token}
+                      currentUser={currentUser}
+                      openPopupPicture={openPopupPicture}
+                      handleChangeReaction={handleChangeReaction}
+                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                     />
                   </MainContainer>
                 )
@@ -534,17 +535,17 @@ function App() {
             />
 
             <Route
-              path='/user/:nicknameId'
+              path='/user/:userId'
               element={
                 <MainContainer isAuthorized={!!token}>
                   <User
-                      openPopupPicture={openPopupPicture}
-                      isAuthorized={!!token}
-                      currentUser={currentUser}
-                      handleChangeReaction={handleChangeReaction}
-                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
-                      notes={allNotes}
-                      users={allUsers}
+                    notes={allNotes}
+                    users={allUsers}
+                    isAuthorized={!!token}
+                    currentUser={currentUser}
+                    openPopupPicture={openPopupPicture}
+                    handleChangeReaction={handleChangeReaction}
+                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                   />
                 </MainContainer>
               }
@@ -555,14 +556,14 @@ function App() {
               element={
                 <MainContainer isAuthorized={!!token}>
                   <Notes
-                    isFavorite={true}
-                    openPopupPicture={openPopupPicture}
-                    isAuthorized={!!token}
-                    currentUser={currentUser}
-                    handleChangeReaction={handleChangeReaction}
-                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                     notes={allNotes}
                     users={allUsers}
+                    isFavorite={true}
+                    isAuthorized={!!token}
+                    currentUser={currentUser}
+                    openPopupPicture={openPopupPicture}
+                    handleChangeReaction={handleChangeReaction}
+                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                   />
                 </MainContainer>
               }
