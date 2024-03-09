@@ -546,7 +546,17 @@ function App() {
                     openPopupPicture={openPopupPicture}
                     handleChangeReaction={handleChangeReaction}
                     handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+                  >
+                  <Notes
+                    notes={allNotes}
+                    users={allUsers}
+                    isAuthorized={!!token}
+                    currentUser={currentUser}
+                    openPopupPicture={openPopupPicture}
+                    handleChangeReaction={handleChangeReaction}
+                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                   />
+                  </User>
                 </MainContainer>
               }
             />

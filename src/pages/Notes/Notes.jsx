@@ -1,3 +1,6 @@
+// ! modules
+import { useParams } from 'react-router-dom';
+
 // ? styles
 import s from './Notes.module.css';
 
@@ -14,9 +17,11 @@ export default function Notes({
   notes,
   users,
 }) {
+  const { userId } = useParams();
+
   const _notes = isFavorite
     ? notes.filter((note) => currentUser.favorites.includes(note._id))
-    : notes;
+    : userId ? notes.filter((note) => note.owner === userId): notes;
 
   const _totalCountNotes = _notes.length;
 
