@@ -1,185 +1,375 @@
 // ! modules
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 // ? styles
-import s from './User.module.css'
+import s from './User.module.css';
 
 // ? pages
 import NotFound from './../../pages/NotFound/NotFound.jsx';
+import Notes from '../../pages/Notes/Notes.jsx';
+
+// ? utils
+import { generateErrorMessage } from '../../utils/utils.js';
 
 export default function User({
-    children,
-    openPopupPicture,
-    isAuthorized,
-    currentUser,
-    handleChangeReaction,
-    handleAddOrDeleteFavorites,
-    notes,
-    users
+  notes,
+  users,
+  currentUser,
+  isAuthorized,
+  handleSubmit,
+  openPopupPicture,
+  handleChangeReaction,
+  handleAddOrDeleteFavorites,
 }) {
-    function getAge(dateOfBirth) {
-        const currentDate = new Date();
-        let age = currentDate.getFullYear() - dateOfBirth.getFullYear();
-        const isBirthdayPassed = (currentDate.getMonth() > dateOfBirth.getMonth()) ||
-            (currentDate.getMonth() === dateOfBirth.getMonth() && currentDate.getDate() >= dateOfBirth.getDate());
-        if (!isBirthdayPassed) age--
-        return age
-    }
+  // ? params
+  const { userId } = useParams();
 
-    function openForm() {
-        setEdit(!edit);
-        setAvatarForm(avatar);
-        setFirstNameForm(firstName);
-        setLastNameForm(lastName);
-        setBirthdayForm(fromIso8601(birthday));
-        setDescriptionForm(description);
-    }
+  // ? constants
+  const user = users.find((element) => element._id === userId);
+  if (!user) return <NotFound />;
 
-    function sendForm(e) {
-        e.preventDefault();
-        // Todo api request
+  const creationDate = new Date(user.creationDate).toLocaleDateString('en-EN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 
-        // To remove later, this code change the user information without requesting to the backend
-        setEdit(!edit);
-        setAvatar(avatarForm);
-        setFirstName(firstNameForm);
-        setLastName(lastNameForm);
-        setBirthday(toIso8601(birthdayForm));
-        setDescription(descriptionForm);
-    }
+  const emptyValue = {
+    'user-first-name': '',
+    'user-last-name': '',
+    'user-avatar': '',
+    'user-birthday': '',
+    'user-description': '',
+  };
 
-    function fromIso8601(Iso8601date) {
-        const originalDate = new Date(Iso8601date);
-        const year = originalDate.getFullYear();
-        const month = ('0' + (originalDate.getMonth() + 1)).slice(-2); // Les mois sont 0-indexés
-        const day = ('0' + originalDate.getDate()).slice(-2);
-        return `${year}-${month}-${day}`;
-    }
+  // ? useState
+  const [inputValue, setInputValue] = useState(emptyValue);
+  const [errorValue, setErrorValue] = useState(emptyValue);
+  const [isFormActive, setFormActive] = useState(false);
+  const [isOwner, setOwner] = useState(currentUser._id === user._id);
+  const [birthday, setBirthday] = useState(null);
+  const [isEditingActive, setEditingActive] = useState(false);
 
-    function toIso8601(formatedDate) {
-        const originalDate = new Date(formatedDate);
-        const year = originalDate.getFullYear();
-        const month = ('0' + (originalDate.getMonth() + 1)).slice(-2);
-        const day = ('0' + originalDate.getDate()).slice(-2);
-        return `${year}-${month}-${day}T00:00:00.000+00:00`;
-    }
-    
-    const { userId } = useParams();
-    const userPageInfo = currentUser._id === userId ? currentUser : users.find(element => element._id === userId);
-    if (!userPageInfo && userId !== 'null') return (<NotFound />)
+  // ? useEffects
 
-    const numberOfNotes = notes.reduce((acc, curr) => curr.owner === userPageInfo._id ? acc + 1 : acc, 0);
+  // init value
+  useEffect(() => {
+    resetForm();
+    setOwner(currentUser._id === user._id);
+    setBirthday(user.birthday ? new Date(user.birthday) : null);
+  }, [user]);
 
-    const date = new Date(userPageInfo.creationDate);
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    const creationDate = date.toLocaleDateString('en-EN', options);
+  // ? functions
 
-    const [avatar, setAvatar] = useState(userPageInfo.avatar);
-    const [firstName, setFirstName] = useState(userPageInfo.firstName);
-    const [lastName, setLastName] = useState(userPageInfo.lastName);
-    const [birthday, setBirthday] = useState(userPageInfo.birthday);
-    const [description, setDescription] = useState(userPageInfo.description);
+  function resetForm() {
+    setInputValue({
+      'user-first-name': user.firstName || '',
+      'user-last-name': user.lastName || '',
+      'user-avatar': user.avatar,
+      'user-birthday': user.birthday || '',
+      'user-description': user.description || '',
+    });
+    user.birthday && setBirthday(new Date(user.birthday));
+  }
 
-    const [avatarForm, setAvatarForm] = useState(avatar);
-    const [firstNameForm, setFirstNameForm] = useState(firstName);
-    const [lastNameForm, setLastNameForm] = useState(lastName);
-    const [birthdayForm, setBirthdayForm] = useState(fromIso8601(birthday));
-    const [descriptionForm, setDescriptionForm] = useState(description);
+  function handleInput(e) {
+    const { id, value, form } = e.target;
 
-    const [edit, setEdit] = useState(false);
+    setInputValue((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
 
-    const [age, setAge] = useState(getAge(new Date(birthday)))
-    
-    useEffect(() => setAge(getAge(new Date(birthday))), [birthday])
+    setErrorValue((prevState) => ({
+      ...prevState,
+      [id]: generateErrorMessage(e.target.validity),
+    }));
 
+    setFormActive(form.checkValidity());
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    handleSubmit({
+      avatar: inputValue['user-avatar'],
+      firstName: inputValue['user-first-name'],
+      lastName: inputValue['user-last-name'],
+      birthday: inputValue['user-birthday'],
+      description: inputValue['user-description'],
+    });
+    setEditingActive(false);
+    setFormActive(false);
+  }
+
+  function getAge(dateOfBirth) {
+    const currentDate = new Date();
+    let age = currentDate.getFullYear() - dateOfBirth.getFullYear();
+    const isBirthdayPassed =
+      currentDate.getMonth() > dateOfBirth.getMonth() ||
+      (currentDate.getMonth() === dateOfBirth.getMonth() &&
+        currentDate.getDate() >= dateOfBirth.getDate());
+    if (!isBirthdayPassed) age--;
+    return age;
+  }
+
+  function fromIso8601(Iso8601date) {
+    const originalDate = new Date(Iso8601date);
+    const year = originalDate.getFullYear();
+    const month = ('0' + (originalDate.getMonth() + 1)).slice(-2); // Les mois sont 0-indexés
+    const day = ('0' + originalDate.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+
+  function toIso8601(formattedDate) {
+    const originalDate = new Date(formattedDate);
+    const year = originalDate.getFullYear();
+    const month = ('0' + (originalDate.getMonth() + 1)).slice(-2);
+    const day = ('0' + originalDate.getDate()).slice(-2);
+    return `${year}-${month}-${day}T00:00:00.000+00:00`;
+  }
+
+  function enableEditMode() {
+    setEditingActive(true);
+  }
+
+  function handleReset() {
+    setEditingActive(false);
+    resetForm();
+  }
+
+  function Buttons({ className }) {
     return (
-        <>
-            <section className={s.main}>
-                {userId === 'null'
-                    ? <div className={s.end}><p className='text text_color_second body'>Please log in to view your profile details<p /></p></div>
-                    : <div className={s.content}>
-                        <form onSubmit={sendForm} id="user-form" className={s.info}>
-                            {
-                                !edit &&
-                                <div className={`${s.img_container} ${currentUser._id === userPageInfo._id && s.owner}`}>
-                                    <img src={avatar} alt={`${userPageInfo.nickname} avatar`} />
-                                </div>
-                            }
-                            <div className={s.text_container}>
-                                <h1>{userPageInfo.nickname}</h1>
-                                <div className={s.input}>
-                                    {edit
-                                        ? <>
-                                            <div className={s.input_names}>
-                                                <p className={s.input_title}>First Name</p>
-                                                <input type='text' value={firstNameForm} onChange={(e) => setFirstNameForm(event.target.value)} />
-                                            </div>
-                                            <div className={s.input_names}>
-                                                <p className={s.input_title}>Last Name</p>
-                                                <input type='text' value={lastNameForm} onChange={(e) => setLastNameForm(event.target.value)} />
-                                            </div>
-                                        </>
-                                        : <p className={s.text_container_info}>{firstName} {lastName}</p>
-                                    }
-                                </div>
-                                <div className={s.input}>
-                                    {edit
-                                        ? <>
-                                            <p className={s.input_title}>Birthday</p>
-                                            <input type='date' value={birthdayForm} onChange={(e) => setBirthdayForm(event.target.value)} />
-                                        </>
-                                        : <p className={s.text_container_info}>{age} year{age > 1 ? 's' : ''} old</p>
-                                    }
-                                </div>
-                                <div className={s.input}>
-                                    {edit
-                                        ? <>
-                                            <p className={s.input_title}>Description</p>
-                                            <input type='text' value={descriptionForm} onChange={(e) => setDescriptionForm(event.target.value)} />
-                                        </>
-                                        : <p className={s.description}>{description}</p>
-                                    }
-                                </div>
-                                {
-                                    edit &&
-                                    <div className={s.input}><p className={s.input_title}>Avatar</p>
-                                        <input type='text' value={avatarForm} onChange={(e) => setAvatarForm(event.target.value)} />
-                                    </div>
-                                }
-                            </div>
-                        </form>
-                        {!edit &&
-                            <div className={s.miscellaneous}>
-                                <div className={s.miscellaneous_case}>
-                                    {numberOfNotes === 0 ? <p>This user has no notes yet</p> : (<p>Owner of <b>{numberOfNotes}</b> note{numberOfNotes !== 1 ? 's' : ''}</p>)}
-                                </div>
-                                <div className={s.miscellaneous_case}>
-                                    <p>ReddNotes user since <b>{creationDate}</b></p>
-                                </div>
-                            </div>
-                        }
-                        {
-                            currentUser._id === userPageInfo._id && (
-                                !edit
-                                    ? <div className={`${s.edit_container} ${s.owner}`}>
-                                        <button className={`${s.edit_button} button`} onClick={openForm}>
-                                            Edit profile
-                                        </button>
-                                    </div>
-                                    : <div className={`${s.edit_container_form} ${s.owner}`}>
-                                        <button className={`${s.edit_button} button button_red`} onClick={() => setEdit(!edit)}>
-                                            Discard
-                                        </button>
-                                        <button type="submit" form="user-form" className={`${s.edit_button} button button_green`}>
-                                            Save
-                                        </button>
-                                    </div>
-                            )
-                        }
-                    </div>}
-            </section>
-            {userId !== 'null' && children}
-        </>
-    )
+      isOwner && (
+        <div className={`${s.buttons} ${className}`}>
+          {isEditingActive ? (
+            <>
+              <button
+                onClick={handleReset}
+                className={`button label-second ${s.button}`}
+                type='reset'
+              >
+                Reset
+              </button>
+              <button
+                onClick={onSubmit}
+                className={`button label-second ${s.button}`}
+                disabled={!isFormActive}
+                type='submit'
+              >
+                Submit
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={enableEditMode}
+              className={`text label-second button ${s.button}`}
+              type='button'
+            >
+              Edit
+            </button>
+          )}
+        </div>
+      )
+    );
+  }
+
+  return (
+    <>
+      <article className={s.main}>
+        <div
+          className={`${s.profile} ${isOwner && s.owner} ${
+            isEditingActive && s.edit
+          }`}
+        >
+          {/* top */}
+          <header className={s.header}>
+            <h1 className={`text title-third ${s.title}`}>{user.nickname}</h1>
+          </header>
+
+          {/* main */}
+          <div className={s.container}>
+            {/* form */}
+            <form onSubmit={onSubmit} id='user-form' className={s.form}>
+              {/* 1 row */}
+              <div className={s.form__row}>
+                {/* avatar + age */}
+                <div>
+                  {/* avatar */}
+                  <div className={s.avatar}>
+                    <img
+                      className={s.avatar__img}
+                      src={inputValue['user-avatar']}
+                      alt={`${user.nickname} avatar`}
+                    />
+                  </div>
+                  {birthday && (
+                    <p className={`text text_color_second subhead ${s.age}`}>
+                      <span className='text_color_default'>
+                        {getAge(birthday)}
+                      </span>{' '}
+                      year
+                      {getAge(birthday) > 1 ? 's' : ''} old
+                    </p>
+                  )}
+                </div>
+
+                {/* fields */}
+                <div className={s.fields}>
+                  {/* first name */}
+                  {(isEditingActive || inputValue['user-first-name']) && (
+                    <div className={s.field}>
+                      <div onDoubleClick={isOwner ? enableEditMode : undefined}>
+                        <h2 className={'text text_color_second label-third'}>
+                          First name
+                        </h2>
+                        <input
+                          id={'user-first-name'}
+                          value={inputValue['user-first-name']}
+                          className={`${s.field__input} ${
+                            errorValue['user-first-name'] &&
+                            s.field__input_valid_invalid
+                          }`}
+                          readOnly={!isEditingActive}
+                          type={'text'}
+                          onChange={handleInput}
+                        />
+                      </div>
+
+                      <p className={`text text_color_accent detail ${s.error}`}>
+                        {errorValue['user-first-name']}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* last name */}
+                  {(isEditingActive || inputValue['user-last-name']) && (
+                    <div className={s.field}>
+                      <div onDoubleClick={isOwner ? enableEditMode : undefined}>
+                        <h2 className={'text text_color_second label-third'}>
+                          Last name
+                        </h2>
+                        <input
+                          id={'user-last-name'}
+                          value={inputValue['user-last-name']}
+                          className={`${s.field__input} ${
+                            errorValue['user-last-name'] &&
+                            s.field__input_valid_invalid
+                          }`}
+                          readOnly={!isEditingActive}
+                          type={'text'}
+                          onChange={handleInput}
+                        />
+                      </div>
+
+                      <p className={`text text_color_accent detail ${s.error}`}>
+                        {errorValue['user-last-name']}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* birthday */}
+                  {(isEditingActive || inputValue['user-birthday']) && (
+                    <div className={s.field}>
+                      <div onDoubleClick={isOwner ? enableEditMode : undefined}>
+                        <h2 className={'text text_color_second label-third'}>
+                          Birthday
+                        </h2>
+                        <input
+                          id={'user-birthday'}
+                          value={fromIso8601(inputValue['user-birthday'])}
+                          className={`text ${s.field__input} ${
+                            errorValue['user-birthday'] &&
+                            s.field__input_valid_invalid
+                          }`}
+                          readOnly={!isEditingActive}
+                          type={'date'}
+                          onChange={handleInput}
+                        />
+                        <p
+                          className={`text text_color_accent detail ${s.error}`}
+                        >
+                          {errorValue['user-birthday']}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* buttons */}
+                <Buttons className={s.buttons_place_form} />
+              </div>
+
+              {/* 2 row */}
+              <div className={s.form__row}>
+                <div className={`${s.field} ${s.field_type_textarea}`}>
+                  <h2 className={'text text_color_second label-third'}>
+                    Description
+                  </h2>
+                  <textarea
+                    id={'user-description'}
+                    value={inputValue['user-description']}
+                    className={`text ${s.field__input} ${
+                      errorValue['user-description'] &&
+                      s.field__input_valid_invalid
+                    }`}
+                    readOnly={!isEditingActive}
+                    type={'text'}
+                    onChange={handleInput}
+                  />
+                  <p className={`text text_color_accent detail ${s.error}`}>
+                    {errorValue['user-description']}
+                  </p>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          {/* bottom */}
+          <footer className={s.footer}>
+            <div className={s.infos}>
+              {/* number of notes */}
+              <div className={s.info}>
+                <p className='text text_color_second label-third'>
+                  {user.notes.length === 0 ? (
+                    'This user has no notes yet'
+                  ) : (
+                    <>
+                      Owner of{' '}
+                      <span className='text_color_default'>
+                        {user.notes.length}{' '}
+                        {user.notes.length !== 1 ? 'notes' : 'note'}
+                      </span>
+                    </>
+                  )}
+                </p>
+              </div>
+
+              {/* user redd notes since */}
+              <div className={s.info}>
+                <p className='text text_color_second label-third'>
+                  ReddNotes user since{' '}
+                  <span className='text_color_default'>{creationDate}</span>
+                </p>
+              </div>
+            </div>
+
+            {/* buttons */}
+            <Buttons className={s.buttons_place_footer} />
+          </footer>
+        </div>
+
+        <Notes
+          notes={notes.filter((note) => note.owner === userId)}
+          users={users}
+          isFavorite={false}
+          isAuthorized={isAuthorized}
+          currentUser={currentUser}
+          openPopupPicture={openPopupPicture}
+          handleChangeReaction={handleChangeReaction}
+          handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+        />
+      </article>
+    </>
+  );
 }

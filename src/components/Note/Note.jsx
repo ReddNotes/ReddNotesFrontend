@@ -10,6 +10,7 @@ import reactionIcon from './../../assets/icon/fire_empty.svg';
 import reactionFillIcon from './../../assets/icon/fire_full.svg';
 import favoriteIcon from './../../assets/icon/star_empty.svg';
 import favoriteFillIcon from './../../assets/icon/star_full.svg';
+import trashIcon from './../../assets/icon/trash.svg';
 import commentIcon from './../../assets/icon/comment.svg';
 import redCommentIcon from './../../assets/icon/comment_red.svg';
 
@@ -21,6 +22,7 @@ export default function Note({
   isAuthorized,
   handleChangeReaction,
   handleAddOrDeleteFavorites,
+  handleDeleteNote,
   note,
   user,
   users
@@ -76,11 +78,18 @@ export default function Note({
     );
   }
 
+  // delete note
+  function handleClickDelete() {
+    handleDeleteNote({
+      noteId: note._id,
+    });
+  }
+
   return (
     <article className={s.main}>
       {/* header */}
       <header className={s.header}>
-        <div className={s.container}>
+        <div className={`${s.container} ${s.container_size_max}`}>
           <NavLink
             to={`/user/${note.owner}`}
             className={`link ${s.header_link} ${isOwner && s.owner}`}
@@ -136,16 +145,30 @@ export default function Note({
           </button>
         </div>
 
-        <button
-          disabled={!isAuthorized}
-          className='button'
-          onClick={handleClickFavorite}
-        >
-          <img
-            src={isSavedFavorites ? favoriteFillIcon : favoriteIcon}
-            alt='star icon'
-          />
-        </button>
+        <div className={s.container}>
+          {/* delete */}
+          {isOwner && (
+            <button
+              disabled={!isOwner}
+              className='button'
+              onClick={handleClickDelete}
+            >
+              <img src={trashIcon} alt='delete icon' />
+            </button>
+          )}
+
+          {/* favorite */}
+          <button
+            disabled={!isAuthorized}
+            className='button'
+            onClick={handleClickFavorite}
+          >
+            <img
+              src={isSavedFavorites ? favoriteFillIcon : favoriteIcon}
+              alt='star icon'
+            />
+          </button>
+        </div>
       </footer>
       {showComment &&
       <Comment

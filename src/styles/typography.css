@@ -2,6 +2,7 @@
 
 .text {
   margin: 0;
+  font-family: Inter;
   color: var(--fg-main-color);
 }
 
@@ -11,6 +12,10 @@
 
 .text_color_accent {
   color: var(--accent-color);
+}
+
+.text_color_default {
+  color: var(--fg-main-color);
 }
 
 /* use */

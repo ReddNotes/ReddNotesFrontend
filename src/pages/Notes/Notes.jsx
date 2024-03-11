@@ -1,6 +1,3 @@
-// ! modules
-import { useParams } from 'react-router-dom';
-
 // ? styles
 import s from './Notes.module.css';
 
@@ -14,14 +11,13 @@ export default function Notes({
   currentUser,
   handleChangeReaction,
   handleAddOrDeleteFavorites,
+  handleDeleteNote,
   notes,
   users,
 }) {
-  const { userId } = useParams();
-
   const _notes = isFavorite
     ? notes.filter((note) => currentUser.favorites.includes(note._id))
-    : userId ? notes.filter((note) => note.owner === userId): notes;
+    : notes;
 
   const _totalCountNotes = _notes.length;
 
@@ -54,6 +50,7 @@ export default function Notes({
 
           return (
             <Note
+              handleDeleteNote={handleDeleteNote}
               openPopupPicture={openPopupPicture}
               isAuthorized={isAuthorized}
               handleChangeReaction={handleChangeReaction}

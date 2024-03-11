@@ -267,6 +267,23 @@ function App() {
             }
             break;
 
+          // update
+          case 'update': {
+            setAllUsers((pre) =>
+              pre.map((user) => {
+                if (user._id === answer.data._id) {
+                  if (currentUser._id === answer.data._id)
+                    setCurrentUser(answer.data);
+                  return answer.data;
+                } else {
+                  return user;
+                }
+              }),
+            );
+
+            break;
+          }
+
           default:
             break;
         }
@@ -386,6 +403,19 @@ function App() {
             break;
           }
 
+          // delete
+          case 'delete': {
+            setAllNotes((pre) => {
+              const updatedNotes = [];
+              pre.map((note) => {
+                if (note._id !== answer.data._id) updatedNotes.push(note);
+              });
+              return updatedNotes;
+            });
+
+            break;
+          }
+
           default:
             break;
         }
@@ -471,6 +501,45 @@ function App() {
     }
   }
 
+  // delete note
+  function handleDeleteNote(data) {
+    if (token) {
+      console.log('submit delete note');
+      console.log(data);
+      socket.send(
+        JSON.stringify({
+          type: 'note',
+          action: 'delete',
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
+
+  // * user
+
+  // update info about user
+  function handleUserUpdateSubmit(data) {
+    if (token) {
+      console.log('submit update user data');
+      socket.send(
+        JSON.stringify({
+          type: 'user',
+          action: 'update',
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
+
   // * other
 
   // set info and open popup with picture
@@ -525,6 +594,7 @@ function App() {
                       users={allUsers}
                       isAuthorized={!!token}
                       currentUser={currentUser}
+                      handleDeleteNote={handleDeleteNote}
                       openPopupPicture={openPopupPicture}
                       handleChangeReaction={handleChangeReaction}
                       handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
@@ -538,25 +608,20 @@ function App() {
               path='/user/:userId'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  <User
-                    notes={allNotes}
-                    users={allUsers}
-                    isAuthorized={!!token}
-                    currentUser={currentUser}
-                    openPopupPicture={openPopupPicture}
-                    handleChangeReaction={handleChangeReaction}
-                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
-                  >
-                  <Notes
-                    notes={allNotes}
-                    users={allUsers}
-                    isAuthorized={!!token}
-                    currentUser={currentUser}
-                    openPopupPicture={openPopupPicture}
-                    handleChangeReaction={handleChangeReaction}
-                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
-                  />
-                  </User>
+                  {isUsersDataDownloaded && isNotesDownloaded ? (
+                    <User
+                      notes={allNotes}
+                      users={allUsers}
+                      isAuthorized={!!token}
+                      currentUser={currentUser}
+                      openPopupPicture={openPopupPicture}
+                      handleSubmit={handleUserUpdateSubmit}
+                      handleChangeReaction={handleChangeReaction}
+                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+                    />
+                  ) : (
+                    <p>todo preloader</p>
+                  )}
                 </MainContainer>
               }
             />
@@ -571,6 +636,7 @@ function App() {
                     isFavorite={true}
                     isAuthorized={!!token}
                     currentUser={currentUser}
+                    handleDeleteNote={handleDeleteNote}
                     openPopupPicture={openPopupPicture}
                     handleChangeReaction={handleChangeReaction}
                     handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
