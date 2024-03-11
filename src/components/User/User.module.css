@@ -5,7 +5,6 @@
   align-items: center;
   padding: 32px 16px 0;
   box-sizing: border-box;
-  gap: 16px;
 }
 
 .profile {
@@ -209,7 +208,6 @@
 @media screen and (max-width: 440px) {
   .main {
     padding: 0;
-    gap: 0;
   }
   .profile {
     border: none;
