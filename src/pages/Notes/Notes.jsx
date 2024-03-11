@@ -61,6 +61,7 @@ export default function Notes({
               key={note._id}
               note={note}
               user={currentUser}
+              users={users}
             />
           );
         })}
