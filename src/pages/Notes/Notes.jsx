@@ -5,26 +5,21 @@ import s from './Notes.module.css';
 import Note from '../../components/Note/Note';
 
 export default function Notes({
-  isFavorite,
+  handleAddOrDeleteFavorites,
+  handleChangeReaction,
+  messageWhenNoNotes,
+  handleDeleteNote,
   openPopupPicture,
   isAuthorized,
+  messageInEnd,
   currentUser,
-  handleChangeReaction,
-  handleAddOrDeleteFavorites,
-  handleDeleteNote,
   notes,
   users,
 }) {
-  const _notes = isFavorite
-    ? notes.filter((note) => currentUser.favorites.includes(note._id))
-    : notes;
-
-  const _totalCountNotes = _notes.length;
-
   return (
     <section className={s.main}>
       {/* notes */}
-      {_notes
+      {notes
         .sort((a, b) => {
           const dateA = new Date(a.creationDate);
           const dateB = new Date(b.creationDate);
@@ -66,13 +61,7 @@ export default function Notes({
       {/* message */}
       <div className={s.end}>
         <p className='text text_color_second body'>
-          {!isAuthorized && isFavorite
-            ? 'To see favorites notes, before you have to login'
-            : _totalCountNotes === 0
-            ? isFavorite
-              ? 'You do not save any note to favorites'
-              : 'So far, no one has added any notes'
-            : `You have been see all ${isFavorite ? 'favorites' : ''} notes`}
+          {notes.length === 0 ? messageWhenNoNotes : messageInEnd}
         </p>
       </div>
     </section>

@@ -10,28 +10,23 @@ import reactionIcon from './../../assets/icon/fire_empty.svg';
 import reactionFillIcon from './../../assets/icon/fire_full.svg';
 import favoriteIcon from './../../assets/icon/star_empty.svg';
 import favoriteFillIcon from './../../assets/icon/star_full.svg';
-import trashIcon from './../../assets/icon/trash.svg';
 import commentIcon from './../../assets/icon/comment.svg';
-import redCommentIcon from './../../assets/icon/comment_red.svg';
+import commentActiveIcon from './../../assets/icon/comment_red.svg';
+import trashIcon from './../../assets/icon/trash.svg';
 
-// ? pages
-import Comment from '../Comment/Comment';
+// ? components
+import Comment from './../Comment/Comment';
 
 export default function Note({
+  handleAddOrDeleteFavorites,
+  handleChangeReaction,
+  handleDeleteNote,
   openPopupPicture,
   isAuthorized,
-  handleChangeReaction,
-  handleAddOrDeleteFavorites,
-  handleDeleteNote,
+  users,
   note,
   user,
-  users
 }) {
-  const [isReactionActive, setReactionActive] = useState(note.isReactionActive);
-  const [isSavedFavorites, setSavedFavorites] = useState(note.isSavedFavorites);
-  const [isOwner, setOwner] = useState(user._id === note.owner);
-  const [showComment, setShowComment] = useState(false);
-
   const date = new Date(note.creationDate);
 
   const year = date.getFullYear();
@@ -49,7 +44,13 @@ export default function Note({
   const minutes = ('0' + date.getMinutes()).slice(-2);
   const formattedTime = `${hours}:${minutes}`;
 
-  // ?
+  // ? useStates
+  const [isReactionActive, setReactionActive] = useState(note.isReactionActive);
+  const [isSavedFavorites, setSavedFavorites] = useState(note.isSavedFavorites);
+  const [isCommentsOpen, setCommentsOpen] = useState(false);
+  const [isOwner, setOwner] = useState(user._id === note.owner);
+
+  // ? useEffects
   useEffect(() => {
     setReactionActive(note.isReactionActive);
     setSavedFavorites(note.isSavedFavorites);
@@ -140,8 +141,15 @@ export default function Note({
             </button>
           </div>
 
-          <button disabled={!isAuthorized} onClick={() => setShowComment(!showComment)} className='button'>
-            <img src={showComment ? redCommentIcon : commentIcon} alt='comment icon' />
+          <button
+            disabled={!isAuthorized}
+            onClick={() => setCommentsOpen(!isCommentsOpen)}
+            className='button'
+          >
+            <img
+              src={isCommentsOpen ? commentActiveIcon : commentIcon}
+              alt='comment icon'
+            />
           </button>
         </div>
 
@@ -170,12 +178,7 @@ export default function Note({
           </button>
         </div>
       </footer>
-      {showComment &&
-      <Comment
-        note={note}
-        user={user}
-        users={users}
-      />}
+      {isCommentsOpen && <Comment note={note} user={user} users={users} />}
     </article>
   );
 }

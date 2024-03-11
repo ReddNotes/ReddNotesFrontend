@@ -505,7 +505,6 @@ function App() {
   function handleDeleteNote(data) {
     if (token) {
       console.log('submit delete note');
-      console.log(data);
       socket.send(
         JSON.stringify({
           type: 'note',
@@ -587,8 +586,8 @@ function App() {
             <Route
               path='/'
               element={
-                isUsersDataDownloaded && (
-                  <MainContainer isAuthorized={!!token}>
+                <MainContainer isAuthorized={!!token}>
+                  {isUsersDataDownloaded && isNotesDownloaded ? (
                     <Notes
                       notes={allNotes}
                       users={allUsers}
@@ -597,10 +596,14 @@ function App() {
                       handleDeleteNote={handleDeleteNote}
                       openPopupPicture={openPopupPicture}
                       handleChangeReaction={handleChangeReaction}
+                      messageWhenNoNotes='No one post any note'
+                      messageInEnd='You have seen all your notes'
                       handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                     />
-                  </MainContainer>
-                )
+                  ) : (
+                    <p>todo preloader</p>
+                  )}
+                </MainContainer>
               }
             />
 
@@ -614,6 +617,7 @@ function App() {
                       users={allUsers}
                       isAuthorized={!!token}
                       currentUser={currentUser}
+                      handleDeleteNote={handleDeleteNote}
                       openPopupPicture={openPopupPicture}
                       handleSubmit={handleUserUpdateSubmit}
                       handleChangeReaction={handleChangeReaction}
@@ -630,17 +634,28 @@ function App() {
               path='/favorite'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  <Notes
-                    notes={allNotes}
-                    users={allUsers}
-                    isFavorite={true}
-                    isAuthorized={!!token}
-                    currentUser={currentUser}
-                    handleDeleteNote={handleDeleteNote}
-                    openPopupPicture={openPopupPicture}
-                    handleChangeReaction={handleChangeReaction}
-                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
-                  />
+                  {isUsersDataDownloaded && isNotesDownloaded ? (
+                    <Notes
+                      notes={allNotes.filter((note) =>
+                        currentUser.favorites.includes(note._id),
+                      )}
+                      users={allUsers}
+                      isAuthorized={!!token}
+                      currentUser={currentUser}
+                      handleDeleteNote={handleDeleteNote}
+                      openPopupPicture={openPopupPicture}
+                      handleChangeReaction={handleChangeReaction}
+                      messageWhenNoNotes={
+                        !!token
+                          ? 'To see favorites notes, before you have to login'
+                          : 'You do not have any note yet'
+                      }
+                      messageInEnd='You have seen all your favorite notes'
+                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+                    />
+                  ) : (
+                    <p>todo preloader</p>
+                  )}
                 </MainContainer>
               }
             />

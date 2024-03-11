@@ -19,6 +19,7 @@ export default function User({
   isAuthorized,
   handleSubmit,
   openPopupPicture,
+  handleDeleteNote,
   handleChangeReaction,
   handleAddOrDeleteFavorites,
 }) {
@@ -196,13 +197,22 @@ export default function User({
                 {/* avatar + age */}
                 <div>
                   {/* avatar */}
-                  <div className={s.avatar}>
+                  <button
+                    type='button'
+                    onClick={() => {
+                      openPopupPicture({
+                        src: inputValue['user-avatar'],
+                        alt: `${user.nickname} avatar`,
+                      });
+                    }}
+                    className={`button ${s.avatar}`}
+                  >
                     <img
                       className={s.avatar__img}
                       src={inputValue['user-avatar']}
                       alt={`${user.nickname} avatar`}
                     />
-                  </div>
+                  </button>
                   {birthday && (
                     <p className={`text text_color_second subhead ${s.age}`}>
                       <span className='text_color_default'>
@@ -360,13 +370,16 @@ export default function User({
         </div>
 
         <Notes
-          notes={notes.filter((note) => note.owner === userId)}
           users={users}
           isFavorite={false}
-          isAuthorized={isAuthorized}
           currentUser={currentUser}
+          isAuthorized={isAuthorized}
+          handleDeleteNote={handleDeleteNote}
           openPopupPicture={openPopupPicture}
           handleChangeReaction={handleChangeReaction}
+          messageInEnd='You have seen all your notes'
+          messageWhenNoNotes='You do not have any note yet'
+          notes={notes.filter((note) => note.owner === userId)}
           handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
         />
       </article>
