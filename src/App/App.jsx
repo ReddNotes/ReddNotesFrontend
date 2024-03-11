@@ -357,7 +357,9 @@ function App() {
                 setAllNotes((pre) => {
                   const updatedNotes = pre.map((note) => {
                     if (note._id === answer.data._id) {
-                      return answer.data;
+                      const _note = { ...note };
+                      _note.likes = answer.data.likes;
+                      return _note;
                     } else {
                       return note;
                     }
