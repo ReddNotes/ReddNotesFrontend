@@ -215,6 +215,9 @@
     border: none;
     border-radius: 0;
   }
+  .field {
+    gap: 0;
+  }
   .footer {
     flex-direction: column;
   }

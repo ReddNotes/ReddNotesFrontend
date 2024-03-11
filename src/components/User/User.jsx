@@ -57,6 +57,7 @@ export default function User({
   useEffect(() => {
     resetForm();
     setOwner(currentUser._id === user._id);
+    setBirthday(user.birthday ? new Date(user.birthday) : null);
   }, [user]);
 
   // ? functions
