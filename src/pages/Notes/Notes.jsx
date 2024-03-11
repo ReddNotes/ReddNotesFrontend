@@ -11,6 +11,7 @@ export default function Notes({
   currentUser,
   handleChangeReaction,
   handleAddOrDeleteFavorites,
+  handleDeleteNote,
   notes,
   users,
 }) {
@@ -49,6 +50,7 @@ export default function Notes({
 
           return (
             <Note
+              handleDeleteNote={handleDeleteNote}
               openPopupPicture={openPopupPicture}
               isAuthorized={isAuthorized}
               handleChangeReaction={handleChangeReaction}

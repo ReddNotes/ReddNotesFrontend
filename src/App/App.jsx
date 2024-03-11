@@ -403,6 +403,19 @@ function App() {
             break;
           }
 
+          // delete
+          case 'delete': {
+            setAllNotes((pre) => {
+              const updatedNotes = [];
+              pre.map((note) => {
+                if (note._id !== answer.data._id) updatedNotes.push(note);
+              });
+              return updatedNotes;
+            });
+
+            break;
+          }
+
           default:
             break;
         }
@@ -488,6 +501,27 @@ function App() {
     }
   }
 
+  // delete note
+  function handleDeleteNote(data) {
+    if (token) {
+      console.log('submit delete note');
+      console.log(data);
+      socket.send(
+        JSON.stringify({
+          type: 'note',
+          action: 'delete',
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
+
+  // * user
+
   // update info about user
   function handleUserUpdateSubmit(data) {
     if (token) {
@@ -560,6 +594,7 @@ function App() {
                       users={allUsers}
                       isAuthorized={!!token}
                       currentUser={currentUser}
+                      handleDeleteNote={handleDeleteNote}
                       openPopupPicture={openPopupPicture}
                       handleChangeReaction={handleChangeReaction}
                       handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
@@ -601,6 +636,7 @@ function App() {
                     isFavorite={true}
                     isAuthorized={!!token}
                     currentUser={currentUser}
+                    handleDeleteNote={handleDeleteNote}
                     openPopupPicture={openPopupPicture}
                     handleChangeReaction={handleChangeReaction}
                     handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
