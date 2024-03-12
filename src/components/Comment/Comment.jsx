@@ -9,7 +9,6 @@ import s from './Comment.module.css';
 import reactionIcon from './../../assets/icon/fire_empty.svg';
 import reactionFillIcon from './../../assets/icon/fire_full.svg';
 import trashIcon from './../../assets/icon/trash.svg';
-import trashActiveIcon from './../../assets/icon/trash_red.svg';
 
 export default function Comment({ user, users, comment, handlerDelete }) {
   const intervals = {
