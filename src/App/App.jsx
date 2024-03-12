@@ -117,21 +117,25 @@ function App() {
       }),
     );
 
-    // get count of all users
-    socket.send(
-      JSON.stringify({
-        type: 'info',
-        action: 'count all users',
-      }),
-    );
+    if (!isUsersDataDownloaded) {
+      // get count of all users
+      socket.send(
+        JSON.stringify({
+          type: 'info',
+          action: 'count all users',
+        }),
+      );
+    }
 
-    // get count of all notes
-    socket.send(
-      JSON.stringify({
-        type: 'info',
-        action: 'count all notes',
-      }),
-    );
+    if (!isNotesDownloaded) {
+      // get count of all notes
+      socket.send(
+        JSON.stringify({
+          type: 'info',
+          action: 'count all notes',
+        }),
+      );
+    }
   }, [socket, isTokenCheck]);
 
   useEffect(() => {
@@ -140,6 +144,7 @@ function App() {
     // when open connection
     socket.addEventListener('open', (event) => {
       console.log('WebSocket connection opened');
+      console.log(event);
 
       // try to login by token
       const token = localStorage.getItem('token');
@@ -159,8 +164,8 @@ function App() {
       console.log('WebSocket connection closed');
       socket.removeEventListener('message', handleWebSocketResponse);
       setToken(null);
-
       setTokenCheck(false);
+
       const _socket = new WebSocket(WEB_SOCKET_SETTING.URL);
       setSocket(_socket);
     });
