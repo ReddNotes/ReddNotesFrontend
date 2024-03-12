@@ -10,20 +10,20 @@ import reactionIcon from './../../assets/icon/fire_empty.svg';
 import reactionFillIcon from './../../assets/icon/fire_full.svg';
 
 export default function Comment({ user, users, comment }) {
+  const intervals = {
+    year: 31536_000,
+    month: 2592_000,
+    week: 604800,
+    day: 86400,
+    hour: 3_600,
+    min: 60,
+    sec: 1,
+  };
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const currentDate = new Date();
-    const diff = Math.floor((currentDate - date) / 1000); // Différence en secondes arrondie
-
-    const intervals = {
-      year: 31536_000,
-      month: 2592_000,
-      week: 604800,
-      day: 86400,
-      hour: 3_600,
-      min: 60,
-      second: 1,
-    };
+    const diff = Math.floor((currentDate - date) / 1000);
 
     for (let key in intervals) {
       const interval = Math.floor(diff / intervals[key]);
@@ -39,6 +39,9 @@ export default function Comment({ user, users, comment }) {
   const [owner, setOwner] = useState(
     users.find((u) => u._id === comment.owner),
   );
+  const [dateOfCreating, setDateOfCreating] = useState(
+    formatDate(comment.creationDate),
+  );
   const [isOwner, setIsOwner] = useState(user._id === comment.owner);
 
   // ? useEffects
@@ -48,7 +51,15 @@ export default function Comment({ user, users, comment }) {
     setIsOwner(user._id === comment.owner);
   }, [users, user]);
 
-  // ? functions
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDateOfCreating(formatDate(comment.creationDate));
+    }, 1_000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <article className={`${s.main} ${isOwner && s.owner}`}>
@@ -77,9 +88,7 @@ export default function Comment({ user, users, comment }) {
 
       {/* bottom */}
       <footer className={s.footer}>
-        <h5 className='text text_color_second detail'>
-          {formatDate(comment.creationDate)}
-        </h5>
+        <h5 className='text text_color_second detail'>{dateOfCreating}</h5>
         <div className={s.reaction}>
           <button type='button' className='button'>
             <img
