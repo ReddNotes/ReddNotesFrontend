@@ -9,6 +9,7 @@ import './App.css';
 // ? components
 import MenuBar from './../components/MenuBar/MenuBar.jsx';
 import PopupPicture from './../components/PopupPicture/PopupPicture.jsx';
+import Preloader from '../components/Preloader/Preloader.jsx';
 
 // ? pages
 import Login from './../pages/Login/login.jsx';
@@ -649,7 +650,7 @@ function App() {
 
   return (
     <>
-      {socket ? (
+      {isUsersDataDownloaded && isNotesDownloaded && socket ? (
         <>
           {isPopupPictureOpen && (
             <PopupPicture
@@ -673,24 +674,20 @@ function App() {
               path='/'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  {isUsersDataDownloaded && isNotesDownloaded ? (
-                    <Notes
-                      notes={allNotes}
-                      users={allUsers}
-                      isAuthorized={!!token}
-                      currentUser={currentUser}
-                      handleDeleteNote={handleDeleteNote}
-                      openPopupPicture={openPopupPicture}
-                      handleCreateComment={handleCreateComment}
-                      handleDeleteComment={handleDeleteComment}
-                      handleChangeReaction={handleChangeReaction}
-                      messageWhenNoNotes='No one post any note'
-                      messageInEnd='You have seen all your notes'
-                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
-                    />
-                  ) : (
-                    <p>todo preloader</p>
-                  )}
+                  <Notes
+                    notes={allNotes}
+                    users={allUsers}
+                    isAuthorized={!!token}
+                    currentUser={currentUser}
+                    handleDeleteNote={handleDeleteNote}
+                    openPopupPicture={openPopupPicture}
+                    handleCreateComment={handleCreateComment}
+                    handleDeleteComment={handleDeleteComment}
+                    handleChangeReaction={handleChangeReaction}
+                    messageWhenNoNotes='No one post any note'
+                    messageInEnd='You have seen all your notes'
+                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+                  />
                 </MainContainer>
               }
             />
@@ -699,23 +696,19 @@ function App() {
               path='/user/:userId'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  {isUsersDataDownloaded && isNotesDownloaded ? (
-                    <User
-                      notes={allNotes}
-                      users={allUsers}
-                      isAuthorized={!!token}
-                      currentUser={currentUser}
-                      handleDeleteNote={handleDeleteNote}
-                      openPopupPicture={openPopupPicture}
-                      handleSubmit={handleUserUpdateSubmit}
-                      handleCreateComment={handleCreateComment}
-                      handleDeleteComment={handleDeleteComment}
-                      handleChangeReaction={handleChangeReaction}
-                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
-                    />
-                  ) : (
-                    <p>todo preloader</p>
-                  )}
+                  <User
+                    notes={allNotes}
+                    users={allUsers}
+                    isAuthorized={!!token}
+                    currentUser={currentUser}
+                    handleDeleteNote={handleDeleteNote}
+                    openPopupPicture={openPopupPicture}
+                    handleSubmit={handleUserUpdateSubmit}
+                    handleCreateComment={handleCreateComment}
+                    handleDeleteComment={handleDeleteComment}
+                    handleChangeReaction={handleChangeReaction}
+                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+                  />
                 </MainContainer>
               }
             />
@@ -724,30 +717,26 @@ function App() {
               path='/favorite'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  {isUsersDataDownloaded && isNotesDownloaded ? (
-                    <Notes
-                      notes={allNotes.filter((note) =>
-                        currentUser.favorites.includes(note._id),
-                      )}
-                      users={allUsers}
-                      isAuthorized={!!token}
-                      currentUser={currentUser}
-                      handleDeleteNote={handleDeleteNote}
-                      openPopupPicture={openPopupPicture}
-                      handleCreateComment={handleCreateComment}
-                      handleDeleteComment={handleDeleteComment}
-                      handleChangeReaction={handleChangeReaction}
-                      messageWhenNoNotes={
-                        !!token
-                          ? 'To see favorites notes, before you have to login'
-                          : 'You do not have any note yet'
-                      }
-                      messageInEnd='You have seen all your favorite notes'
-                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
-                    />
-                  ) : (
-                    <p>todo preloader</p>
-                  )}
+                  <Notes
+                    notes={allNotes.filter((note) =>
+                      currentUser.favorites.includes(note._id),
+                    )}
+                    users={allUsers}
+                    isAuthorized={!!token}
+                    currentUser={currentUser}
+                    handleDeleteNote={handleDeleteNote}
+                    openPopupPicture={openPopupPicture}
+                    handleCreateComment={handleCreateComment}
+                    handleDeleteComment={handleDeleteComment}
+                    handleChangeReaction={handleChangeReaction}
+                    messageWhenNoNotes={
+                      !!token
+                        ? 'To see favorites notes, before you have to login'
+                        : 'You do not have any note yet'
+                    }
+                    messageInEnd='You have seen all your favorite notes'
+                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+                  />
                 </MainContainer>
               }
             />
@@ -780,12 +769,14 @@ function App() {
                 />
               }
             />
+
             <Route path='/about' element={<AboutPage />} />
+
             <Route path='*' element={<NotFound />} />
           </Routes>
         </>
       ) : (
-        <p>todo preloader</p>
+        <Preloader />
       )}
     </>
   );
