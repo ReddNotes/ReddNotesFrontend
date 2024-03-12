@@ -90,7 +90,7 @@ export default function Comments({ handleSubmit, note, user, users }) {
       )}
 
       {/*  */}
-      <form id={`${note._id}_note_form`} onSubmit={onSubmit} className={s.form}>
+      <form onSubmit={onSubmit} className={s.form}>
         <div className={s.avatar}>
           <img
             className={s.avatar__img}

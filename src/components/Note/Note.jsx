@@ -91,7 +91,7 @@ export default function Note({
     if (!isCommentsOpen)
       setTimeout(() => {
         const myComponent = document.getElementById(`${note._id}_note`);
-        myComponent.scrollIntoView({ behavior: 'smooth' });
+        myComponent.scrollIntoView({ behavior: 'smooth', block: 'end' });
       }, 30);
     setCommentsOpen(!isCommentsOpen);
   }
