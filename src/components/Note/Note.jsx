@@ -133,7 +133,7 @@ export default function Note({
         <div className={s.container}>
           <div className={s.reaction}>
             <p
-              className={`text title-third  text_color_second ${
+              className={`text body text_color_second ${
                 isReactionActive && 'text_color_accent'
               }`}
             >
@@ -151,16 +151,26 @@ export default function Note({
             </button>
           </div>
 
-          <button
-            disabled={!isAuthorized}
-            onClick={handleOpenComments}
-            className='button'
-          >
-            <img
-              src={isCommentsOpen ? commentActiveIcon : commentIcon}
-              alt='comment icon'
-            />
-          </button>
+          {/* comments */}
+          <div className={s.reaction}>
+            <p
+              className={`text body text_color_second ${
+                isCommentsOpen && 'text_color_accent'
+              }`}
+            >
+              {note.comments.length}
+            </p>
+            <button
+              disabled={!isAuthorized}
+              onClick={handleOpenComments}
+              className='button'
+            >
+              <img
+                src={isCommentsOpen ? commentActiveIcon : commentIcon}
+                alt='comment icon'
+              />
+            </button>
+          </div>
         </div>
 
         <div className={s.container}>
