@@ -21,6 +21,7 @@ export default function Note({
   handleAddOrDeleteFavorites,
   handleChangeReaction,
   handleCreateComment,
+  handleDeleteComment,
   handleDeleteNote,
   openPopupPicture,
   isAuthorized,
@@ -200,7 +201,8 @@ export default function Note({
       </footer>
       {isCommentsOpen && (
         <Comments
-          handleSubmit={handleCreateComment}
+          handleCreateComment={handleCreateComment}
+          handleDeleteComment={handleDeleteComment}
           note={note}
           user={user}
           users={users}

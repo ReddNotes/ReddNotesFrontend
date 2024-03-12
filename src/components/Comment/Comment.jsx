@@ -8,8 +8,10 @@ import s from './Comment.module.css';
 // ? assets
 import reactionIcon from './../../assets/icon/fire_empty.svg';
 import reactionFillIcon from './../../assets/icon/fire_full.svg';
+import trashIcon from './../../assets/icon/trash.svg';
+import trashActiveIcon from './../../assets/icon/trash_red.svg';
 
-export default function Comment({ user, users, comment }) {
+export default function Comment({ user, users, comment, handlerDelete }) {
   const intervals = {
     year: 31536_000,
     month: 2592_000,
@@ -81,6 +83,21 @@ export default function Comment({ user, users, comment }) {
             />
           </NavLink>
         )}
+
+        {isOwner && (
+          <button
+            type='button'
+            onClick={handlerDelete}
+            className={`button ${s.delete}`}
+          >
+            <img
+              className={s.icon}
+              src={true ? trashIcon : reactionFillIcon}
+              alt='delete icon'
+            />
+          </button>
+        )}
+
         <div className={s.comment}>
           <p className='text label-second'>{comment.value}</p>
         </div>
@@ -91,11 +108,7 @@ export default function Comment({ user, users, comment }) {
         <h5 className='text text_color_second detail'>{dateOfCreating}</h5>
         <div className={s.reaction}>
           <button type='button' className='button'>
-            <img
-              className={s.icon}
-              src={true ? reactionIcon : reactionFillIcon}
-              alt='Reaction icon'
-            />
+            <img className={s.icon} src={reactionIcon} alt='Reaction icon' />
           </button>
           <p className={'text text_color_second label-third'}>
             {comment.likes.length}

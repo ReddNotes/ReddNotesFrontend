@@ -21,6 +21,7 @@ export default function User({
   openPopupPicture,
   handleDeleteNote,
   handleCreateComment,
+  handleDeleteComment,
   handleChangeReaction,
   handleAddOrDeleteFavorites,
 }) {
@@ -378,6 +379,7 @@ export default function User({
           handleDeleteNote={handleDeleteNote}
           openPopupPicture={openPopupPicture}
           handleCreateComment={handleCreateComment}
+          handleDeleteComment={handleDeleteComment}
           handleChangeReaction={handleChangeReaction}
           messageInEnd='You have seen all your notes'
           messageWhenNoNotes='You do not have any note yet'

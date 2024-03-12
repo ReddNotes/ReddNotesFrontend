@@ -8,6 +8,7 @@ export default function Notes({
   handleAddOrDeleteFavorites,
   handleChangeReaction,
   handleCreateComment,
+  handleDeleteComment,
   messageWhenNoNotes,
   handleDeleteNote,
   openPopupPicture,
@@ -52,6 +53,7 @@ export default function Notes({
               handleChangeReaction={handleChangeReaction}
               handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
               handleCreateComment={handleCreateComment}
+              handleDeleteComment={handleDeleteComment}
               key={note._id}
               note={note}
               user={currentUser}

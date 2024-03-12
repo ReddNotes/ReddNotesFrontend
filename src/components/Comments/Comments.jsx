@@ -10,7 +10,13 @@ import sendIcon from './../../assets/icon/send.svg';
 // ? components
 import Comment from './../Comment/Comment';
 
-export default function Comments({ handleSubmit, note, user, users }) {
+export default function Comments({
+  handleCreateComment,
+  handleDeleteComment,
+  note,
+  user,
+  users,
+}) {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const currentDate = new Date();
@@ -62,11 +68,21 @@ export default function Comments({ handleSubmit, note, user, users }) {
     e.target.style.height = e.target.scrollHeight + 'px';
   }
 
-  function onSubmit(e) {
+  function handleCreate(e) {
     e.preventDefault();
-    handleSubmit({
+    handleCreateComment({
       noteId: note._id,
       value: inputValue[`${note._id}_note_comment`],
+    });
+    setInputValue(emptyValue);
+    setFormActive(false);
+  }
+
+  function handleDelete(e, commentId) {
+    e.preventDefault();
+    handleDeleteComment({
+      noteId: note._id,
+      commentId: commentId,
     });
     setInputValue(emptyValue);
     setFormActive(false);
@@ -81,6 +97,7 @@ export default function Comments({ handleSubmit, note, user, users }) {
             users={users}
             comment={comment}
             key={comment._id}
+            handlerDelete={(e) => handleDelete(e, comment._id)}
           />
         ))
       ) : (
@@ -90,7 +107,7 @@ export default function Comments({ handleSubmit, note, user, users }) {
       )}
 
       {/*  */}
-      <form onSubmit={onSubmit} className={s.form}>
+      <form onSubmit={handleCreate} className={s.form}>
         <div className={s.avatar}>
           <img
             className={s.avatar__img}

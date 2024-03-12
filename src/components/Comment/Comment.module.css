@@ -33,6 +33,16 @@
   margin-top: 2px;
 }
 
+.delete {
+  opacity: 0;
+  transition: all 0.3s ease;
+  margin-right: 8px;
+}
+
+.container:hover .delete {
+  opacity: 1;
+}
+
 .comment {
   padding: 4px 8px;
   box-sizing: border-box;

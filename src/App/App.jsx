@@ -430,24 +430,43 @@ function App() {
       case 'comment':
         switch (answer.action) {
           // create
-          case 'create':
-            {
-              setAllNotes((pre) => {
-                const updatedNotes = pre.map((note) => {
-                  if (note._id === answer.data.noteId) {
-                    const _note = { ...note };
-                    _note.comments.push(answer.data);
-                    return _note;
-                  } else {
-                    return note;
-                  }
-                });
-
-                return updatedNotes;
+          case 'create': {
+            setAllNotes((pre) => {
+              const updatedNotes = pre.map((note) => {
+                if (note._id === answer.data.noteId) {
+                  const _note = { ...note };
+                  _note.comments.push(answer.data);
+                  return _note;
+                } else {
+                  return note;
+                }
               });
-              break;
-            }
+
+              return updatedNotes;
+            });
             break;
+          }
+
+          // delete
+          case 'delete': {
+            setAllNotes((pre) => {
+              const updatedNotes = pre.map((note) => {
+                if (note._id === answer.data.noteId) {
+                  const _note = { ...note };
+                  _note.comments = _note.comments.filter(
+                    (c) => c._id !== answer.data._id,
+                  );
+                  return _note;
+                } else {
+                  return note;
+                }
+              });
+              return updatedNotes;
+            });
+
+            break;
+          }
+
           default:
             break;
         }
@@ -564,6 +583,24 @@ function App() {
     }
   }
 
+  // delete a comment
+  function handleDeleteComment(data) {
+    if (token) {
+      console.log('submit delete comment');
+      socket.send(
+        JSON.stringify({
+          type: 'comment',
+          action: 'delete',
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
+
   // * user
 
   // update info about user
@@ -641,6 +678,7 @@ function App() {
                       handleDeleteNote={handleDeleteNote}
                       openPopupPicture={openPopupPicture}
                       handleCreateComment={handleCreateComment}
+                      handleDeleteComment={handleDeleteComment}
                       handleChangeReaction={handleChangeReaction}
                       messageWhenNoNotes='No one post any note'
                       messageInEnd='You have seen all your notes'
@@ -667,6 +705,7 @@ function App() {
                       openPopupPicture={openPopupPicture}
                       handleSubmit={handleUserUpdateSubmit}
                       handleCreateComment={handleCreateComment}
+                      handleDeleteComment={handleDeleteComment}
                       handleChangeReaction={handleChangeReaction}
                       handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                     />
@@ -692,6 +731,7 @@ function App() {
                       handleDeleteNote={handleDeleteNote}
                       openPopupPicture={openPopupPicture}
                       handleCreateComment={handleCreateComment}
+                      handleDeleteComment={handleDeleteComment}
                       handleChangeReaction={handleChangeReaction}
                       messageWhenNoNotes={
                         !!token
