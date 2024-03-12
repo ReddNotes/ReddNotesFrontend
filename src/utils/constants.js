@@ -2,12 +2,12 @@
 
 export const STATUS = {
   SIMPLE: 'dev',
-  DEV: true,
+  DEV: false,
   PROD: false,
 };
 
 export const WEB_SOCKET_SETTING = {
   URL: STATUS.DEV
     ? 'ws://localhost:5005/websocket'
-    : 'ws://ReddNotes.adaptable.app/websocket',
+    : 'ws://reddnotes.adaptable.app/websocket',
 };
