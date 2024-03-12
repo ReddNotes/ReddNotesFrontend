@@ -20,6 +20,7 @@ import User from '../components/User/User.jsx';
 
 // ? utils
 import { WEB_SOCKET_SETTING } from './../utils/constants.js';
+import AboutPage from '../pages/AboutPage/AboutPage.jsx';
 
 function App() {
   const navigate = useNavigate();
@@ -735,6 +736,7 @@ function App() {
                 />
               }
             />
+            <Route path='/about' element={<AboutPage />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </>
