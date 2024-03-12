@@ -1,13 +1,18 @@
+// constants.js
+
 // ! modules
 
-export const STATUS = {
-  SIMPLE: 'dev',
-  DEV: false,
-  PROD: false,
+export const SERVER_SETTING = {
+  PORT: 5173,
+  STATUS: {
+    SIMPLE: 'prod', // 'dev'
+    DEV: false, // true
+    PROD: true, // false
+  },
 };
 
 export const WEB_SOCKET_SETTING = {
-  URL: STATUS.DEV
+  URL: SERVER_SETTING.STATUS.DEV
     ? 'ws://localhost:5005/websocket'
-    : 'ws://reddnotes.adaptable.app/websocket',
+    : 'wss://reddnotes.adaptable.app/websocket',
 };
