@@ -7,6 +7,7 @@ import Note from '../../components/Note/Note';
 export default function Notes({
   handleAddOrDeleteFavorites,
   handleChangeReaction,
+  handleCreateComment,
   messageWhenNoNotes,
   handleDeleteNote,
   openPopupPicture,
@@ -50,6 +51,7 @@ export default function Notes({
               isAuthorized={isAuthorized}
               handleChangeReaction={handleChangeReaction}
               handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+              handleCreateComment={handleCreateComment}
               key={note._id}
               note={note}
               user={currentUser}

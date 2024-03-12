@@ -20,6 +20,7 @@ export default function User({
   handleSubmit,
   openPopupPicture,
   handleDeleteNote,
+  handleCreateComment,
   handleChangeReaction,
   handleAddOrDeleteFavorites,
 }) {
@@ -376,6 +377,7 @@ export default function User({
           isAuthorized={isAuthorized}
           handleDeleteNote={handleDeleteNote}
           openPopupPicture={openPopupPicture}
+          handleCreateComment={handleCreateComment}
           handleChangeReaction={handleChangeReaction}
           messageInEnd='You have seen all your notes'
           messageWhenNoNotes='You do not have any note yet'

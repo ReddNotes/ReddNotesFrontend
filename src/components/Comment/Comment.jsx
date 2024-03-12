@@ -9,7 +9,7 @@ import s from './Comment.module.css';
 import reactionIcon from './../../assets/icon/fire_empty.svg';
 import reactionFillIcon from './../../assets/icon/fire_full.svg';
 
-export default function Comment({ note, user, users, comment }) {
+export default function Comment({ user, users, comment }) {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const currentDate = new Date();

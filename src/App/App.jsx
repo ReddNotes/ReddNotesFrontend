@@ -415,6 +415,8 @@ function App() {
               return updatedNotes;
             });
 
+            setCountAllNotes((pre) => pre - 1);
+
             break;
           }
 
@@ -425,9 +427,29 @@ function App() {
 
       // comment
       case 'comment':
-        // todo
-        break;
+        switch (answer.action) {
+          // create
+          case 'create':
+            {
+              setAllNotes((pre) => {
+                const updatedNotes = pre.map((note) => {
+                  if (note._id === answer.data.noteId) {
+                    const _note = { ...note };
+                    _note.comments.push(answer.data);
+                    return _note;
+                  } else {
+                    return note;
+                  }
+                });
 
+                return updatedNotes;
+              });
+              break;
+            }
+            break;
+          default:
+            break;
+        }
       default:
         break;
     }
@@ -521,6 +543,26 @@ function App() {
     }
   }
 
+  // * comment
+
+  // create a comment
+  function handleCreateComment(data) {
+    if (token) {
+      console.log('submit create comment');
+      socket.send(
+        JSON.stringify({
+          type: 'comment',
+          action: 'create',
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
+
   // * user
 
   // update info about user
@@ -597,6 +639,7 @@ function App() {
                       currentUser={currentUser}
                       handleDeleteNote={handleDeleteNote}
                       openPopupPicture={openPopupPicture}
+                      handleCreateComment={handleCreateComment}
                       handleChangeReaction={handleChangeReaction}
                       messageWhenNoNotes='No one post any note'
                       messageInEnd='You have seen all your notes'
@@ -622,6 +665,7 @@ function App() {
                       handleDeleteNote={handleDeleteNote}
                       openPopupPicture={openPopupPicture}
                       handleSubmit={handleUserUpdateSubmit}
+                      handleCreateComment={handleCreateComment}
                       handleChangeReaction={handleChangeReaction}
                       handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
                     />
@@ -646,6 +690,7 @@ function App() {
                       currentUser={currentUser}
                       handleDeleteNote={handleDeleteNote}
                       openPopupPicture={openPopupPicture}
+                      handleCreateComment={handleCreateComment}
                       handleChangeReaction={handleChangeReaction}
                       messageWhenNoNotes={
                         !!token

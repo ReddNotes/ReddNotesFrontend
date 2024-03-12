@@ -20,6 +20,7 @@ import Comments from './../Comments/Comments';
 export default function Note({
   handleAddOrDeleteFavorites,
   handleChangeReaction,
+  handleCreateComment,
   handleDeleteNote,
   openPopupPicture,
   isAuthorized,
@@ -187,7 +188,14 @@ export default function Note({
           </button>
         </div>
       </footer>
-      {isCommentsOpen && <Comments note={note} user={user} users={users} />}
+      {isCommentsOpen && (
+        <Comments
+          handleSubmit={handleCreateComment}
+          note={note}
+          user={user}
+          users={users}
+        />
+      )}
     </article>
   );
 }

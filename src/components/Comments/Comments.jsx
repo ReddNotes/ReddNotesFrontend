@@ -10,7 +10,7 @@ import sendIcon from './../../assets/icon/send.svg';
 // ? components
 import Comment from './../Comment/Comment';
 
-export default function Comments({ note, user, users }) {
+export default function Comments({ handleSubmit, note, user, users }) {
   function formatDate(dateString) {
     const date = new Date(dateString);
     const currentDate = new Date();
@@ -77,7 +77,6 @@ export default function Comments({ note, user, users }) {
       {note.comments.length !== 0 ? (
         note.comments.map((comment) => (
           <Comment
-            note={note}
             user={user}
             users={users}
             comment={comment}
