@@ -15,7 +15,7 @@ import commentActiveIcon from './../../assets/icon/comment_red.svg';
 import trashIcon from './../../assets/icon/trash.svg';
 
 // ? components
-import Comment from './../Comment/Comment';
+import Comments from './../Comments/Comments';
 
 export default function Note({
   handleAddOrDeleteFavorites,
@@ -86,8 +86,17 @@ export default function Note({
     });
   }
 
+  function handleOpenComments() {
+    if (!isCommentsOpen)
+      setTimeout(() => {
+        const myComponent = document.getElementById(`${note._id}_note`);
+        myComponent.scrollIntoView({ behavior: 'smooth' });
+      }, 30);
+    setCommentsOpen(!isCommentsOpen);
+  }
+
   return (
-    <article className={s.main}>
+    <article id={`${note._id}_note`} className={s.main}>
       {/* header */}
       <header className={s.header}>
         <div className={`${s.container} ${s.container_size_max}`}>
@@ -143,7 +152,7 @@ export default function Note({
 
           <button
             disabled={!isAuthorized}
-            onClick={() => setCommentsOpen(!isCommentsOpen)}
+            onClick={handleOpenComments}
             className='button'
           >
             <img
@@ -178,7 +187,7 @@ export default function Note({
           </button>
         </div>
       </footer>
-      {isCommentsOpen && <Comment note={note} user={user} users={users} />}
+      {isCommentsOpen && <Comments note={note} user={user} users={users} />}
     </article>
   );
 }
