@@ -158,6 +158,10 @@ function App() {
       console.log('WebSocket connection closed');
       socket.removeEventListener('message', handleWebSocketResponse);
       setToken(null);
+
+      setTokenCheck(false);
+      const _socket = new WebSocket(WEB_SOCKET_SETTING.URL);
+      setSocket(_socket);
     });
 
     return () => {
