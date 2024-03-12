@@ -1,4 +1,4 @@
-import type { Context, Config } from "@netlify/edge-functions";
+import type { Context } from "@netlify/edge-functions";
 
 export default async (request: Request, context: Context) => {
   let index = 0
@@ -6,7 +6,8 @@ export default async (request: Request, context: Context) => {
   const body = new ReadableStream({
     start(controller) {
       setInterval(() => {
-        controller.enqueue(encoder.encode(`data: Hello ${index++}\n\n`));
+        console.log('Keepalive packet send');
+        controller.enqueue(encoder.encode(`data: Hi ${index++}\n\n`));
       }, 1000);
     },
   });
@@ -15,8 +16,4 @@ export default async (request: Request, context: Context) => {
       "Content-Type": "text/event-stream",
     },
   });
-};
-
-export const config: Config = {
-  path: "/sse",
 };
