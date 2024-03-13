@@ -30,7 +30,7 @@
 .title-second {
   font-size: 20px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 300;
   line-height: 28px;
   letter-spacing: 0.38px;
 }
@@ -99,4 +99,10 @@
   font-weight: 300;
   line-height: 12px;
   letter-spacing: 0.24px;
+}
+
+@media screen and (max-width: 440px) {
+  .detail {
+    font-size: 12px;
+  }
 }
