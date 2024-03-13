@@ -24,6 +24,7 @@ import Settings from '../components/Settings/Settings.jsx';
 // ? utils
 import { WEB_SOCKET_SETTING } from './../utils/constants.js';
 import AboutPage from '../pages/AboutPage/AboutPage.jsx';
+import NewNote from '../components/NewNote/NewNote.jsx';
 
 function App() {
   const navigate = useNavigate();
@@ -531,6 +532,23 @@ function App() {
   }
 
   // * note
+  // create a new one note
+  function handleCreateNote(data) {
+    if (token) {
+      console.log('submit create note');
+      socket.send(
+        JSON.stringify({
+          type: 'note',
+          action: 'create',
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
 
   // set/delete reaction
   function handleChangeReaction(data, method) {
@@ -694,6 +712,12 @@ function App() {
               path='/'
               element={
                 <MainContainer isAuthorized={!!token}>
+                  {!!token && (
+                    <NewNote
+                      user={currentUser}
+                      handleCreateNote={handleCreateNote}
+                    />
+                  )}
                   <Notes
                     notes={allNotes}
                     users={allUsers}
