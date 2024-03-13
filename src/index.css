@@ -36,6 +36,7 @@
   --border-main-light-color: #fff;
   --border-secondary-color: #0a100d;
   --border-tertiary-color: #d9d9d9;
+  --border-accent-color: var(--accent-color);
 
   /* css rules */
   font-family: 'Inter';

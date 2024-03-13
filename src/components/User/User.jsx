@@ -340,6 +340,15 @@ export default function User({
           {/* bottom */}
           <footer className={s.footer}>
             <div className={s.infos}>
+              {/* owner */}
+              {user.isOwner && (
+                <div className={`${s.info} ${s.info_border_accent}`}>
+                  <p className='text text_color_accent label-third'>
+                    This user is one of owners of ReddNotes
+                  </p>
+                </div>
+              )}
+
               {/* number of notes */}
               <div className={s.info}>
                 <p className='text text_color_second label-third'>
