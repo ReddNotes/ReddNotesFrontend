@@ -1,6 +1,6 @@
 // ! modules
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 // ? styles
 import s from './MenuBar.module.css';
@@ -23,6 +23,7 @@ export default function MenuBar({
   isAuthorized,
   user,
 }) {
+  const navigate = useNavigate();
   const _id = 'menubar-navigation-line';
 
   const [line, setLine] = useState(null);
@@ -43,13 +44,13 @@ export default function MenuBar({
       '/': _countPosition(0, _size.big),
       '/user': _countPosition(1, _size.big),
       '/favorite': _countPosition(2, _size.big),
-      '/settings': _countPosition(3, _size.big),
+      '/settings': _countPosition(isAuthorized ? 3 : 2, _size.big),
     },
     small: {
       '/': _countPosition(0, _size.small),
       '/user': _countPosition(1, _size.small),
       '/favorite': _countPosition(2, _size.small),
-      '/settings': _countPosition(3, _size.small),
+      '/settings': _countPosition(isAuthorized ? 3 : 2, _size.small),
     },
   };
 
@@ -71,7 +72,7 @@ export default function MenuBar({
       line.style.left = position.small[pathname];
       line.style.top = 0;
     }
-  }, [line, pathname, width]);
+  }, [line, pathname, width, user]);
 
   return (
     <article className={s.main}>
@@ -111,18 +112,22 @@ export default function MenuBar({
           </NavLink>
 
           {/* favorite */}
-          <NavLink
-            to={'/favorite'}
-            className={({ isActive }) => {
-              return `link ${s.item} ${isActive && s.link_type_current}`;
-            }}
-          >
-            {/* // todo make logic with notification <div id={notificationOnFavorites ? s.current : ''} /> */}
-            <img
-              src={pathname === '/favorite' ? favoriteActiveIcon : favoriteIcon}
-              alt='Favorite Logo'
-            />
-          </NavLink>
+          {isAuthorized && (
+            <NavLink
+              to={'/favorite'}
+              className={({ isActive }) => {
+                return `link ${s.item} ${isActive && s.link_type_current}`;
+              }}
+            >
+              {/* // todo make logic with notification <div id={notificationOnFavorites ? s.current : ''} /> */}
+              <img
+                src={
+                  pathname === '/favorite' ? favoriteActiveIcon : favoriteIcon
+                }
+                alt='Favorite Logo'
+              />
+            </NavLink>
+          )}
 
           {/* settings */}
           <NavLink

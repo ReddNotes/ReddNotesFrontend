@@ -10,6 +10,8 @@ import './App.css';
 import MenuBar from './../components/MenuBar/MenuBar.jsx';
 import PopupPicture from './../components/PopupPicture/PopupPicture.jsx';
 import Preloader from '../components/Preloader/Preloader.jsx';
+import ProtectedRoute from './../components/ProtectedRoute/ProtectedRoute.js';
+import User from './../components/User/User.jsx';
 
 // ? pages
 import Login from './../pages/Login/login.jsx';
@@ -17,7 +19,6 @@ import MainContainer from './../pages/MainContainer/MainContainer.jsx';
 import Notes from './../pages/Notes/Notes.jsx';
 import NotFound from './../pages/NotFound/NotFound.jsx';
 import Register from './../pages/Register/register.jsx';
-import User from '../components/User/User.jsx';
 
 // ? utils
 import { WEB_SOCKET_SETTING } from './../utils/constants.js';
@@ -732,28 +733,30 @@ function App() {
             <Route
               path='/favorite'
               element={
-                <MainContainer isAuthorized={!!token}>
-                  <Notes
-                    notes={allNotes.filter((note) =>
-                      currentUser.favorites.includes(note._id),
-                    )}
-                    users={allUsers}
-                    isAuthorized={!!token}
-                    currentUser={currentUser}
-                    handleDeleteNote={handleDeleteNote}
-                    openPopupPicture={openPopupPicture}
-                    handleCreateComment={handleCreateComment}
-                    handleDeleteComment={handleDeleteComment}
-                    handleChangeReaction={handleChangeReaction}
-                    messageWhenNoNotes={
-                      !!token
-                        ? 'To see favorites notes, before you have to login'
-                        : 'You do not have any note yet'
-                    }
-                    messageInEnd='You have seen all your favorite notes'
-                    handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
-                  />
-                </MainContainer>
+                <ProtectedRoute isActive={!!token} to='/'>
+                  <MainContainer isAuthorized={!!token}>
+                    <Notes
+                      notes={allNotes.filter((note) =>
+                        currentUser.favorites.includes(note._id),
+                      )}
+                      users={allUsers}
+                      isAuthorized={!!token}
+                      currentUser={currentUser}
+                      handleDeleteNote={handleDeleteNote}
+                      openPopupPicture={openPopupPicture}
+                      handleCreateComment={handleCreateComment}
+                      handleDeleteComment={handleDeleteComment}
+                      handleChangeReaction={handleChangeReaction}
+                      messageWhenNoNotes={
+                        !!token
+                          ? 'To see favorites notes, before you have to login'
+                          : 'You do not have any note yet'
+                      }
+                      messageInEnd='You have seen all your favorite notes'
+                      handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
+                    />
+                  </MainContainer>
+                </ProtectedRoute>
               }
             />
 
@@ -769,20 +772,24 @@ function App() {
             <Route
               path='/login'
               element={
-                <Login
-                  handleSubmit={handleLogin}
-                  error={errorsFromServer.login}
-                />
+                <ProtectedRoute isActive={!token}>
+                  <Login
+                    handleSubmit={handleLogin}
+                    error={errorsFromServer.login}
+                  />
+                </ProtectedRoute>
               }
             />
 
             <Route
               path='/register'
               element={
-                <Register
-                  handleSubmit={handleRegister}
-                  error={errorsFromServer.register}
-                />
+                <ProtectedRoute isActive={!token}>
+                  <Register
+                    handleSubmit={handleRegister}
+                    error={errorsFromServer.register}
+                  />
+                </ProtectedRoute>
               }
             />
 

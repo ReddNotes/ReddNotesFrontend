@@ -161,11 +161,7 @@ export default function Note({
             >
               {note.comments.length}
             </p>
-            <button
-              disabled={!isAuthorized}
-              onClick={handleOpenComments}
-              className='button'
-            >
+            <button onClick={handleOpenComments} className='button'>
               <img
                 src={isCommentsOpen ? commentActiveIcon : commentIcon}
                 alt='comment icon'
@@ -203,9 +199,10 @@ export default function Note({
         <Comments
           handleCreateComment={handleCreateComment}
           handleDeleteComment={handleDeleteComment}
+          isAuthorized={isAuthorized}
+          users={users}
           note={note}
           user={user}
-          users={users}
         />
       )}
     </article>
