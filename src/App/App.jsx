@@ -653,7 +653,7 @@ function App() {
   }
 
   // close popup with picture
-  function handlerClose() {
+  function closePopupWithPicture() {
     document.body.style.overflow = ''; // enabled scroll
     setPopupPictureOpen(false);
   }
@@ -673,7 +673,7 @@ function App() {
             <PopupPicture
               src={currentPicture.src}
               alt={currentPicture.alt}
-              handlerClose={handlerClose}
+              handlerClose={closePopupWithPicture}
             />
           )}
 
