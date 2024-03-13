@@ -61,7 +61,7 @@ export default function User({
     resetForm();
     setOwner(currentUser._id === user._id);
     setBirthday(user.birthday ? new Date(user.birthday) : null);
-  }, [user]);
+  }, [user, currentUser]);
 
   // ? functions
 
