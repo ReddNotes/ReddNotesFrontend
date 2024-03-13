@@ -5,6 +5,12 @@ import { useState, useEffect } from 'react';
 // ? styles
 import s from './User.module.css';
 
+// ? assets
+import editIcon from './../../assets/icon/pencil.svg';
+
+// ? components
+import PopupWithAvatars from './../PopupWithAvatars/PopupWithAvatars.jsx';
+
 // ? pages
 import NotFound from './../../pages/NotFound/NotFound.jsx';
 import Notes from '../../pages/Notes/Notes.jsx';
@@ -53,6 +59,7 @@ export default function User({
   const [isOwner, setOwner] = useState(currentUser._id === user._id);
   const [birthday, setBirthday] = useState(null);
   const [isEditingActive, setEditingActive] = useState(false);
+  const [isPopupWithAvatarsOpen, setPopupWithAvatarsOpen] = useState(false);
 
   // ? useEffects
 
@@ -92,6 +99,35 @@ export default function User({
     setFormActive(form.checkValidity());
   }
 
+  function handleChangeAvatar({ src }) {
+    setInputValue((prevState) => ({
+      ...prevState,
+      ['user-avatar']: src,
+    }));
+
+    handleSubmit({
+      avatar: src,
+      firstName: inputValue['user-first-name'],
+      lastName: inputValue['user-last-name'],
+      birthday: inputValue['user-birthday'],
+      description: inputValue['user-description'],
+    });
+
+    const form = document.getElementById('user-form');
+    setFormActive(form.checkValidity());
+  }
+
+  function handlerOpenPopupWithAvatar() {
+    document.body.style.overflow = 'hidden'; // disabled scroll
+    setPopupWithAvatarsOpen(true);
+  }
+
+  function handlerClosePopupWithAvatar() {
+    document.body.style.overflow = ''; // enabled scroll
+    setPopupWithAvatarsOpen(false);
+    setEditingActive(false);
+  }
+
   function onSubmit(e) {
     e.preventDefault();
     handleSubmit({
@@ -122,14 +158,6 @@ export default function User({
     const month = ('0' + (originalDate.getMonth() + 1)).slice(-2); // Les mois sont 0-indexés
     const day = ('0' + originalDate.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
-  }
-
-  function toIso8601(formattedDate) {
-    const originalDate = new Date(formattedDate);
-    const year = originalDate.getFullYear();
-    const month = ('0' + (originalDate.getMonth() + 1)).slice(-2);
-    const day = ('0' + originalDate.getDate()).slice(-2);
-    return `${year}-${month}-${day}T00:00:00.000+00:00`;
   }
 
   function enableEditMode() {
@@ -202,10 +230,12 @@ export default function User({
                   <button
                     type='button'
                     onClick={() => {
-                      openPopupPicture({
-                        src: inputValue['user-avatar'],
-                        alt: `${user.nickname} avatar`,
-                      });
+                      isEditingActive
+                        ? handlerOpenPopupWithAvatar()
+                        : openPopupPicture({
+                            src: inputValue['user-avatar'],
+                            alt: `${user.nickname} avatar`,
+                          });
                     }}
                     className={`button ${s.avatar}`}
                   >
@@ -214,7 +244,9 @@ export default function User({
                       src={inputValue['user-avatar']}
                       alt={`${user.nickname} avatar`}
                     />
+                    <img className={s.icon} src={editIcon} alt={'edit icon'} />
                   </button>
+
                   {birthday && (
                     <p className={`text text_color_second subhead ${s.age}`}>
                       <span className='text_color_default'>
@@ -396,6 +428,12 @@ export default function User({
           handleAddOrDeleteFavorites={handleAddOrDeleteFavorites}
         />
       </article>
+      {isPopupWithAvatarsOpen && (
+        <PopupWithAvatars
+          handleChooseAvatar={handleChangeAvatar}
+          handlerClose={handlerClosePopupWithAvatar}
+        />
+      )}
     </>
   );
 }

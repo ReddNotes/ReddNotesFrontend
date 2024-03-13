@@ -1,0 +1,99 @@
+.main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 32px 0;
+  box-sizing: border-box;
+  background-color: var(--bg-generic-color);
+  z-index: 10;
+}
+
+.container {
+  width: 80%;
+  max-width: var(--max-width-content);
+  max-height: 94%;
+  box-sizing: border-box;
+  position: relative;
+  border: 0.5px solid var(--border-main-color);
+  border-radius: 8px;
+  padding: 24px 0;
+  box-shadow: 0 0 100px 10px var(--border-main-color);
+  background-color: var(--bg-generic-color);
+
+  z-index: 3;
+}
+
+.avatars {
+  padding: 0 16px;
+  box-sizing: border-box;
+  max-height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 128px);
+  grid-template-rows: repeat(auto-fit, 128px);
+  justify-content: space-evenly;
+  gap: 24px;
+  overflow-y: scroll;
+}
+
+.avatar {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 0.5px solid var(--border-main-color);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.avatar:hover {
+  border-radius: 4px;
+}
+
+.avatar__img {
+  width: 100%;
+  height: 100%;
+}
+
+.close {
+  position: absolute;
+  top: calc(-32px - 4px);
+  right: calc(-32px - 4px);
+  width: 32px;
+  height: 32px;
+}
+
+.close_icon {
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 440px) {
+  .main {
+    padding: 0;
+  }
+  .container {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border: none;
+    border-radius: 0;
+    padding: 32px 8px;
+    box-shadow: inset 0px 28px 10px 10px var(--bg-main-dark-color),
+      inset 0px -28px 10px 10px var(--bg-main-dark-color);
+  }
+  .avatars {
+    padding: 0;
+  }
+  .close {
+    top: 0;
+    right: calc(2px);
+  }
+}

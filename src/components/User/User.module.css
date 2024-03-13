@@ -53,6 +53,33 @@
   border: 2px solid var(--accent-color);
 }
 
+/* edit icon */
+.icon {
+  --size: 24px;
+  position: absolute;
+  top: calc(50% - (var(--size) / 2));
+  left: calc(50% - (var(--size) / 2));
+  width: var(--size);
+  height: var(--size);
+  object-fit: cover;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.edit .avatar:hover .icon {
+  opacity: 1;
+}
+
+.edit .avatar:hover .avatar__img::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .avatar__img {
   --size: 4px;
   width: calc(100% - var(--size));
