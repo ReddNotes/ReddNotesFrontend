@@ -19,6 +19,7 @@ import MainContainer from './../pages/MainContainer/MainContainer.jsx';
 import Notes from './../pages/Notes/Notes.jsx';
 import NotFound from './../pages/NotFound/NotFound.jsx';
 import Register from './../pages/Register/register.jsx';
+import Settings from '../components/Settings/Settings.jsx';
 
 // ? utils
 import { WEB_SOCKET_SETTING } from './../utils/constants.js';
@@ -76,6 +77,8 @@ function App() {
     src: 'https://images.unsplash.com/photo-1531804055935-76f44d7c3621?q=80&w=3088&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     alt: null,
   });
+  // darkMode
+  const [darkMode, setDarkMode] = useState(false);
 
   // errors
   const [errorsFromServer, setErrorsFromServer] = useState({
@@ -764,7 +767,10 @@ function App() {
               path='/settings'
               element={
                 <MainContainer isAuthorized={!!token}>
-                  <p>settings</p>
+                  <Settings
+                    darkMode={darkMode}
+                    setDarkMode={setDarkMode}
+                  />
                 </MainContainer>
               }
             />
