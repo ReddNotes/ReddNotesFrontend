@@ -79,7 +79,7 @@ function App() {
     alt: null,
   });
   // darkMode
-  const [darkMode, setDarkMode] = useState(false);
+  const [isDarkModeEnabled, setDarkModeEnabled] = useState(false);
 
   // errors
   const [errorsFromServer, setErrorsFromServer] = useState({
@@ -190,6 +190,16 @@ function App() {
       socket.removeEventListener('close', () => {});
     };
   }, [socket]);
+
+  useEffect(() => {
+    const _root = document.getElementById('root');
+
+    if (isDarkModeEnabled) {
+      _root.setAttribute('data-theme', 'dark');
+    } else {
+      _root.setAttribute('data-theme', 'light');
+    }
+  }, [isDarkModeEnabled]);
 
   // ? functions
 
@@ -792,8 +802,8 @@ function App() {
               element={
                 <MainContainer isAuthorized={!!token}>
                   <Settings
-                    darkMode={darkMode}
-                    setDarkMode={setDarkMode}
+                    isDarkModeEnabled={isDarkModeEnabled}
+                    setDarkModeEnabled={setDarkModeEnabled}
                   />
                 </MainContainer>
               }
