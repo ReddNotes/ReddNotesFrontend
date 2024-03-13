@@ -105,6 +105,8 @@ export default function Comment({ user, users, comment, handlerDelete }) {
       {/* bottom */}
       <footer className={s.footer}>
         <h5 className='text text_color_second detail'>{dateOfCreating}</h5>
+        {/* 
+        // todo implement in future
         <div className={s.reaction}>
           <button type='button' className='button'>
             <img className={s.icon} src={reactionIcon} alt='Reaction icon' />
@@ -112,7 +114,7 @@ export default function Comment({ user, users, comment, handlerDelete }) {
           <p className={'text text_color_second label-third'}>
             {comment.likes.length}
           </p>
-        </div>
+        </div> */}
       </footer>
     </article>
   );

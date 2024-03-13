@@ -60,8 +60,14 @@ function App() {
   const [socket, setSocket] = useState(null);
   // count all users
   const [countAllUsers, setCountAllUsers] = useState(null);
+  // is count all users Downloaded
+  const [isCountAllUsersDownloaded, setCountAllUsersDownloaded] =
+    useState(false);
   // count all notes
   const [countAllNotes, setCountAllNotes] = useState(null);
+  // is count all notes Downloaded
+  const [isCountAllNotesDownloaded, setCountAllNotesDownloaded] =
+    useState(false);
   // is popup picture open or not
   const [isPopupPictureOpen, setPopupPictureOpen] = useState(false);
   // info about current picture
@@ -84,7 +90,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!token) return;
+    if (!socket || !token || isTokenCheck) return;
 
     socket.send(
       JSON.stringify({
@@ -99,25 +105,7 @@ function App() {
   useEffect(() => {
     if (!socket || !isTokenCheck) return;
 
-    // get all notes
-    socket.send(
-      JSON.stringify({
-        type: 'note',
-        action: 'get',
-        method: 'all',
-      }),
-    );
-
-    // get all users
-    socket.send(
-      JSON.stringify({
-        type: 'user',
-        action: 'get',
-        method: 'all',
-      }),
-    );
-
-    if (!isUsersDataDownloaded) {
+    if (!isCountAllUsersDownloaded) {
       // get count of all users
       socket.send(
         JSON.stringify({
@@ -127,12 +115,34 @@ function App() {
       );
     }
 
-    if (!isNotesDownloaded) {
+    if (!isCountAllNotesDownloaded) {
       // get count of all notes
       socket.send(
         JSON.stringify({
           type: 'info',
           action: 'count all notes',
+        }),
+      );
+    }
+
+    if (!isUsersDataDownloaded) {
+      // get all users
+      socket.send(
+        JSON.stringify({
+          type: 'user',
+          action: 'get',
+          method: 'all',
+        }),
+      );
+    }
+
+    if (!isNotesDownloaded) {
+      // get all notes
+      socket.send(
+        JSON.stringify({
+          type: 'note',
+          action: 'get',
+          method: 'all',
         }),
       );
     }
@@ -144,7 +154,7 @@ function App() {
     // when open connection
     socket.addEventListener('open', (event) => {
       console.log('WebSocket connection opened');
-      console.log(event);
+      // console.log(event);
 
       // try to login by token
       const token = localStorage.getItem('token');
@@ -163,8 +173,7 @@ function App() {
     socket.addEventListener('close', () => {
       console.log('WebSocket connection closed');
       socket.removeEventListener('message', handleWebSocketResponse);
-      setToken(null);
-      setTokenCheck(false);
+      setSocket(null);
 
       const _socket = new WebSocket(WEB_SOCKET_SETTING.URL);
       setSocket(_socket);
@@ -249,10 +258,12 @@ function App() {
         switch (answer.action) {
           case 'count all users':
             setCountAllUsers(answer.data);
+            setCountAllUsersDownloaded(true);
             break;
 
           case 'count all notes':
             setCountAllNotes(answer.data);
+            setCountAllNotesDownloaded(true);
             break;
 
           default:
