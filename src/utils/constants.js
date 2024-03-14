@@ -5,9 +5,9 @@
 export const APP_SETTING = {
   PORT: 5173,
   STATUS: {
-    SIMPLE: 'dev', // 'dev', 'prod'
-    DEV: true, // true
-    PROD: false, // false
+    SIMPLE: 'prod', // 'dev', 'prod'
+    DEV: false, // true
+    PROD: true, // false
   },
 };
 
@@ -36,6 +36,8 @@ export const AVATARS = {
     'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/items/105600/bf1acd0a0e0b6d5df2f538f94026d629e53909e6.gif',
   ],
 };
+
+export const LOCAL_STORAGE_VARIABLES = ['token', 'isDarkModeEnabled'];
 
 export const WEB_SOCKET_SETTING = {
   URL: APP_SETTING.STATUS.DEV

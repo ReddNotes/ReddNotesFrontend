@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 // ! modules
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
 // ? styles
@@ -192,19 +192,37 @@ function App() {
     };
   }, [socket]);
 
-  // ? dark light theme
+  // check local storage
   useEffect(() => {
+    let LSisDarkModeEnabled = '';
+    let _isDarkModeEnabled = false;
+
+    if (!!token) {
+      const LSuser = JSON.parse(localStorage.getItem(currentUser.nickname));
+      _isDarkModeEnabled = LSuser.isDarkModeEnabled || false;
+    } else {
+      LSisDarkModeEnabled = localStorage.getItem('isDarkModeEnabled');
+      _isDarkModeEnabled =
+        LSisDarkModeEnabled === 'true'
+          ? true
+          : LSisDarkModeEnabled === 'false'
+          ? false
+          : false;
+    }
+
     const _root = document.getElementById('root');
     const _html = document.querySelector('html');
 
-    if (isDarkModeEnabled) {
+    if (_isDarkModeEnabled) {
       _root.setAttribute('data-theme', 'dark');
       _html.setAttribute('data-theme', 'dark');
     } else {
       _root.setAttribute('data-theme', 'light');
       _html.setAttribute('data-theme', 'light');
     }
-  }, [isDarkModeEnabled]);
+    localStorage.setItem('isDarkModeEnabled', _isDarkModeEnabled);
+    setDarkModeEnabled(_isDarkModeEnabled);
+  }, [currentUser]);
 
   // ? functions
 
@@ -235,7 +253,21 @@ function App() {
                 setCurrentUser({ ...currentUser, ...answer.data });
                 setToken(answer.token);
                 localStorage.setItem('token', answer.token);
-                localStorage.setItem(answer.data.nickname, answer.token);
+
+                const _data = JSON.parse(
+                  localStorage.getItem(answer.data.nickname),
+                );
+
+                const _dataToSave = { ..._data };
+
+                _dataToSave.token = answer.token;
+                _dataToSave.avatar = answer.data.avatar;
+
+                localStorage.setItem(
+                  answer.data.nickname,
+                  JSON.stringify(_dataToSave),
+                );
+
                 setTokenCheck(true);
                 navigate('/');
                 break;
@@ -264,8 +296,23 @@ function App() {
               setToken(answer.token);
               setCurrentUser({ ...currentUser, ...answer.data });
               setToken(answer.token);
+
               localStorage.setItem('token', answer.token);
-              localStorage.setItem(answer.data.nickname, answer.token);
+
+              const _data = JSON.parse(localStorage.get(answer.data.nickname));
+
+              const _dataToSave = { ..._data };
+
+              _dataToSave.token = answer.token;
+              _dataToSave.avatar = answer.data.avatar;
+
+              localStorage.setItem(
+                answer.data.nickname,
+                JSON.stringify(_dataToSave),
+              );
+
+              localStorage.setItem(answer.data.nickname, JSON.stringify(_data));
+
               setTokenCheck(true);
 
               socket.send(
@@ -549,9 +596,23 @@ function App() {
         action: 'login',
         method: 'by data',
         data: data,
+      }),
+    );
+  }
+
+  // login to server by token
+  function handleLoginByToken(token) {
+    console.log('submit login');
+    socket.send(
+      JSON.stringify({
+        type: 'auth',
+        action: 'login',
+        method: 'by token',
         token: token,
       }),
     );
+
+    setToken(token);
   }
 
   // register to server
@@ -829,6 +890,9 @@ function App() {
               element={
                 <MainContainer isAuthorized={!!token}>
                   <Settings
+                    user={currentUser}
+                    isAuthorized={!!token}
+                    handleLogin={handleLoginByToken}
                     isDarkModeEnabled={isDarkModeEnabled}
                     setDarkModeEnabled={setDarkModeEnabled}
                   />
