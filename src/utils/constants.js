@@ -5,9 +5,9 @@
 export const APP_SETTING = {
   PORT: 5173,
   STATUS: {
-    SIMPLE: 'prod', // 'dev'
-    DEV: false, // true
-    PROD: true, // false
+    SIMPLE: 'dev', // 'dev', 'prod'
+    DEV: true, // true
+    PROD: false, // false
   },
 };
 

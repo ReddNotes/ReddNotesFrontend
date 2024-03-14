@@ -37,6 +37,7 @@
 }
 
 .field__input {
+  background-color: transparent;
   width: 100%;
   box-sizing: border-box;
   height: 46px;

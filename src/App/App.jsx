@@ -89,6 +89,7 @@ function App() {
 
   // ? useEffects
 
+  // first connect to web socket
   useEffect(() => {
     const _socket = new WebSocket(WEB_SOCKET_SETTING.URL);
     setSocket(_socket);
@@ -191,13 +192,17 @@ function App() {
     };
   }, [socket]);
 
+  // ? dark light theme
   useEffect(() => {
     const _root = document.getElementById('root');
+    const _html = document.querySelector('html');
 
     if (isDarkModeEnabled) {
       _root.setAttribute('data-theme', 'dark');
+      _html.setAttribute('data-theme', 'dark');
     } else {
       _root.setAttribute('data-theme', 'light');
+      _html.setAttribute('data-theme', 'light');
     }
   }, [isDarkModeEnabled]);
 
@@ -807,7 +812,7 @@ function App() {
                       handleDeleteComment={handleDeleteComment}
                       handleChangeReaction={handleChangeReaction}
                       messageWhenNoNotes={
-                        !!token
+                        !token
                           ? 'To see favorites notes, before you have to login'
                           : 'You do not have any note yet'
                       }

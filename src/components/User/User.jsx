@@ -177,14 +177,14 @@ export default function User({
             <>
               <button
                 onClick={handleReset}
-                className={`button label-second ${s.button}`}
+                className={`button text label-second ${s.button}`}
                 type='reset'
               >
                 Reset
               </button>
               <button
                 onClick={onSubmit}
-                className={`button label-second ${s.button}`}
+                className={`button text label-second ${s.button}`}
                 disabled={!isFormActive}
                 type='submit'
               >
@@ -194,7 +194,7 @@ export default function User({
           ) : (
             <button
               onClick={enableEditMode}
-              className={`text label-second button ${s.button}`}
+              className={`button text label-second ${s.button}`}
               type='button'
             >
               Edit
@@ -270,7 +270,7 @@ export default function User({
                         <input
                           id={'user-first-name'}
                           value={inputValue['user-first-name']}
-                          className={`${s.field__input} ${
+                          className={`text ${s.field__input} ${
                             errorValue['user-first-name'] &&
                             s.field__input_valid_invalid
                           }`}
@@ -296,7 +296,7 @@ export default function User({
                         <input
                           id={'user-last-name'}
                           value={inputValue['user-last-name']}
-                          className={`${s.field__input} ${
+                          className={`text ${s.field__input} ${
                             errorValue['user-last-name'] &&
                             s.field__input_valid_invalid
                           }`}

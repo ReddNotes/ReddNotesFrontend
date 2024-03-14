@@ -14,8 +14,8 @@ export default function NotificationAuth() {
           You can not use all functionality of this application. To use full
           functionality as set reaction, add to favorites, write comments,
           create own notes - you have to be logged.{' '}
-          <NavLink className={'link'} to={'/login'}>
-            <b>Login here</b>
+          <NavLink className={'text detail link'} to={'/login'}>
+            Login here
           </NavLink>
         </p>
       </div>

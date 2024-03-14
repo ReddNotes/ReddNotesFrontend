@@ -27,12 +27,13 @@
 }
 
 .textarea {
+  background-color: transparent;
   width: 100%;
   resize: none;
   outline: none;
   border: 0;
   padding: 0;
-  border-bottom: 1px solid var(--border-tertiary-color);
+  border-bottom: 1px solid var(--border-tertiary-inside-color);
   text-align: justify;
 }
 

@@ -11,7 +11,7 @@
 .form {
   width: 100%;
   max-width: var(--max-width-content);
-  border: 0.5px solid var(--border-tertiary-color);
+  border: 0.5px solid var(--border-tertiary-outside-color);
   border-radius: 8px;
   padding: 8px 16px;
   display: flex;
@@ -75,13 +75,14 @@
   border: none;
   outline: none;
   flex: 1;
+  background-color: transparent;
 }
 
 .value {
   width: 100%;
   min-height: 128px;
-  border-top: 0.5px solid var(--border-tertiary-color);
-  border-bottom: 0.5px solid var(--border-tertiary-color);
+  border-top: 0.5px solid var(--border-tertiary-inside-color);
+  border-bottom: 0.5px solid var(--border-tertiary-inside-color);
   box-sizing: border-box;
   padding: 12px 0;
 }
@@ -95,6 +96,7 @@
   border: none;
   outline: none;
   text-align: justify;
+  background-color: transparent;
 }
 
 .footer {
@@ -119,7 +121,7 @@
     border: 0;
     border-radius: 0;
     padding: 16px;
-    border-top: 0.5px solid var(--border-tertiary-color);
+    border-top: 0.5px solid var(--border-tertiary-outside-color);
   }
 
   .header {

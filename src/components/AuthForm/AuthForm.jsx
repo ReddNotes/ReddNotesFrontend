@@ -57,7 +57,7 @@ export default function AuthForm({
                     onChange={onChange}
                     value={inp.value}
                     required={inp.required}
-                    className={`${s.field__input} ${
+                    className={`text ${s.field__input} ${
                       inp.error && s.field__input_valid_invalid
                     }`}
                     type={inp.type}

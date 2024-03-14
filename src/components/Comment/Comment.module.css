@@ -45,10 +45,10 @@
 }
 
 .comment {
-  padding: 4px 8px;
+  padding: 6px 10px;
   box-sizing: border-box;
   background-color: var(--bg-tertiary-color);
-  border: 0.5px solid var(--border-tertiary-color);
+  border: 0.5px solid var(--border-tertiary-outside-color);
   border-radius: 8px;
   text-align: justify;
 }

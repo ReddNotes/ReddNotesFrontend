@@ -1,7 +1,7 @@
 .main {
   width: 100%;
   max-width: var(--max-width-content);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 0.5px solid var(--border-tertiary-outside-color);
   border-radius: 8px;
   padding: 8px 16px;
   display: flex;
@@ -77,13 +77,11 @@
 .value {
   width: 100%;
   min-height: 128px;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--border-tertiary-inside-color);
+  border-bottom: 1px solid var(--border-tertiary-inside-color);
   box-sizing: border-box;
   padding: 12px 0;
-
   text-align: justify;
-  text-justify: inter-word;
 }
 
 .footer {
