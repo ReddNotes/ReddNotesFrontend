@@ -254,12 +254,34 @@ function App() {
                 register: answer.errorMessage,
               }));
             }
-            setToken(answer.token);
-            setCurrentUser({ ...currentUser, ...answer.data });
-            setToken(answer.token);
-            localStorage.setItem('token', answer.token);
-            localStorage.setItem(answer.data.nickname, answer.token);
-            setTokenCheck(true);
+
+            if (answer.token) {
+              setToken(answer.token);
+              setCurrentUser({ ...currentUser, ...answer.data });
+              setToken(answer.token);
+              localStorage.setItem('token', answer.token);
+              localStorage.setItem(answer.data.nickname, answer.token);
+              setTokenCheck(true);
+
+              socket.send(
+                JSON.stringify({
+                  type: 'note',
+                  action: 'create',
+                  data: {
+                    title: 'I just signed up',
+                    description:
+                      'In this moment, in this second, I became part of the ReddNotes community',
+                  },
+                  token: answer.token,
+                }),
+              );
+            } else {
+              setAllUsers((pre) => {
+                pre.push(answer.data);
+                return pre;
+              });
+            }
+
             navigate('/');
             break;
 
