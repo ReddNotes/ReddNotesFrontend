@@ -7,6 +7,7 @@ import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
 
 // ? components
+import ListNotifications from '../components/ListNotifications/ListNotifications.jsx';
 import MenuBar from './../components/MenuBar/MenuBar.jsx';
 import PopupPicture from './../components/PopupPicture/PopupPicture.jsx';
 import Preloader from '../components/Preloader/Preloader.jsx';
@@ -59,6 +60,10 @@ function App() {
   const [allNotes, setAllNotes] = useState([]);
   // all users
   const [allUsers, setAllUsers] = useState([]);
+  // all notifications
+  const [allNotifications, setAllNotifications] = useState([]);
+  // max id of notifications
+  const [maxIdNotification, setMaxIdNotification] = useState(0);
   // socket
   const [socket, setSocket] = useState(null);
   // count all users
@@ -268,6 +273,12 @@ function App() {
                   JSON.stringify(_dataToSave),
                 );
 
+                createNotification({
+                  title: 'Login',
+                  text: `You successfully login as ${answer.data.nickname}`,
+                  isError: false,
+                });
+
                 setTokenCheck(true);
                 navigate('/');
                 break;
@@ -327,10 +338,22 @@ function App() {
                   token: answer.token,
                 }),
               );
+
+              createNotification({
+                title: 'Register',
+                text: `You successfully register an account as ${answer.data.nickname}`,
+                isError: false,
+              });
             } else {
               setAllUsers((pre) => {
                 pre.push(answer.data);
                 return pre;
+              });
+
+              createNotification({
+                title: 'Register',
+                text: `${answer.data.nickname} successfully register in ReddNotes`,
+                isError: false,
               });
             }
 
@@ -392,6 +415,12 @@ function App() {
               }),
             );
 
+            createNotification({
+              title: 'Update profile info',
+              text: 'You successfully update your profile',
+              isError: false,
+            });
+
             break;
           }
 
@@ -421,10 +450,14 @@ function App() {
 
           // create
           case 'create': {
+            let isOwner = false;
+            let nickname = '';
+
             setToken((token) => {
               if (token) {
                 setCurrentUser((pre) => {
                   if (answer.data.owner === pre._id) {
+                    isOwner = true;
                     return {
                       ...pre,
                       notes: [...pre.notes, answer.data._id],
@@ -436,6 +469,7 @@ function App() {
                 setAllUsers((pre) => {
                   const updatedUsers = pre.map((user) => {
                     if (user._id === answer.data.owner) {
+                      nickname = user.nickname;
                       return {
                         ...user,
                         notes: [...user.notes, answer.data._id],
@@ -454,6 +488,12 @@ function App() {
 
             setAllNotes((pre) => [...pre, answer.data]);
             setCountAllNotes((pre) => pre + 1);
+
+            createNotification({
+              title: 'A new note',
+              text: `${isOwner ? 'You' : nickname} just create a new note`,
+              isError: false,
+            });
 
             break;
           }
@@ -611,7 +651,7 @@ function App() {
         token: token,
       }),
     );
-
+    localStorage.setItem('token', token);
     setToken(token);
   }
 
@@ -784,6 +824,21 @@ function App() {
     setToken(null);
   }
 
+  // create notification
+  function createNotification(data) {
+    setAllNotifications((pre) => [
+      ...pre,
+      {
+        id: maxIdNotification,
+        title: data.title,
+        text: data.text,
+        isError: data.isError,
+      },
+    ]);
+
+    setMaxIdNotification((pre) => pre + 1);
+  }
+
   return (
     <>
       {isUsersDataDownloaded && isNotesDownloaded && socket ? (
@@ -804,6 +859,12 @@ function App() {
               handlerLogout={handlerLogout}
             />
           )}
+
+          <ListNotifications
+            isAuthorized={!!token}
+            notifications={allNotifications}
+            setNotifications={setAllNotifications}
+          />
 
           <Routes>
             <Route

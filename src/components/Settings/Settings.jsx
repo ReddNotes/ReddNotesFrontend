@@ -36,7 +36,7 @@ export default function Settings({
     });
 
     setLoggedAccounts(_loggedAccounts);
-  }, []);
+  }, [user, isAuthorized]);
 
   // ? functions
 
@@ -97,17 +97,20 @@ export default function Settings({
             Choose account
           </h2>
           <div className={s.setting}>
-            {loggedAccounts.lastIndexOf > 0 ? (
+            {loggedAccounts.length > 0 ? (
               loggedAccounts.map((acc, index) => {
                 function onClick() {
                   changeUser({ token: acc.token });
                 }
 
+                const isCurrent = acc.nickname === user.nickname;
+
                 return (
                   <button
+                    disabled={isCurrent}
                     key={index}
                     className={`button ${s.account} ${
-                      acc.nickname === user.nickname && s.account_type_current
+                      isCurrent && s.account_type_current
                     }`}
                     onClick={onClick}
                   >
