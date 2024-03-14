@@ -96,32 +96,38 @@ export default function Settings({
           <h2 className={`text label-first ${s.topic__title}`}>
             Choose account
           </h2>
-
           <div className={s.setting}>
-            {loggedAccounts.map((acc, index) => {
-              function onClick() {
-                changeUser({ token: acc.token });
-              }
+            {loggedAccounts.lastIndexOf > 0 ? (
+              loggedAccounts.map((acc, index) => {
+                function onClick() {
+                  changeUser({ token: acc.token });
+                }
 
-              return (
-                <button
-                  key={index}
-                  className={`button ${s.account} ${
-                    acc.nickname === user.nickname && s.account_type_current
-                  }`}
-                  onClick={onClick}
-                >
-                  <img
-                    src={acc.avatar}
-                    className={s.account__img}
-                    alt={`avatar of ${acc.nickname}`}
-                  />
-                  <h3 className='text text_color_second label-second'>
-                    {acc.nickname}
-                  </h3>
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={index}
+                    className={`button ${s.account} ${
+                      acc.nickname === user.nickname && s.account_type_current
+                    }`}
+                    onClick={onClick}
+                  >
+                    <img
+                      src={acc.avatar}
+                      className={s.account__img}
+                      alt={`avatar of ${acc.nickname}`}
+                    />
+                    <h3 className='text text_color_second label-second'>
+                      {acc.nickname}
+                    </h3>
+                  </button>
+                );
+              })
+            ) : (
+              <h4 className='text subhead text_color_second'>
+                You must be logged in to at least one account before you can
+                switch between accounts
+              </h4>
+            )}
           </div>
         </article>
       </article>

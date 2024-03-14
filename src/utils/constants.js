@@ -39,8 +39,14 @@ export const AVATARS = {
 
 export const LOCAL_STORAGE_VARIABLES = ['token', 'isDarkModeEnabled'];
 
+// export const WEB_SOCKET_SETTING = {
+//   URL: APP_SETTING.STATUS.DEV
+//     ? 'ws://localhost:5005/websocket'
+//     : 'wss://reddnotes.adaptable.app/websocket',
+// };
+
 export const WEB_SOCKET_SETTING = {
   URL: APP_SETTING.STATUS.DEV
     ? 'ws://localhost:5005/websocket'
-    : 'wss://reddnotes.adaptable.app/websocket',
+    : 'ws://maurinnas.ddns.net:5005/websocket',
 };
