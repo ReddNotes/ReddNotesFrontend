@@ -418,11 +418,16 @@ function App() {
 
           // update
           case 'update': {
+            let nickname = '';
+            let isOwner = false;
             setAllUsers((pre) =>
               pre.map((user) => {
                 if (user._id === answer.data._id) {
-                  if (currentUser._id === answer.data._id)
+                  nickname = answer.data.nickname;
+                  if (currentUser._id === answer.data._id) {
                     setCurrentUser(answer.data);
+                    isOwner = true;
+                  }
                   return answer.data;
                 } else {
                   return user;
@@ -432,7 +437,9 @@ function App() {
 
             createNotification({
               title: 'Update profile info',
-              text: 'You successfully update your profile',
+              text: `${
+                isOwner ? 'You' : nickname ? nickname : 'Someone'
+              } successfully update profile`,
               isError: false,
             });
 
