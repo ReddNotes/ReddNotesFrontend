@@ -491,7 +491,9 @@ function App() {
 
             createNotification({
               title: 'A new note',
-              text: `${isOwner ? 'You' : nickname} just create a new note`,
+              text: `${
+                isOwner ? 'You' : nickname ? nickname : 'Someone'
+              } just create a new note`,
               isError: false,
             });
 

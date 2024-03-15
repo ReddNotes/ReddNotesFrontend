@@ -55,7 +55,6 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
-  align-items: center;
   box-sizing: border-box;
 }
 
@@ -103,7 +102,7 @@
   align-items: center;
   gap: 12px;
   border-radius: 8px;
-  overflow: hidden;
+  min-width: 256px;
 }
 
 .account_type_current {
@@ -129,5 +128,10 @@
     padding: 16px;
     border-top: 0.5px solid rgba(0, 0, 0, 0.08);
     margin: 0;
+  }
+
+  .account {
+    width: 100%;
+    padding: 16px 24px;
   }
 }
