@@ -37,7 +37,11 @@ export const AVATARS = {
   ],
 };
 
-export const LOCAL_STORAGE_VARIABLES = ['token', 'isDarkModeEnabled'];
+export const LOCAL_STORAGE_VARIABLES = [
+  'token',
+  'isDarkModeEnabled',
+  'isNotificationEnabled',
+];
 
 // export const WEB_SOCKET_SETTING = {
 //   URL: APP_SETTING.STATUS.DEV

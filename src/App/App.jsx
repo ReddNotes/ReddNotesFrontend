@@ -85,6 +85,8 @@ function App() {
   });
   // darkMode
   const [isDarkModeEnabled, setDarkModeEnabled] = useState(false);
+  // notification
+  const [isNotificationEnabled, setNotificationEnabled] = useState(false);
 
   // errors
   const [errorsFromServer, setErrorsFromServer] = useState({
@@ -201,10 +203,13 @@ function App() {
   useEffect(() => {
     let LSisDarkModeEnabled = '';
     let _isDarkModeEnabled = false;
+    let LSisNotificationEnabled = '';
+    let _isNotificationEnabled = true;
 
     if (!!token) {
       const LSuser = JSON.parse(localStorage.getItem(currentUser.nickname));
       _isDarkModeEnabled = LSuser.isDarkModeEnabled || false;
+      _isNotificationEnabled = LSuser.isNotificationEnabled;
     } else {
       LSisDarkModeEnabled = localStorage.getItem('isDarkModeEnabled');
       _isDarkModeEnabled =
@@ -213,6 +218,14 @@ function App() {
           : LSisDarkModeEnabled === 'false'
           ? false
           : false;
+
+      LSisNotificationEnabled = localStorage.getItem('isNotificationEnabled');
+      _isNotificationEnabled =
+        LSisNotificationEnabled === 'true'
+          ? true
+          : LSisNotificationEnabled === 'false'
+          ? false
+          : true;
     }
 
     const _root = document.getElementById('root');
@@ -226,7 +239,9 @@ function App() {
       _html.setAttribute('data-theme', 'light');
     }
     localStorage.setItem('isDarkModeEnabled', _isDarkModeEnabled);
+    localStorage.setItem('isNotificationEnabled', _isNotificationEnabled);
     setDarkModeEnabled(_isDarkModeEnabled);
+    setNotificationEnabled(_isNotificationEnabled);
   }, [currentUser]);
 
   // ? functions
@@ -828,17 +843,24 @@ function App() {
 
   // create notification
   function createNotification(data) {
-    setAllNotifications((pre) => [
-      ...pre,
-      {
-        id: maxIdNotification,
-        title: data.title,
-        text: data.text,
-        isError: data.isError,
-      },
-    ]);
+    setNotificationEnabled((preNotification) => {
+      if (preNotification) {
+        setMaxIdNotification((preId) => {
+          setAllNotifications((pre) => [
+            ...pre,
+            {
+              id: preId,
+              title: data.title,
+              text: data.text,
+              isError: data.isError,
+            },
+          ]);
 
-    setMaxIdNotification((pre) => pre + 1);
+          return preId + 1;
+        });
+      }
+      return preNotification;
+    });
   }
 
   return (
@@ -958,6 +980,8 @@ function App() {
                     handleLogin={handleLoginByToken}
                     isDarkModeEnabled={isDarkModeEnabled}
                     setDarkModeEnabled={setDarkModeEnabled}
+                    isNotificationEnabled={isNotificationEnabled}
+                    setNotificationEnabled={setNotificationEnabled}
                   />
                 </MainContainer>
               }

@@ -8,6 +8,8 @@ import s from './Settings.module.css';
 import { LOCAL_STORAGE_VARIABLES } from './../../utils/constants';
 
 export default function Settings({
+  setNotificationEnabled,
+  isNotificationEnabled,
   setDarkModeEnabled,
   isDarkModeEnabled,
   isAuthorized,
@@ -65,6 +67,20 @@ export default function Settings({
     setDarkModeEnabled(newMode);
   }
 
+  // turn on/off notification
+  function changeNotification() {
+    const newMode = !isNotificationEnabled;
+    localStorage.setItem('isNotificationEnabled', newMode);
+
+    if (isAuthorized) {
+      const _data = JSON.parse(localStorage.getItem(user.nickname));
+      _data.isNotificationEnabled = newMode;
+      localStorage.setItem(user.nickname, JSON.stringify(_data));
+    }
+
+    setNotificationEnabled(newMode);
+  }
+
   // change account
   function changeUser({ token }) {
     handleLogin(token);
@@ -77,8 +93,8 @@ export default function Settings({
           <h1 className='text title-second'>Settings</h1>
         </header>
 
-        {/* theme switcher */}
         <article className={s.topic}>
+          {/* theme switcher */}
           <div className={s.setting}>
             <h3 className='text label-first'>Dark mode</h3>
 
@@ -87,6 +103,16 @@ export default function Settings({
               checked={isDarkModeEnabled}
               className={`button ${s.switch}`}
               onChange={changeColorMode}
+            />
+          </div>
+          <div className={s.setting}>
+            <h3 className='text label-first'>Notification</h3>
+
+            <input
+              type='checkbox'
+              checked={isNotificationEnabled}
+              className={`button ${s.switch}`}
+              onChange={changeNotification}
             />
           </div>
         </article>
