@@ -43,14 +43,8 @@ export const LOCAL_STORAGE_VARIABLES = [
   'isNotificationEnabled',
 ];
 
-// export const WEB_SOCKET_SETTING = {
-//   URL: APP_SETTING.STATUS.DEV
-//     ? 'ws://localhost:5005/websocket'
-//     : 'wss://reddnotes.adaptable.app/websocket',
-// };
-
 export const WEB_SOCKET_SETTING = {
   URL: APP_SETTING.STATUS.DEV
     ? 'ws://localhost:5005/websocket'
-    : 'ws://maurinnas.ddns.net:5005/websocket',
+    : 'wss://reddnotes.adaptable.app/websocket', // ws://maurinnas.ddns.net:5005/websocket
 };
