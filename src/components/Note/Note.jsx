@@ -19,6 +19,7 @@ import Comments from './../Comments/Comments';
 
 export default function Note({
   handleAddOrDeleteFavorites,
+  isButtonDeleteNoteActive,
   handleChangeReaction,
   handleCreateComment,
   handleDeleteComment,
@@ -174,7 +175,7 @@ export default function Note({
           {/* delete */}
           {isOwner && (
             <button
-              disabled={!isOwner}
+              disabled={!isButtonDeleteNoteActive}
               className='button'
               onClick={handleClickDelete}
             >

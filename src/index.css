@@ -57,7 +57,7 @@
   --bg-secondary-color: #222;
   --bg-generic-color: #131313;
   --bg-tertiary-color: #202020;
-  --bg-glass-color: transparent;
+  --bg-glass-color: rgba(0, 0, 0, 0.25);
 
   /* ? fg */
   --fg-main-color: #f9f9f9;
