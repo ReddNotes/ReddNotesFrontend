@@ -53,6 +53,10 @@ function App() {
     lastName: null, // string
     birthday: null, // date
     description: null, // string
+    settings: {
+      theme: 'light',
+      notification: true,
+    },
   };
   // all info about user
   const [currentUser, setCurrentUser] = useState(_emptyUser);
@@ -170,7 +174,7 @@ function App() {
       // console.log(event);
 
       // try to login by token
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('ReddNotes.token');
 
       if (!token || token === 'null') return setTokenCheck(true);
 
@@ -201,47 +205,44 @@ function App() {
 
   // check local storage
   useEffect(() => {
-    let LSisDarkModeEnabled = '';
-    let _isDarkModeEnabled = false;
-    let LSisNotificationEnabled = '';
+    let theme = '';
     let _isNotificationEnabled = true;
 
     if (!!token) {
-      const LSuser = JSON.parse(localStorage.getItem(currentUser.nickname));
-      _isDarkModeEnabled = LSuser.isDarkModeEnabled || false;
-      _isNotificationEnabled = LSuser.isNotificationEnabled;
+      _isNotificationEnabled = currentUser.settings.notification;
+      theme = currentUser.settings.theme;
     } else {
-      LSisDarkModeEnabled = localStorage.getItem('isDarkModeEnabled');
-      _isDarkModeEnabled =
-        LSisDarkModeEnabled === 'true'
-          ? true
-          : LSisDarkModeEnabled === 'false'
-          ? false
-          : false;
+      theme = localStorage.getItem('ReddNotes.theme') || 'light';
+      localStorage.setItem('ReddNotes.theme', theme);
 
-      LSisNotificationEnabled = localStorage.getItem('isNotificationEnabled');
+      const LSNotification = localStorage.getItem('ReddNotes.notification');
+
       _isNotificationEnabled =
-        LSisNotificationEnabled === 'true'
+        LSNotification === 'true'
           ? true
-          : LSisNotificationEnabled === 'false'
+          : LSNotification === 'false'
           ? false
           : true;
+
+      localStorage.setItem('ReddNotes.notification', _isNotificationEnabled);
+
+      const _user = { ...currentUser };
+
+      _user.settings.theme = theme;
+      _user.settings.notification = _isNotificationEnabled;
+
+      setCurrentUser(_user);
     }
+  }, [isUsersDataDownloaded, token, isTokenCheck]);
+
+  useEffect(() => {
+    const { theme } = currentUser.settings;
 
     const _root = document.getElementById('root');
     const _html = document.querySelector('html');
 
-    if (_isDarkModeEnabled) {
-      _root.setAttribute('data-theme', 'dark');
-      _html.setAttribute('data-theme', 'dark');
-    } else {
-      _root.setAttribute('data-theme', 'light');
-      _html.setAttribute('data-theme', 'light');
-    }
-    localStorage.setItem('isDarkModeEnabled', _isDarkModeEnabled);
-    localStorage.setItem('isNotificationEnabled', _isNotificationEnabled);
-    setDarkModeEnabled(_isDarkModeEnabled);
-    setNotificationEnabled(_isNotificationEnabled);
+    _root.setAttribute('data-theme', theme);
+    _html.setAttribute('data-theme', theme);
   }, [currentUser]);
 
   // ? functions
@@ -272,26 +273,29 @@ function App() {
 
                 setCurrentUser({ ...currentUser, ...answer.data });
                 setToken(answer.token);
-                localStorage.setItem('token', answer.token);
+                localStorage.setItem('ReddNotes.token', answer.token);
 
-                const _data = JSON.parse(
-                  localStorage.getItem(answer.data.nickname),
-                );
+                const _data = [
+                  ...(JSON.parse(localStorage.getItem('ReddNotes.accounts')) ||
+                    []),
+                ];
 
-                const _dataToSave = { ..._data };
-
-                _dataToSave.token = answer.token;
-                _dataToSave.avatar = answer.data.avatar;
+                _data.push({
+                  nickname: answer.data.nickname,
+                  token: answer.token,
+                  avatar: answer.data.avatar,
+                });
 
                 localStorage.setItem(
-                  answer.data.nickname,
-                  JSON.stringify(_dataToSave),
+                  'ReddNotes.accounts',
+                  JSON.stringify(_data),
                 );
 
                 createNotification({
                   title: 'Login',
                   text: `You successfully login as ${answer.data.nickname}`,
                   isError: false,
+                  time: 16,
                 });
 
                 setTokenCheck(true);
@@ -300,7 +304,12 @@ function App() {
               }
               // token
               case 'by token':
-                setCurrentUser({ ...currentUser, ...answer.data });
+                const _user = {
+                  ...currentUser,
+                  ...answer.data,
+                };
+
+                setCurrentUser(_user);
                 setTokenCheck(true);
                 break;
 
@@ -323,7 +332,7 @@ function App() {
               setCurrentUser({ ...currentUser, ...answer.data });
               setToken(answer.token);
 
-              localStorage.setItem('token', answer.token);
+              localStorage.setItem('ReddNotes.token', answer.token);
 
               const _data = JSON.parse(localStorage.get(answer.data.nickname));
 
@@ -358,6 +367,7 @@ function App() {
                 title: 'Register',
                 text: `You successfully register an account as ${answer.data.nickname}`,
                 isError: false,
+                time: 16,
               });
             } else {
               setAllUsers((pre) => {
@@ -369,6 +379,7 @@ function App() {
                 title: 'Register',
                 text: `${answer.data.nickname} successfully register in ReddNotes`,
                 isError: false,
+                time: 16,
               });
             }
 
@@ -418,30 +429,62 @@ function App() {
 
           // update
           case 'update': {
-            let nickname = '';
-            let isOwner = false;
-            setAllUsers((pre) =>
-              pre.map((user) => {
-                if (user._id === answer.data._id) {
-                  nickname = answer.data.nickname;
-                  if (currentUser._id === answer.data._id) {
-                    setCurrentUser(answer.data);
-                    isOwner = true;
-                  }
-                  return answer.data;
-                } else {
-                  return user;
-                }
-              }),
-            );
+            switch (answer.method) {
+              case 'data': {
+                let nickname = '';
+                let isOwner = false;
+                setAllUsers((pre) =>
+                  pre.map((user) => {
+                    if (user._id === answer.data._id) {
+                      nickname = answer.data.nickname;
+                      if (currentUser._id === answer.data._id) {
+                        setCurrentUser(answer.data);
+                        isOwner = true;
+                      }
+                      return answer.data;
+                    } else {
+                      return user;
+                    }
+                  }),
+                );
 
-            createNotification({
-              title: 'Update profile info',
-              text: `${
-                isOwner ? 'You' : nickname ? nickname : 'Someone'
-              } successfully update profile`,
-              isError: false,
-            });
+                createNotification({
+                  title: 'Update profile info',
+                  text: `${
+                    isOwner ? 'You' : nickname ? nickname : 'Someone'
+                  } successfully update profile`,
+                  isError: false,
+                  time: 16,
+                });
+                break;
+              }
+
+              case 'settings': {
+                setAllUsers((pre) =>
+                  pre.map((user) => {
+                    if (user._id === answer.data._id) {
+                      if (currentUser._id === answer.data._id) {
+                        setCurrentUser(answer.data);
+                      }
+                      return answer.data;
+                    } else {
+                      return user;
+                    }
+                  }),
+                );
+
+                createNotification({
+                  title: 'Update settings',
+                  text: 'You successfully update settings',
+                  isError: false,
+                  time: 8,
+                });
+                break;
+              }
+
+              default:
+                break;
+            }
 
             break;
           }
@@ -517,6 +560,7 @@ function App() {
                 isOwner ? 'You' : nickname ? nickname : 'Someone'
               } just create a new note`,
               isError: false,
+              time: 16,
             });
 
             break;
@@ -675,7 +719,7 @@ function App() {
         token: token,
       }),
     );
-    localStorage.setItem('token', token);
+    localStorage.setItem('ReddNotes.token', token);
     setToken(token);
   }
 
@@ -816,6 +860,26 @@ function App() {
         JSON.stringify({
           type: 'user',
           action: 'update',
+          method: 'data',
+          data: data,
+          token: token,
+        }),
+      );
+    } else {
+      // todo show
+      console.log('user is not authorized');
+    }
+  }
+
+  // update settings of user
+  function handleSettingsUpdateSubmit(data) {
+    if (token) {
+      console.log('submit update user settings');
+      socket.send(
+        JSON.stringify({
+          type: 'user',
+          action: 'update',
+          method: 'settings',
           data: data,
           token: token,
         }),
@@ -843,15 +907,15 @@ function App() {
 
   // logout
   function handlerLogout() {
-    localStorage.setItem('token', null);
+    localStorage.setItem('ReddNotes.token', null);
     setCurrentUser(_emptyUser);
     setToken(null);
   }
 
   // create notification
   function createNotification(data) {
-    setNotificationEnabled((preNotification) => {
-      if (preNotification) {
+    setCurrentUser((pre) => {
+      if (pre.settings.notification) {
         setMaxIdNotification((preId) => {
           setAllNotifications((pre) => [
             ...pre,
@@ -860,13 +924,15 @@ function App() {
               title: data.title,
               text: data.text,
               isError: data.isError,
+              time: data.time || 16,
             },
           ]);
 
           return preId + 1;
         });
       }
-      return preNotification;
+
+      return pre;
     });
   }
 
@@ -984,11 +1050,9 @@ function App() {
                   <Settings
                     user={currentUser}
                     isAuthorized={!!token}
+                    setCurrentUser={setCurrentUser}
                     handleLogin={handleLoginByToken}
-                    isDarkModeEnabled={isDarkModeEnabled}
-                    setDarkModeEnabled={setDarkModeEnabled}
-                    isNotificationEnabled={isNotificationEnabled}
-                    setNotificationEnabled={setNotificationEnabled}
+                    handleSettingsUpdateSubmit={handleSettingsUpdateSubmit}
                   />
                 </MainContainer>
               }

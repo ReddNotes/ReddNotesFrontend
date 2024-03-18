@@ -8,77 +8,67 @@ import s from './Settings.module.css';
 import { LOCAL_STORAGE_VARIABLES } from './../../utils/constants';
 
 export default function Settings({
-  setNotificationEnabled,
-  isNotificationEnabled,
-  setDarkModeEnabled,
-  isDarkModeEnabled,
+  handleSettingsUpdateSubmit,
+  setCurrentUser,
   isAuthorized,
   handleLogin,
   user,
 }) {
+  // ? useStates
   const [loggedAccounts, setLoggedAccounts] = useState([]);
 
   // ? useEffects
   useEffect(() => {
-    const length = localStorage.length;
-    const _nicknames = [];
-
-    for (let i = 0; i < length; i++) {
-      const element = localStorage.key(i);
-
-      if (!LOCAL_STORAGE_VARIABLES.includes(element)) _nicknames.push(element);
-    }
-
-    const _loggedAccounts = [];
-
-    _nicknames.forEach((_nickname) => {
-      const _user = JSON.parse(localStorage.getItem(_nickname));
-      _user.nickname = _nickname;
-      _loggedAccounts.push(_user);
-    });
-
-    setLoggedAccounts(_loggedAccounts);
+    setLoggedAccounts(
+      JSON.parse(localStorage.getItem('ReddNotes.accounts')) || [],
+    );
   }, [user, isAuthorized]);
 
   // ? functions
 
   // change to dark or light theme
-  function changeColorMode() {
-    const newMode = !isDarkModeEnabled;
-    localStorage.setItem('isDarkModeEnabled', newMode);
+  function changeTheme() {
+    const newTheme = user.settings.theme === 'dark' ? 'light' : 'dark';
+    if (!isAuthorized) {
+      localStorage.setItem('ReddNotes.theme', newTheme);
+    } else {
+      handleSettingsUpdateSubmit({
+        theme: newTheme,
+        notification: user.settings.notification,
+      });
+    }
 
     const _root = document.getElementById('root');
     const _html = document.querySelector('html');
 
-    if (newMode) {
-      _root.setAttribute('data-theme', 'dark');
-      _html.setAttribute('data-theme', 'dark');
-    } else {
-      _root.setAttribute('data-theme', 'light');
-      _html.setAttribute('data-theme', 'light');
-    }
+    _root.setAttribute('data-theme', newTheme);
+    _html.setAttribute('data-theme', newTheme);
 
-    if (isAuthorized) {
-      const _data = JSON.parse(localStorage.getItem(user.nickname));
-      _data.isDarkModeEnabled = newMode;
-      localStorage.setItem(user.nickname, JSON.stringify(_data));
-    }
+    const _user = { ...user };
 
-    setDarkModeEnabled(newMode);
+    _user.settings.theme = newTheme;
+
+    setCurrentUser(_user);
   }
 
   // turn on/off notification
   function changeNotification() {
-    const newMode = !isNotificationEnabled;
-    localStorage.setItem('isNotificationEnabled', newMode);
+    const newNotification = !user.settings.notification;
 
-    if (isAuthorized) {
-      const _data = JSON.parse(localStorage.getItem(user.nickname));
-      _data.isNotificationEnabled = newMode;
-      localStorage.setItem(user.nickname, JSON.stringify(_data));
+    if (!isAuthorized) {
+      localStorage.setItem('ReddNotes.notification', newNotification);
+    } else {
+      handleSettingsUpdateSubmit({
+        theme: user.settings.theme,
+        notification: newNotification,
+      });
     }
 
-    setNotificationEnabled(newMode);
+    const _user = { ...user };
+
+    _user.settings.notification = newNotification;
+
+    setCurrentUser(_user);
   }
 
   // change account
@@ -96,13 +86,14 @@ export default function Settings({
         <article className={s.topic}>
           {/* theme switcher */}
           <div className={s.setting}>
-            <h3 className='text label-first'>Dark mode</h3>
+            <h3 className='text label-first'>Dark theme</h3>
 
             <input
+              title={`Now theme is ${user.settings.theme}`}
               type='checkbox'
-              checked={isDarkModeEnabled}
+              checked={user.settings.theme === 'dark'}
               className={`button ${s.switch}`}
-              onChange={changeColorMode}
+              onChange={changeTheme}
             />
           </div>
           <div className={s.setting}>
@@ -110,7 +101,10 @@ export default function Settings({
 
             <input
               type='checkbox'
-              checked={isNotificationEnabled}
+              title={`Now notification is turn ${
+                user.settings.notification ? 'on' : 'off'
+              }`}
+              checked={user.settings.notification}
               className={`button ${s.switch}`}
               onChange={changeNotification}
             />

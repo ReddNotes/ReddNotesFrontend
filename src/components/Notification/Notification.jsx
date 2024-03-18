@@ -15,16 +15,16 @@ export default function Notification({
     title: 'Example',
     text: 'Someone create a new one note',
     isError: false,
+    time: 16,
   },
   handleCloseNotification = () => {},
 }) {
   // constants
   const lineId = `notification-${data.id}-line`;
-  const timeAlive = 16;
   // ? useStates
 
   // time before notification will close
-  const [timeToClose, setTimeToClose] = useState(timeAlive);
+  const [timeToClose, setTimeToClose] = useState(data.time);
 
   // ? useEffects
 
@@ -33,7 +33,7 @@ export default function Notification({
     setTimeout(() => {
       clearInterval(interval);
       handleCloseNotification({ id: data.id });
-    }, timeAlive * 1_000);
+    }, data.time * 1_000);
 
     const interval = setInterval(() => {
       setTimeToClose((pre) => {
@@ -51,8 +51,8 @@ export default function Notification({
 
     if (!_header) return;
 
-    _header.style.width = `${(100 * timeToClose) / timeAlive}%`;
-  }, [timeToClose]);
+    _header.style.width = `${(100 * timeToClose) / data.time}%`;
+  }, [data.time, timeToClose]);
 
   // ? functions
 
@@ -65,7 +65,10 @@ export default function Notification({
     <article className={`${s.main} ${data.isError && s.main_type_error}`}>
       {/* top */}
       <header className={s.header}>
-        <h4 className='text subhead'>{data.title}</h4>
+        <div>
+          <span className='text text_color_second detail'>#{data.id}</span>
+          <h4 className='text subhead'>{data.title}</h4>
+        </div>
         <button className='button' onClick={closeNotification}>
           <img className={s.icon} src={closeIcon} alt='close icon' />
         </button>

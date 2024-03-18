@@ -20,7 +20,7 @@ export default function ListNotifications({
       {notifications.map((data, index) => {
         return (
           <Notification
-            key={index}
+            key={data.id}
             data={data}
             handleCloseNotification={closeNotification}
           />

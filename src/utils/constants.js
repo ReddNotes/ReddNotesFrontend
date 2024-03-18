@@ -38,9 +38,10 @@ export const AVATARS = {
 };
 
 export const LOCAL_STORAGE_VARIABLES = [
-  'token',
-  'isDarkModeEnabled',
-  'isNotificationEnabled',
+  'ReddNotes.token',
+  'ReddNotes.notification',
+  'ReddNotes.accounts',
+  'ReddNotes.theme',
 ];
 
 export const WEB_SOCKET_SETTING = {
