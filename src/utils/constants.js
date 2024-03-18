@@ -2,12 +2,14 @@
 
 // ! modules
 
+import config from './../config.json';
+
 export const APP_SETTING = {
-  PORT: 5173,
+  PORT: config.PORT,
   STATUS: {
-    SIMPLE: 'prod', // 'dev', 'prod'
-    DEV: false, // true
-    PROD: true, // false
+    SIMPLE: config.STATUS.SIMPLE,
+    DEV: config.STATUS.DEV,
+    PROD: config.STATUS.PROD,
   },
 };
 
@@ -46,6 +48,6 @@ export const LOCAL_STORAGE_VARIABLES = [
 
 export const WEB_SOCKET_SETTING = {
   URL: APP_SETTING.STATUS.DEV
-    ? 'ws://localhost:5005/websocket'
-    : 'wss://reddnotes.adaptable.app/websocket', // ws://maurinnas.ddns.net:5005/websocket
+    ? config.WEB_SOCKET_SETTING.DEV
+    : config.WEB_SOCKET_SETTING.PROD, // ws://maurinnas.ddns.net:5005/websocket
 };

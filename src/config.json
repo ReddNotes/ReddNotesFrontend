@@ -1,0 +1,12 @@
+{
+  "PORT": 5173,
+  "STATUS": {
+    "SIMPLE": "prod",
+    "DEV": false,
+    "PROD": true
+  },
+  "WEB_SOCKET_SETTING": {
+    "DEV": "ws://localhost:5005/websocket",
+    "PROD": "wss://reddnotes.adaptable.app/websocket"
+  }
+}
