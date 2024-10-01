@@ -7,6 +7,6 @@
   },
   "WEB_SOCKET_SETTING": {
     "DEV": "ws://localhost:5005/websocket",
-    "PROD": "wss://reddnotes.adaptable.app/websocket"
+    "PROD": "wss://reddnotesbackend.adaptable.app/websocket"
   }
 }
